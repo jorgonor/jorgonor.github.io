@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>ETagFilePathResult, an ActionResult to save bandwidth in ASP.NET MVC. - Jorgonor</title>
+<meta property="og:title" content="ETagFilePathResult, an ActionResult to save bandwidth in ASP.NET MVC." />
+<meta name="description" content="ETagFilePathResult is an ASP.NET MVC ActionResult that implements HTTP ETags based on a file. Useful to save bandwidth if you are serving files from a controller." />
+<meta property="og:description" content="ETagFilePathResult is an ASP.NET MVC ActionResult that implements HTTP ETags based on a file. Useful to save bandwidth if you are serving files from a controller." />
+<link rel="canonical" href="https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html" />
+<meta property="og:url" content="https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-07-04T23:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "ETagFilePathResult, an ActionResult to save bandwidth in ASP.NET MVC.",
+"datePublished": "2016-07-04T23:00:00+02:00",
+"description": "ETagFilePathResult is an ASP.NET MVC ActionResult that implements HTTP ETags based on a file. Useful to save bandwidth if you are serving files from a controller.",
+"url": "https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="C#, .NET, ASP.NET" >
+
+  
+  <meta name="content-language" content="en">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/en">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/contact.html">Contact</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>ETagFilePathResult, an ActionResult to save bandwidth in ASP.NET MVC.</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Jul 4, 2016</p>
+              </header>
+
+              <article class="post-content">
+                <p><a href="http://www.asp.net/mvc">ASP.NET MVC</a> provides several ways to serve files from controllers,
+but all of them require to serve the entire file content through the network, something that
+will make our website slow and more expensive while it’s ridiculous to transfer the same content
+over the network every time the resource is requested.
+Client-side HTTP caching can easily prevent downloading all those extra bytes. In this post
+we offer a solution to it without doing any complicated stuff,
+using the ActionResult abstract class to integrate a solution based on <a href="https://en.wikipedia.org/wiki/HTTP_ETag">ETags</a>
+in ASP.NET MVC to implement the client-side caching.</p>
+
+<h3 id="why-do-i-need-to-return-static-files-from-a-controller">Why do I need to return static files from a controller?</h3>
+
+<p>It might seem ridiculous to return static files from a controller. Well, <strong>it is not</strong>. In several
+scenarios it is very useful and secures your web application.
+For instance, when there are private resources that might be readable only for a subset of users
+you <strong>must</strong> validate in the controller if the resource is readable for the user who requests it,
+if not you’re creating a security hole by mistake.
+Other use cases are dynamically generated files backed by a
+server-side cache, or even customized stylesheets backed on a server file too.</p>
+
+<h3 id="alright-but-let-me-see-the-code">Alright, but let me see the code!</h3>
+
+<p>This class is analogous to other classes that are already in ASP.NET MVC like
+<a href="https://msdn.microsoft.com/en-us/library/system.web.mvc.filepathresult(v=vs.118).aspx">FilePathResult</a> or
+<a href="https://msdn.microsoft.com/en-us/library/system.web.mvc.filestreamresult(v=vs.118).aspx">FileStreamResult</a>.
+While these classes work, they do not implement any client-side caching mechanism.
+So, with <em>ETagFilePathResult</em> an ETag will be calculated from the server file full path and the file last write time and returned
+to the client, letting the client know that the resource can be cached and indexed by this ETag.</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Image</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Find the image that matches with the incoming id.
+</span>    <span class="k">return</span> <span class="k">new</span> <span class="nf">ETagFilePathResult</span><span class="p">(</span>
+        <span class="n">imagePath</span><span class="p">,</span> <span class="s">"image/png"</span><span class="p">,</span> <span class="n">Request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"If-None-Match"</span><span class="p">]</span>
+    <span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="err">﻿</span><span class="k">public</span> <span class="k">class</span> <span class="nc">ETagFilePathResult</span> <span class="p">:</span> <span class="n">ActionResult</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="kt">string</span> <span class="n">fileName</span><span class="p">;</span>
+    <span class="k">private</span> <span class="kt">string</span> <span class="n">contentType</span><span class="p">;</span>
+    <span class="k">private</span> <span class="kt">string</span> <span class="n">previousETag</span><span class="p">;</span>
+    <span class="k">private</span> <span class="kt">string</span> <span class="n">uniqueSource</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="nf">ETagFilePathResult</span><span class="p">(</span><span class="kt">string</span> <span class="n">fileName</span><span class="p">,</span> <span class="kt">string</span> <span class="n">contentType</span><span class="p">,</span>
+            <span class="kt">string</span> <span class="n">previousETag</span><span class="p">,</span> <span class="kt">string</span> <span class="n">uniqueSource</span> <span class="p">=</span> <span class="s">""</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">fileName</span> <span class="p">=</span> <span class="n">fileName</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">contentType</span> <span class="p">=</span> <span class="n">contentType</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">previousETag</span> <span class="p">=</span> <span class="n">previousETag</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">uniqueSource</span> <span class="p">=</span> <span class="n">uniqueSource</span> <span class="p">??</span> <span class="s">""</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">ExecuteResult</span><span class="p">(</span><span class="n">ControllerContext</span> <span class="n">context</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">context</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentNullException</span><span class="p">(</span><span class="s">"context"</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">HttpResponseBase</span> <span class="n">response</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">HttpContext</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+        <span class="n">response</span><span class="p">.</span><span class="n">ContentType</span> <span class="p">=</span> <span class="n">contentType</span><span class="p">;</span>
+
+        <span class="n">FileInfo</span> <span class="n">fileInfo</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">FileInfo</span><span class="p">(</span><span class="n">fileName</span><span class="p">);</span>
+        <span class="kt">string</span> <span class="n">eTag</span> <span class="p">=</span> <span class="nf">CalculateETag</span><span class="p">(</span><span class="n">fileInfo</span><span class="p">);</span>
+
+        <span class="n">response</span><span class="p">.</span><span class="n">Headers</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="s">"Content-Length"</span><span class="p">,</span> <span class="n">fileInfo</span><span class="p">.</span><span class="n">Length</span><span class="p">.</span><span class="nf">ToString</span><span class="p">());</span>
+        <span class="n">response</span><span class="p">.</span><span class="n">Cache</span><span class="p">.</span><span class="nf">SetCacheability</span><span class="p">(</span><span class="n">HttpCacheability</span><span class="p">.</span><span class="n">ServerAndPrivate</span><span class="p">);</span>
+        <span class="n">response</span><span class="p">.</span><span class="n">Cache</span><span class="p">.</span><span class="nf">SetETag</span><span class="p">(</span><span class="n">eTag</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">eTag</span> <span class="p">==</span> <span class="n">previousETag</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">response</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">NotModified</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">response</span><span class="p">.</span><span class="nf">TransmitFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">);</span>
+            <span class="n">response</span><span class="p">.</span><span class="nf">Flush</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">virtual</span> <span class="kt">string</span> <span class="nf">CalculateETag</span><span class="p">(</span><span class="n">FileInfo</span> <span class="n">fileInfo</span><span class="p">)</span>
+    <span class="p">{</span>            
+        <span class="kt">string</span> <span class="n">hashSource</span><span class="p">;</span>
+        <span class="kt">byte</span><span class="p">[]</span> <span class="n">bContentsToHash</span><span class="p">,</span> <span class="n">hash</span><span class="p">;</span>
+
+        <span class="n">hashSource</span> <span class="p">=</span> <span class="n">String</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="s">"-"</span><span class="p">,</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span>
+            <span class="n">fileInfo</span><span class="p">.</span><span class="n">FullName</span><span class="p">,</span>
+            <span class="n">fileInfo</span><span class="p">.</span><span class="n">LastWriteTime</span><span class="p">.</span><span class="nf">ToString</span><span class="p">(),</span>
+            <span class="n">uniqueSource</span>
+        <span class="p">);</span>
+        <span class="n">bContentsToHash</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">Unicode</span><span class="p">.</span><span class="nf">GetBytes</span><span class="p">(</span><span class="n">hashSource</span><span class="p">);</span>
+        <span class="n">hash</span> <span class="p">=</span> <span class="p">((</span><span class="n">HashAlgorithm</span><span class="p">)</span> <span class="n">CryptoConfig</span><span class="p">.</span><span class="nf">CreateFromName</span><span class="p">(</span><span class="s">"MD5"</span><span class="p">))</span>
+                                            <span class="p">.</span><span class="nf">ComputeHash</span><span class="p">(</span><span class="n">bContentsToHash</span><span class="p">);</span>
+
+        <span class="kt">string</span> <span class="n">eTag</span> <span class="p">=</span> <span class="n">BitConverter</span><span class="p">.</span><span class="nf">ToString</span><span class="p">(</span><span class="n">hash</span><span class="p">)</span>
+                                  <span class="p">.</span><span class="nf">Replace</span><span class="p">(</span><span class="s">"-"</span><span class="p">,</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">)</span>
+                                  <span class="p">.</span><span class="nf">ToLower</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="n">eTag</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The next time the browser asks for this resource, it will add an If-None-Match header with the ETag,
+and the server will check if that ETag matches the current file stored in the filesystem. If it does, it returns only an HTTP
+<a href="https://httpstatuses.com/304">Not Modified</a> status code, and doesn’t transmit the file content to the client, authorizing the browser
+to keep using the same copy it downloaded previously for this resource.
+Isn’t it cool? And no extra code needed in your controller!</p>
+
+<p>Given this code, it is pretty straightforward to implement alternatives,
+such as an ActionResult that serves a file from a stream or a byte array
+and <em>etags</em> it. In this case we would not be able to use the last write time,
+but we could simply hash the content of the stream and calculate the ETag
+from that.</p>
+
+<p>I hope this helps and if you implement any alternative don’t hesitate to share in comments!</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">C#</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">.NET</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">ASP.NET</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Software Developer and Web passionate.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Technologies</h5>
+                
+                <ul>
+                    <li><a href="/en/php-developer.html" class="white-text">PHP</a></li>
+                    <li><a href="/en/web-developer.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Spain
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

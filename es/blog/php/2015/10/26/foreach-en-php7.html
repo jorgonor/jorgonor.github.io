@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Foreach en PHP7 - Jorgonor</title>
+<meta property="og:title" content="Foreach en PHP7" />
+<meta name="description" content="La nueva versión de PHP7 ya está aquí, y esta nueva versión introduce cambios no compatibles a la sentencia foreach. En este post, los tratamos en detalle." />
+<meta property="og:description" content="La nueva versión de PHP7 ya está aquí, y esta nueva versión introduce cambios no compatibles a la sentencia foreach. En este post, los tratamos en detalle." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/php/2015/10/26/foreach-en-php7.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/php/2015/10/26/foreach-en-php7.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-10-26T22:30:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Foreach en PHP7",
+"datePublished": "2015-10-26T22:30:00+01:00",
+"description": "La nueva versión de PHP7 ya está aquí, y esta nueva versión introduce cambios no compatibles a la sentencia foreach. En este post, los tratamos en detalle.",
+"url": "https://jorgonor.com/es/blog/php/2015/10/26/foreach-en-php7.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="PHP, PHP7, foreach, Compatibilidad" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Foreach en PHP7</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Oct 26, 2015</p>
+              </header>
+
+              <article class="post-content">
+                <p>La nueva versión de PHP7 ya está aquí, y esta nueva versión introduce cambios no compatibles a la sentencia <em>foreach</em>.
+Así como detallamos gran parte de las nuevas funcionalidades y detalles de compatibilidad en el anterior post <a href="/es/blog/PHP7/2015/10/26/php7-ya-esta-aqui.html">PHP7 ya está aquí</a>,
+en este post vamos a centrarnos de manera detallada en los cambios sobre la sentencia <em>foreach</em>.</p>
+
+<h3 id="el-puntero-al-array-no-se-modifica-dentro-de-la-sentencia">El puntero al array no se modifica dentro de la sentencia</h3>
+
+<p>Dentro de una sentencia <em>foreach</em> el puntero al array no será modificado. Por tanto, si has utilizado funciones como <em>current</em> dentro de esta sentencia,
+tendrás que tener en cuenta esto a la hora de migrar proyectos a PHP7. Veámoslo con un ejemplo.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$values</span> <span class="k">as</span> <span class="o">&amp;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">var_dump</span><span class="p">(</span><span class="nb">current</span><span class="p">(</span><span class="nv">$values</span><span class="p">));</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>En PHP5, la salida del código anterior sería:</p>
+
+<pre>
+int(2)
+int(3)
+bool(false)
+</pre>
+
+<p>En cambio, en PHP7 la salida sería:</p>
+
+<pre>
+int(1)
+int(1)
+int(1)
+</pre>
+
+<h3 id="comportamiento-del-foreach-por-referencia-mejorado">Comportamiento del <em>foreach</em> por referencia mejorado</h3>
+
+<p>Si dentro de una sentencia <em>foreach</em> por referencia añadimos elementos al array, estos elementos serán iterados.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$values</span> <span class="k">as</span> <span class="o">&amp;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+    <span class="nv">$values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>En PHP5, la salida del código anterior sería:</p>
+
+<pre>
+int(1)
+</pre>
+
+<p>En cambio, en PHP7:</p>
+
+<pre>
+int(1)
+int(2)
+</pre>
+
+<p>Hay que ir con mucho cuidado, porque algunos foreach ya desarrollados podrían causar bucles infinitos en PHP7.</p>
+
+<h3 id="el-cambio-retrocompatible-que-se-han-dejado">El cambio retrocompatible que se han dejado</h3>
+
+<p>A pesar de haber introducido mejoras, no han solucionado un problema muy básico de alcances. La sentencia <em>foreach</em> se
+deja definida la variable con el último valor iterado. Creo que deberían haber roto este comportamiento extraño, ya que
+no tiene ningún sentido acceder a esa variable de ese modo, y simplemente no debería estar definida, como en el resto de lenguajes.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$values</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span></code></pre></figure>
+
+<p>El código anterior en ambas versiones funciona y escribiría 1, cosa no deseable en mi opinión.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP7</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">foreach</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Compatibilidad</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

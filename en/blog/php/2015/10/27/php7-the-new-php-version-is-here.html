@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>PHP7. The new PHP version is here. - Jorgonor</title>
+<meta property="og:title" content="PHP7. The new PHP version is here." />
+<meta name="description" content="PHP7 is here. Well, the final release hasn’t been released yet, but next 12th November is scheduled to be released so maybe when you are reading this post the stable final release might be released." />
+<meta property="og:description" content="PHP7 is here. Well, the final release hasn’t been released yet, but next 12th November is scheduled to be released so maybe when you are reading this post the stable final release might be released." />
+<link rel="canonical" href="https://jorgonor.com/en/blog/php/2015/10/27/php7-the-new-php-version-is-here.html" />
+<meta property="og:url" content="https://jorgonor.com/en/blog/php/2015/10/27/php7-the-new-php-version-is-here.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-10-27T19:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "PHP7. The new PHP version is here.",
+"datePublished": "2015-10-27T19:00:00+01:00",
+"description": "PHP7 is here. Well, the final release hasn’t been released yet, but next 12th November is scheduled to be released so maybe when you are reading this post the stable final release might be released.",
+"url": "https://jorgonor.com/en/blog/php/2015/10/27/php7-the-new-php-version-is-here.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="PHP, PHP7, Performance, New features, BC, Backward compatibility" >
+
+  
+  <meta name="content-language" content="en">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/en">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/contact.html">Contact</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>PHP7. The new PHP version is here.</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Oct 27, 2015</p>
+              </header>
+
+              <article class="post-content">
+                <p><strong>PHP7</strong> is here. Well, the final release hasn’t been released yet, but next 12th November is <a href="https://wiki.php.net/todo/php70#timetable">scheduled to be released</a>
+so maybe when you are reading this post the stable final release might be released. And, what does this new language version provide?
+The <em>killer feature</em> promised is <strong>performance</strong>. Zend has published the next <a href="http://www.zend.com/en/resources/php-7">infographic</a> where you can see
+how they announce a <strong>2x performance improvement</strong>. This might be a half of servers, software twice faster, so it is a considerable
+enhancement for the whole PHP ecosystem.</p>
+
+<h3 id="performance">Performance</h3>
+
+<p>Zend did also publish <a href="http://www.zend.com/en/resources/php7_infographic">this infographic</a> showing the performance boost in PHP frameworks widely used, such as Magento or Drupal.
+This infographic shows how PHP7 is capable of serving more requests per second than even HHVM, Facebook’s project to improve PHP performance. At the bottom of the infographic,
+it is shown how PHP is the fastest dynamic language resolving Mandelbrot fractals problem. So, we have again another reason to use PHP, <strong>performance</strong>.</p>
+
+<h3 id="new-features">New features</h3>
+
+<p>PHP7 also provides new features, that have been added to the language to make it more modern.
+Syntactic sugar is always a good thing, that is why we are going to enumerate some of these new features in the language.</p>
+
+<h4 id="spaceship-operator">Spaceship operator</h4>
+
+<p>In the first place, we are going to explain the weird new feature, the <em>Spaceship operator</em> (<em>&lt;=&gt;</em>). This operator
+compares values returning what is expected by comparators, -1 if the first operand is less than the second, 0 if both operands are equal
+and 1 if the first operador is greater than the second.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nv">$b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+<span class="k">echo</span> <span class="nv">$a</span> <span class="o">&lt;=&gt;</span> <span class="nv">$b</span><span class="p">;</span></code></pre></figure>
+
+<p>This operator is not a huge boost, but it is another weird thing more to the language. The only use case that comes to my mind is to use
+it inside anonymous functions used by sorting functions, like <a href="http://php.net/manual/en/function.usort.php">usort</a>.</p>
+
+<h4 id="a-language-with-better-typing">A language with better typing</h4>
+
+<p>PHP is a dynamic language, but sometimes it is useful to be able to define the type of a function argument or which type a function returns.
+In previous PHP versions, only <em>class types</em> were allowed to be defined in function arguments. PHP7 will allow also scalar types to be hinted in function arguments.
+It also adds the possibility to define which type a function returns.
+Be ready to have a better autocompletion support for the language in IDEs, because I suppose almost all PHP7 frameworks will make an extensive use of this
+new feature.</p>
+
+<h4 id="coalesce-operator">Coalesce operator</h4>
+
+<p>This flow structure has been the most written piece of code during my professional PHP life.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$x</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="cm">/* $_POST values */</span>
+<span class="p">);</span>
+
+<span class="nv">$value</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$x</span><span class="p">[</span><span class="s1">'value'</span><span class="p">])</span> <span class="o">?</span>
+    <span class="nv">$x</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span></code></pre></figure>
+
+<p>Don’t you agree? Haven’t you ever used this flow structure? To avoid a <em>Notice</em> when you don’t check if the key exists in an array,
+you are forced to write this piece of code. Some developers used the @ operator, that suppresses warnings generated by the statement
+surrounded by it. That is not a solution, that was just hiding an error.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$x</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="cm">/* $_POST values */</span>
+<span class="p">);</span>
+
+<span class="nv">$value</span> <span class="o">=</span> <span class="o">@</span><span class="nv">$x</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]);</span></code></pre></figure>
+
+<p>In PHP7, we will be able to use the coalesce operator that will allow a neater way to solve this problem.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$x</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="cm">/* $_POST values */</span>
+<span class="p">);</span>
+
+<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$x</span><span class="p">[</span><span class="s1">'value'</span><span class="p">])</span> <span class="o">??</span> <span class="kc">null</span><span class="p">;</span></code></pre></figure>
+
+<h4 id="group-use-declarations">Group use declarations</h4>
+
+<p>From PHP5.3 forward, PHP has namespaces. If you use classes from another namespace, the <em>use</em> statement allows to use simply the class name instead of its full namespace name.
+Before PHP7, you had to write a use statement for each class. With PHP7, group use declarations can be used, writing only one line per package making it clearer what classes
+and namespaces are being used.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="c1">// Before
+</span><span class="k">use</span> <span class="nx">some\namespace\ClassA</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">some\namespace\ClassB</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">some\namespace\ClassC</span> <span class="k">as</span> <span class="nx">AliasClassC</span><span class="p">;</span>
+
+<span class="c1">// Now
+</span><span class="k">use</span> <span class="nx">some\namespace\</span><span class="p">{</span><span class="nx">ClassA</span><span class="p">,</span> <span class="nx">ClassB</span><span class="p">,</span> <span class="nx">ClassC</span> <span class="k">as</span> <span class="nx">AliasClassC</span><span class="p">};</span></code></pre></figure>
+
+<h4 id="integer-division">Integer division</h4>
+
+<p><a href="http://php.net/manual/en/function.intdiv.php">intdiv</a> function will provide a way to execute the integer division without any trick.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="c1">// Before
+</span><span class="nv">$a</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="mi">3</span><span class="p">);</span>
+
+<span class="c1">// Now
+</span><span class="nv">$a</span> <span class="o">=</span> <span class="nx">intdiv</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre></figure>
+
+<h3 id="expressions-in-constants">Expressions in constants</h3>
+
+<p>Now, constants will be able to store the result of an expression. Before, PHP threw an exception.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">class</span> <span class="nc">A</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="no">DAY_SECONDS</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<h3 id="backwards-compatibility">Backwards compatibility</h3>
+
+<p>The biggest of problems with new major language versions, it’s cool to introduce new features and huge improvements but normally these features
+introduce <strong>BC breaks</strong> (backwards compatibility breaks). So, if a project is not under automatic testing or, at least, has a manual procedure
+established to know it does what is expected, we have a great problem if we have to migrate it to a newer language major version.</p>
+
+<p>Regarding PHP7, it has been promised it won’t be a pain to migrate from PHP5 to it. Even though, some changes are worth to take a look before moving on.</p>
+
+<h4 id="exception-handling-changes">Exception handling changes</h4>
+
+<p>The exception hierarchy has been modified. In PHP7 we will have <a href="http://php.net/manual/en/class.exception.php">exceptions</a> and <a href="http://php.net/manual/en/class.error.php">errors</a>.
+Some structures that threw an uncatchable fatal error, now will throw an <em>Error</em> that could be catched with a try/catch statement, because this <em>Error</em> class will implement
+the <em>Throwable</em> interface that will be the new way to catch any exception or error in a block of code.</p>
+
+<p>This will allow catching errors that before stopped the program flow, or simply triggered unmeaningful warnings, like the division by zero.
+Now, we can even catch a division by zero error and do something special about it.</p>
+
+<h4 id="new-objects-cannot-be-assigned-by-reference"><em>New</em> Objects cannot be assigned by reference</h4>
+
+<p>In PHP7, an object created with a <em>new</em> statement cannot be assigned by reference in the same statement to a variable.
+This piece of code was widely used in previous PHP versions because of some performance reasons, so if you are migrating a legacy project or you’re used to use this 
+piece of code in your applications, it’s a good moment to stop using it.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$a</span> <span class="o">=</span> <span class="o">&amp;</span><span class="k">new</span> <span class="nx">\stdClass</span><span class="p">();</span></code></pre></figure>
+
+<h4 id="more-bc-issues">More BC issues</h4>
+
+<p>The explained issues are the most important to me, but you can find other BC issues like removed functions in the <a href="http://php.net/manual/en/migration70.incompatible.php">official migration link</a> or in
+<a href="https://github.com/tpunt/PHP7-Reference#changes">this Github repository</a> with examples.</p>
+
+<h3 id="php7-is-here-to-make-the-web-better">PHP7 is here to make the Web better</h3>
+
+<p>In my opinion, it is a new version with little breaking compatibility changes, something positive, but it this mantra has also made impossible to do more ambitious changes to the language
+that might have considerably improved the language. But I suppose PHP mantainers don’t want a Python3 happening in PHP.</p>
+
+<p>Other features I miss are more types and functions for the PHP internals. A <em>decimal</em> type would be great to do fixed numeric operations, something basic for high-level languages.
+So, to finish with this post, developers must keep updated, so it is important to know which are the new features provided by this new version
+because sooner or later this version will become the standard. And the sooner the better. PHP7 has performance and behaviour improvements that can’t be skipped. PHP7 is here to make the Web better.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP7</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Performance</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">New features</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">BC</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Backward compatibility</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Software Developer and Web passionate.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Technologies</h5>
+                
+                <ul>
+                    <li><a href="/en/php-developer.html" class="white-text">PHP</a></li>
+                    <li><a href="/en/web-developer.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Spain
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Primeros pasos con ASP.NET Core sobre Linux - Jorgonor</title>
+<meta property="og:title" content="Primeros pasos con ASP.NET Core sobre Linux" />
+<meta name="description" content="Las promesas son una solución para implementar código asíncrono que aparece como una abstracción más avanzada con la que reemplazar los callbacks." />
+<meta property="og:description" content="Las promesas son una solución para implementar código asíncrono que aparece como una abstracción más avanzada con la que reemplazar los callbacks." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:image" content="https://jorgonor.com/img/posts/aspnetcore-logo.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-11-27T18:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Primeros pasos con ASP.NET Core sobre Linux",
+"image": "https://jorgonor.com/img/posts/aspnetcore-logo.png",
+"datePublished": "2016-11-27T18:00:00+01:00",
+"description": "Las promesas son una solución para implementar código asíncrono que aparece como una abstracción más avanzada con la que reemplazar los callbacks.",
+"url": "https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content=".NET Core, ASP.NET Core, Linux" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Primeros pasos con ASP.NET Core sobre Linux</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Nov 27, 2016</p>
+              </header>
+
+              <article class="post-content">
+                <p><a href="https://www.asp.net/core">ASP.NET Core</a> es la nueva apuesta de Microsoft por una solución multiplataforma de desarrollo web.
+Soporta tanto Windows como Mac come Linux, y permite una transición de páginas web desarrolladas con ASP.NET MVC a su versión
+multiplataforma ASP.NET MVC Core. Esta nueva tecnología además, destaca por ser una de las soluciones con mejor rendimiento a
+la hora de desarrollar aplicaciones web.</p>
+
+<h3 id="instalando-el-sdk">Instalando el SDK</h3>
+
+<p>Para poder trabajar con ASP.NET Core, necesitamos descargarnos el <a href="https://www.microsoft.com/net/core">runtime de .NET Core</a>. Estos son los pasos a seguir para instalarlo sobre Ubuntu 16.04 LTS.</p>
+
+<ul>
+  <li>Seguimos los pasos para instalar .NET Core a través de los repositorios de Microsoft. <a href="https://www.microsoft.com/net/core#linuxubuntu">https://www.microsoft.com/net/core#linuxubuntu</a> Para ejecutar estos pasos basta con abrir una consola y ejecutar:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Añadimos los repositorios a nuestro sistema</span>
+sudo sh -c <span class="s1">'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" &gt; /etc/apt/sources.list.d/dotnetdev.list'</span>
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
+sudo apt-get update
+
+<span class="c"># Instalamos .NET Core 1.1 y 1.0</span>
+sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121</code></pre></figure>
+
+<ul>
+  <li>Si queremos usar un IDE para desarrollar, podemos usar <a href="https://code.visualstudio.com/">Visual Studio Code</a>, el IDE multiplataforma de Microsoft.</li>
+</ul>
+
+<h3 id="crear-un-proyecto-web">Crear un proyecto web</h3>
+
+<p>Una vez instalado todo lo necesario, pasamos a crear nuestro proyecto web con las siguientes instrucciones.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir DotNetCoreWeb <span class="o">&amp;&amp;</span> <span class="nb">cd </span>DotNetCoreWeb
+dotnet new -t web
+dotnet restore
+<span class="c"># Para instalar las dependencias del lado del cliente</span>
+<span class="c"># Necesitamos tener Node.js instalado</span>
+npm -g install bower gulp
+bower install
+npm install
+
+<span class="c"># Inicializamos la base de datos</span>
+dotnet ef database update
+
+<span class="c"># Iniciamos el entorno para activar el modo desarrollo</span>
+<span class="nb">export </span><span class="nv">ASPNETCORE_ENVIRONMENT</span><span class="o">=</span>development
+
+<span class="c"># Ejecutamos el proyecto</span>
+dotnet run</code></pre></figure>
+
+<p>Tras ejecutar estos comandos, podremos abrir un navegador a la URL <a href="http://localhost:5000" rel="nofollow" target="_blank">http://localhost:5000</a>
+donde podremos ver la web plantilla creada por el comando <em>dotnet new -t web</em>.
+Este proyecto plantilla ya viene con <a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/">ASP.NET Core MVC</a> y
+<a href="https://docs.microsoft.com/en-us/ef/core/index">Entity Framework Core</a>.
+Es recomendable echar un ojo al código con el editor que más nos guste para ver ejemplos de controladores, vistas y modelos que nos puedan luego
+ayudar en como utilizar todas las herramientas ofrecidas por la plataforma ASP.NET Core MVC.</p>
+
+<h3 id="un-caso-práctico-todolist-crud">Un caso práctico, <em>TodoList</em> CRUD.</h3>
+
+<p>Vamos a empezar a añadir código propio a la aplicación plantilla. Crearemos un listado de <em>todos</em> y un formulario para añadirlos. Para ello
+vamos a poner el código necesario para hacer un ejemplo funcional básico.
+También puedes bajarte el proyecto completo desde <a href="https://github.com/jorgonor/DotNetCoreWeb">este repositorio de Github</a>.</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Data/ApplicationContext.cs
+</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">ApplicationDbContext</span>
+<span class="p">{</span>
+    <span class="c1">// ...
+</span>
+    <span class="c1">// Añadir esta línea
+</span>    <span class="k">public</span> <span class="n">DbSet</span><span class="p">&lt;</span><span class="n">Todo</span><span class="p">&gt;</span> <span class="n">Todos</span> <span class="p">{</span><span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;}</span>
+
+    <span class="c1">// ...
+</span><span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Models/Todo.cs
+</span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.ComponentModel.DataAnnotations</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.ComponentModel.DataAnnotations.Schema</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">WebApplication.Models</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Todo</span>
+    <span class="p">{</span>
+        <span class="p">[</span><span class="n">Key</span><span class="p">]</span>
+        <span class="p">[</span><span class="nf">DatabaseGenerated</span><span class="p">(</span><span class="n">DatabaseGeneratedOption</span><span class="p">.</span><span class="n">Identity</span><span class="p">)]</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">TodoId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="p">[</span><span class="n">Required</span><span class="p">]</span>
+        <span class="k">public</span> <span class="kt">string</span> <span class="n">Title</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">string</span> <span class="n">Comments</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="k">public</span> <span class="n">DateTime</span><span class="p">?</span> <span class="n">DueDate</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Controllers/TodoController.cs
+</span>
+<span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.AspNetCore.Mvc</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.EntityFrameworkCore</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">WebApplication.Data</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">WebApplication.Models</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">WebApplication.Controllers</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">TodoController</span> <span class="p">:</span> <span class="n">Controller</span>
+    <span class="p">{</span>
+        <span class="k">protected</span> <span class="k">readonly</span> <span class="n">ApplicationDbContext</span> <span class="n">_context</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="nf">TodoController</span><span class="p">(</span><span class="n">ApplicationDbContext</span> <span class="n">context</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">_context</span> <span class="p">=</span> <span class="n">context</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">IActionResult</span><span class="p">&gt;</span> <span class="nf">Index</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="k">await</span> <span class="n">_context</span><span class="p">.</span><span class="n">Todos</span><span class="p">.</span><span class="nf">ToListAsync</span><span class="p">());</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Add</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="p">[</span><span class="n">HttpPost</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">ValidateAntiForgeryToken</span><span class="p">]</span>
+        <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">IActionResult</span><span class="p">&gt;</span> <span class="nf">Add</span><span class="p">([</span><span class="nf">Bind</span><span class="p">(</span><span class="s">"Title, Comments, DueDate"</span><span class="p">)]</span> <span class="n">Todo</span> <span class="n">todo</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ModelState</span><span class="p">.</span><span class="n">IsValid</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">_context</span><span class="p">.</span><span class="n">Todos</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">todo</span><span class="p">);</span>
+                <span class="k">await</span> <span class="n">_context</span><span class="p">.</span><span class="nf">SaveChangesAsync</span><span class="p">();</span>
+                <span class="k">return</span> <span class="nf">RedirectToAction</span><span class="p">(</span><span class="s">"Index"</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="n">todo</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>También añadiremos las vistas que se cargaran desde el controlador <em>TodoController</em>.</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- Views/Todo/Index.cshtml --&gt;</span>
+
+@model IEnumerable<span class="nt">&lt;WebApplication</span><span class="err">.</span><span class="na">Models</span><span class="err">.</span><span class="na">Todo</span><span class="nt">&gt;</span>
+
+@{
+    string emptySymbol = "-";
+}
+<span class="nt">&lt;a</span> <span class="na">asp-action=</span><span class="s">"Add"</span> <span class="nt">&gt;</span>Add Todo<span class="nt">&lt;/a&gt;</span>
+
+<span class="nt">&lt;table</span> <span class="na">class=</span><span class="s">"table table-responsive"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;thead&gt;</span>
+        <span class="nt">&lt;tr&gt;</span>
+            <span class="nt">&lt;td&gt;</span>Id<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td&gt;</span>Title<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td&gt;</span>Comments<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td&gt;</span>Due Date<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/thead&gt;</span>
+    <span class="nt">&lt;tbody&gt;</span>
+        @foreach(var item in Model) {
+        <span class="nt">&lt;tr&gt;</span>
+            <span class="nt">&lt;td&gt;</span>
+                @Html.DisplayFor(modelItem =&gt; item.TodoId)
+            <span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td&gt;</span>
+                @Html.DisplayFor(modelItem =&gt; item.Title)
+            <span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td&gt;</span>
+                @if(!String.IsNullOrEmpty(item.Comments)) {
+                    @Html.DisplayFor(modelItem =&gt; item.Comments)
+                } else {
+                    @emptySymbol
+                }
+            <span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td&gt;</span>
+                @if (item.DueDate.HasValue) {
+                    @Html.DisplayFor(modelItem =&gt; item.DueDate)
+                } else {
+                    @emptySymbol
+                }
+            <span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+        }
+    <span class="nt">&lt;/tbody&gt;</span>
+<span class="nt">&lt;/table&gt;</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- Views/Todo/Add.cshtml --&gt;</span>
+@model WebApplication.Models.Todo
+
+<span class="nt">&lt;form</span> <span class="na">asp-action=</span><span class="s">"Add"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-horizontal"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h4&gt;</span>Add Todo<span class="nt">&lt;/h4&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">asp-validation-summary=</span><span class="s">"ModelOnly"</span> <span class="na">class=</span><span class="s">"text-danger"</span> <span class="nt">&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">asp-for=</span><span class="s">"Title"</span> <span class="na">class=</span><span class="s">"col-md-2 control-label"</span> <span class="nt">&gt;&lt;/label&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-10"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;input</span> <span class="na">asp-for=</span><span class="s">"Title"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="nt">/&gt;</span>
+                <span class="nt">&lt;span</span> <span class="na">asp-validation-for=</span><span class="s">"Title"</span> <span class="na">class=</span><span class="s">"text-danger"</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">asp-for=</span><span class="s">"Comments"</span> <span class="na">class=</span><span class="s">"col-md-2 control-label"</span> <span class="nt">&gt;&lt;/label&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-10"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;textarea</span> <span class="na">asp-for=</span><span class="s">"Comments"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="nt">&gt;&lt;/textarea&gt;</span>
+                <span class="nt">&lt;span</span> <span class="na">asp-validation-for=</span><span class="s">"Comments"</span> <span class="na">class=</span><span class="s">"text-danger"</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+       <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">asp-for=</span><span class="s">"DueDate"</span> <span class="na">class=</span><span class="s">"col-md-2 control-label"</span> <span class="nt">&gt;&lt;/label&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-10"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"date"</span> <span class="na">asp-for=</span><span class="s">"DueDate"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="nt">/&gt;</span>
+                <span class="nt">&lt;span</span> <span class="na">asp-validation-for=</span><span class="s">"DueDate"</span> <span class="na">class=</span><span class="s">"text-danger"</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-offset-2 col-md-10"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Save Todo"</span> <span class="na">class=</span><span class="s">"btn btn-default"</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/form&gt;</span></code></pre></figure>
+
+<p>Tras añadir los modelos, controladores y vistas necesarios para ejecutar nuestro ejemplo, vamos a tener que actualizar la base de datos
+de nuevo. Podemos hacerlo fácilmente con la herramienta de consola de Entity Framework Core.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dotnet ef migrations add Todo1
+dotnet ef database update</code></pre></figure>
+
+<p>Tras estos pasos podemos volver a ejecutar <strong>dotnet run</strong> y abrir un navegador a la URL <a href="http://localhost:5000/Todo" rel="nofollow" target="_blank">http://localhost:5000/Todo</a>.</p>
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <img src="/img/posts/aspnet-core-screen.png" class="img-responsive" alt="ASP.NET Core application running on Linux" />
+    </div>
+</div>
+
+<p>Ya tenemos nuestro listado de <em>Todos</em> y un formulario para poder añadir <em>Todos</em> nuevos.</p>
+
+<h3 id="dándole-más-sabor-a-linux-a-nuestra-aplicación-web">Dándole más sabor a Linux a nuestra aplicación web</h3>
+
+<p>Ahora ya tenemos una aplicación web que corre sobre Linux y usa .NET Core. La plantilla que viene con ASP.NET Core está configurada para usar Sqlite, opción
+multiplataforma y muy útil para desarrollo, pero que pudiendo usar MySQL como motor de bases de datos queda un poco floja. Por ese motivo, vamos a
+modificar nuestra aplicación para usar MySQL como gestor de bases de datos.</p>
+
+<p>Desgraciadamente, <a href="https://docs.microsoft.com/en-us/ef/core/providers/">el proveedor de base de datos oficial para MySQL aún no es estable</a>, pero podemos
+usar el <a href="https://docs.microsoft.com/en-us/ef/core/providers/pomelo/">proveedor proporcionado por Pomelo</a>. Para hacer esto basta con actualizar
+el fichero <em>project.json</em> con una nueva dependencia y ejecutar <strong>dotnet restore</strong>.</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">//</span><span class="w"> </span><span class="err">project.json</span><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="nt">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+       </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+       </span><span class="nt">"Pomelo.EntityFrameworkCore.MySQL"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.1"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>También tendremos que hacerle saber al servicio <em>ApplicationDbContext</em> que ahora debe usar MySQL como motor y actualizar la cadena de conexión en el fichero <em>appsettings.json</em>.</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Startup.cs
+</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Add framework services.
+</span>    <span class="n">services</span><span class="p">.</span><span class="n">AddDbContext</span><span class="p">&lt;</span><span class="n">ApplicationDbContext</span><span class="p">&gt;(</span><span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="n">options</span><span class="p">.</span><span class="nf">UseMySql</span><span class="p">(</span><span class="n">Configuration</span><span class="p">.</span><span class="nf">GetConnectionString</span><span class="p">(</span><span class="s">"DefaultConnection"</span><span class="p">)));</span>
+    <span class="c1">// Other services configuration ...
+</span><span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">//</span><span class="w"> </span><span class="err">appsettings.json</span><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="nt">"ConnectionStrings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"DefaultConnection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"server=localhost;database=dotnetcore;uid=root;pwd=password"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>Tras esto va a ser necesario regenerar nuestra última migración y actualizar la base de datos desde el modelo de nuevo.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dotnet ef migrations remove
+dotnet ef migrations add Todo1
+dotnet ef database update</code></pre></figure>
+
+<p>Ya tenemos nuestra aplicación usando MySQL como motor de base de datos.</p>
+
+<h3 id="desplegar-nuestra-web-aspnet-core-en-un-servidor-linux">Desplegar nuestra web ASP.NET Core en un servidor Linux</h3>
+
+<p>Para acabar de cerrar el círculo, necesitamos saber como desplegaremos esta aplicación web. No vamos a entrar en detalle en esta sección,
+pero sí vamos a explicar como ejecutar una instancia de nuestra aplicación preparada para producción detrás de un <em>reverse proxy</em> como Nginx,
+usando <a href="https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction">esta guía de Microsoft como referencia</a>. Para instalar Nginx basta con ejecutar:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install nginx</code></pre></figure>
+
+<p>Con nginx instalado, tendremos que publicar nuestro proyecto para que sea lo más eficiente posible en producción
+y copiar el resultado de nuestra compilación a un directorio utilizable por el usuario <em>www-data</em>, como haríamos
+con un proyecto LAMP.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Compilamos en modo Release</span>
+dotnet publish -c Release
+<span class="c"># Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción</span>
+cp -r bin/Release/netcoreapp1.1/publish/<span class="k">*</span> /var/aspnetcore/DotNetCoreWeb</code></pre></figure>
+
+<p>Finalmente, pasaremos a seguir los pasos descritos en la guía de Microsoft para crear un servicio manejado a través de <em>systemd</em>. Algo que esta guía no nos dice, es que en el descriptor del servicio,
+hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por eso, añadimos el descriptor del servicio utilizado en el proyecto de ejemplo.</p>
+
+<figure class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="nn">[Unit]</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">.NET running on Ubuntu 16.04</span>
+
+<span class="nn">[Service]</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll</span>
+<span class="py">Restart</span><span class="p">=</span><span class="s">always</span>
+<span class="py">RestartSec</span><span class="p">=</span><span class="s">10</span>
+<span class="py">SyslogIdentifier</span><span class="p">=</span><span class="s">dotnet-example</span>
+<span class="py">User</span><span class="p">=</span><span class="s">www-data</span>
+<span class="py">Environment</span><span class="p">=</span><span class="s">ASPNETCORE_ENVIRONMENT=Production</span>
+<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/var/aspnetcore/DotNetCoreWeb</span>
+
+<span class="nn">[Install]</span>
+<span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span></code></pre></figure>
+
+<h2 id="referencias">Referencias</h2>
+
+<ul>
+  <li><a href="https://www.microsoft.com/net/core">Instalar .NET Core</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/ef/core/providers/">Proveedores de bases de datos de EF Core</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction">Publicar un proyecto ASP.NET Core en Linux</a></li>
+</ul>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">.NET Core</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">ASP.NET Core</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Linux</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

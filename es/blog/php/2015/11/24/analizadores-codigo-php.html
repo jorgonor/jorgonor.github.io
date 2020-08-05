@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Analizadores estáticos del código para PHP - Jorgonor</title>
+<meta property="og:title" content="Analizadores estáticos del código para PHP" />
+<meta name="description" content="El ecosistema PHP ha mejorado mucho en los últimos años. Aún así, en el campo de los analizadores estáticos de código, PHP sigue sin destacar demasiado, probablemente debido a su naturaleza dinámica. A pesar de ello, algunas de estas herramientas están empezando a aparecer." />
+<meta property="og:description" content="El ecosistema PHP ha mejorado mucho en los últimos años. Aún así, en el campo de los analizadores estáticos de código, PHP sigue sin destacar demasiado, probablemente debido a su naturaleza dinámica. A pesar de ello, algunas de estas herramientas están empezando a aparecer." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/php/2015/11/24/analizadores-codigo-php.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/php/2015/11/24/analizadores-codigo-php.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:image" content="https://jorgonor.com/img/posts/quality_analyzer_dashboard.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-11-24T23:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Analizadores estáticos del código para PHP",
+"image": "https://jorgonor.com/img/posts/quality_analyzer_dashboard.png",
+"datePublished": "2015-11-24T23:00:00+01:00",
+"description": "El ecosistema PHP ha mejorado mucho en los últimos años. Aún así, en el campo de los analizadores estáticos de código, PHP sigue sin destacar demasiado, probablemente debido a su naturaleza dinámica. A pesar de ello, algunas de estas herramientas están empezando a aparecer.",
+"url": "https://jorgonor.com/es/blog/php/2015/11/24/analizadores-codigo-php.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="PHP, analizador estático, calidad código, integración continua, Quality Analyzer" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Analizadores estáticos del código para PHP</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Nov 24, 2015</p>
+              </header>
+
+              <article class="post-content">
+                <p>El ecosistema PHP ha mejorado mucho en los últimos años. Aún así, en el campo de los analizadores estáticos de código, PHP sigue sin destacar demasiado, probablemente
+debido a su naturaleza dinámica. A pesar de ello, algunas de estas herramientas están empezando a aparecer. En este post vamos a recoger algunas de 
+las herramientas más clásicas y los primeros analizadores estáticos de código para PHP.</p>
+
+<h3 id="php-code-sniffer">PHP Code Sniffer</h3>
+
+<p><a href="http://pear.php.net/package/PHP_CodeSniffer/">PHP Code Sniffer</a> es lo que conocemos como un linter, analiza que cumplamos con unas reglas
+básicas en el código que podemos compartir con el equipo de desarrollo, asegurándonos que todos cumplen con ellas. Un ejemplo es la guerra
+eterna entre tabuladores y espacios o si todas las sentencias <em>if</em> deben agrupar las sentencias con corchetes.
+Si definimos un <em>ruleset</em> personalizado, podemos añadirlo al repositorio de código y comprobar
+que la aplicación cumpla con las reglas definidas. En mi caso, utilizo el estándar <a href="http://www.php-fig.org/psr/psr-2/">PSR-2</a>, ya que con
+el tiempo debería acabar siendo el estándar mayoritario por ser el oficial. Por último aclarar, que esta herramienta no es un analizador estático de código,
+es una primera aproximación hacia preocuparse por la calidad del código de nuestras aplicaciones y compartir un estilo
+de programación con el equipo.</p>
+
+<h3 id="php-qa-tools">PHP QA Tools</h3>
+
+<p><a href="http://phpqatools.org/">PHP QA Tools</a> es una web que recoge algunas de las herramientas más utilizadas,
+como <a href="http://pdepend.org/">PHP Depend</a>, <a href="http://phpmd.org/">PHP Mess Detector</a> y <a href="http://www.phpmetrics.org/">PhpMetrics</a>.
+Cada una de ellas resuelve un aspecto muy específico, y en algunos casos puede resultar muy útil, pero en mi opinión hoy por hoy
+es mejor apoyarse en soluciones de integración continua más fáciles de utilizar y con toda esa información
+en un único punto moviéndose más hacia una solución de integración continua. Veamos algunas de ellas.</p>
+
+<h3 id="quality-analyzer">Quality Analyzer</h3>
+
+<p><a href="https://github.com/Qafoo/QualityAnalyzer">Quality Analyzer</a> es una herramienta open-source muy completa. Aglutina algunas de las herramientas
+que podemos encontrar en PHP QA Tools.</p>
+
+<p>La instalación es muy sencilla y generar la información también. Para instalar la herramienta solo necesitas git y ejecutar los siguientes comandos.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">git clone https://github.com/Qafoo/QualityAnalyzer.git
+<span class="nb">cd </span>QualityAnalyzer
+composer install</code></pre></figure>
+
+<p>Y para probar la herramienta sobre una aplicación.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">bin/analyze analyze src/php/
+bin/analyze serve</code></pre></figure>
+
+<p>En las siguientes capturas se pueden ver las métricas más importantes en su Dashboard y una imagen de la gráfica
+de dependencias entre paquetes que muestra.</p>
+
+<div class="row">
+    <div class="col s12 m6">
+        <img alt="Quality Analyzer Resumen" class="responsive-img" src="/img/posts/quality_analyzer_dashboard.png" />
+    </div>
+    <div class="col s12 m6">
+        <img alt="Quality Analyzer Dependencias" class="responsive-img" src="/img/posts/quality_analyzer_dependencies.png" />
+    </div>
+</div>
+
+<p>En el menú superior se puede ver que ofrece otras funcionalidades, como el Mess Detector, que muestra incorrecciones en nuestro código fuente,
+el checkstyle, que hace la tarea de PHP Code Sniffer y un enlace a “Copy &amp; Paste” donde se detectarán secciones donde se haya duplicado
+código de manera indiscriminada. Mucho valor para ser una solución gratuita.</p>
+
+<h3 id="scrutinizer">Scrutinizer</h3>
+
+<p><a href="https://scrutinizer-ci.com/">Scrutinizer</a> es un analizador de pago que aglutina todas las funcionalidades que se espera de un analizador
+estático para PHP. Es muy completo, pero como he dicho es de pago. Tuvo su momento cuando aún no había soluciones como <strong>Quality Analyzer</strong>,
+pero si aún estás a tiempo de elegir qué herramienta utilizar, hoy poy hoy no lo elegiría.</p>
+
+<h3 id="phan">Phan</h3>
+
+<p><a href="https://github.com/rlerdorf/phan">Phan</a> puede que sea el analizador estático del futuro, pero no es el del presente. Este analizador estático
+solo funciona con PHP7, que pronto tendrá su lanzamiento estable pero aún no lo es. Lo añado en el post por la curiosidad de que ha sido creado por el
+creador de PHP Rasmus Lerdorf y porque en un futuro tendremos que tenerlo en cuenta, ya que con tal patrocinio de Rasmus, es probable que desbanque al resto
+de soluciones, almenos las open-source.</p>
+
+<h3 id="porqué-necesitas-un-analizador-estático-de-código">Porqué necesitas un analizador estático de código</h3>
+
+<p>Si estás leyendo esto es porque te preocupas por la calidad de tu código. Estas herramientas te pueden ser muy útiles en ese caso, detectan
+incorrecciones en tu código que te pueden ayudar incluso a mejorar como profesional. El camino es tortuoso y suele hacer falta mucho
+rigor para aplicar este tipo de herramientas a aplicaciones que no siguen ninguna buena práctica de desarrollo o simplemente se empezaron
+a desarrollar sin tener estas tecnologías en cuenta porque aún no existían. A pesar de ello, siempre es bueno aplicarlas hasta un cierto nivel así que
+anímate a probar <strong>Quality Analyzer</strong> y averigua qué problemas de calidad tiene tu código.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">analizador estático</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">calidad código</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">integración continua</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Quality Analyzer</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

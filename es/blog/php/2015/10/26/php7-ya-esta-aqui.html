@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>PHP7. La nueva versión de PHP ya está aquí. - Jorgonor</title>
+<meta property="og:title" content="PHP7. La nueva versión de PHP ya está aquí." />
+<meta name="description" content="Sí señores, PHP7 ya está aquí. Solamente tienes que entrar en php.net para poder descargarlo y hacer tus pruebas con él. Y, ¿qué nos aporta esta nueva versión del lenguaje? Lo que más destaca es su mejora sustancial de rendimiento. Zend ha hecho la siguiente infografía en la cual se puede ver como anuncian una mejora del rendimiento de 2 veces más rápido!. Esto puede significar la mitad de infraestructura de servidores para tus proyectos, la mitad de tiempo de proceso. En definitiva una mejora de gran magnitud para el ecosistema PHP." />
+<meta property="og:description" content="Sí señores, PHP7 ya está aquí. Solamente tienes que entrar en php.net para poder descargarlo y hacer tus pruebas con él. Y, ¿qué nos aporta esta nueva versión del lenguaje? Lo que más destaca es su mejora sustancial de rendimiento. Zend ha hecho la siguiente infografía en la cual se puede ver como anuncian una mejora del rendimiento de 2 veces más rápido!. Esto puede significar la mitad de infraestructura de servidores para tus proyectos, la mitad de tiempo de proceso. En definitiva una mejora de gran magnitud para el ecosistema PHP." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/php/2015/10/26/php7-ya-esta-aqui.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/php/2015/10/26/php7-ya-esta-aqui.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-10-26T22:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "PHP7. La nueva versión de PHP ya está aquí.",
+"datePublished": "2015-10-26T22:00:00+01:00",
+"description": "Sí señores, PHP7 ya está aquí. Solamente tienes que entrar en php.net para poder descargarlo y hacer tus pruebas con él. Y, ¿qué nos aporta esta nueva versión del lenguaje? Lo que más destaca es su mejora sustancial de rendimiento. Zend ha hecho la siguiente infografía en la cual se puede ver como anuncian una mejora del rendimiento de 2 veces más rápido!. Esto puede significar la mitad de infraestructura de servidores para tus proyectos, la mitad de tiempo de proceso. En definitiva una mejora de gran magnitud para el ecosistema PHP.",
+"url": "https://jorgonor.com/es/blog/php/2015/10/26/php7-ya-esta-aqui.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="PHP, PHP7, Rendimiento, Novedades, Compatibilidad" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>PHP7. La nueva versión de PHP ya está aquí.</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Oct 26, 2015</p>
+              </header>
+
+              <article class="post-content">
+                <p>Sí señores, <strong>PHP7</strong> ya está aquí. Solamente tienes que entrar en <a href="http://php.net">php.net</a> para poder descargarlo y hacer tus pruebas con él.
+Y, ¿qué nos aporta esta nueva versión del lenguaje? Lo que más destaca es su mejora sustancial de rendimiento. Zend ha hecho
+la siguiente <a href="http://www.zend.com/en/resources/php-7">infografía</a> en la cual se puede ver como anuncian una mejora del rendimiento de <strong>2 veces más rápido</strong>!.
+Esto puede significar la mitad de infraestructura de servidores para tus proyectos, la mitad de tiempo de proceso.
+En definitiva una mejora de gran magnitud para el ecosistema PHP.</p>
+
+<h3 id="rendimiento">Rendimiento</h3>
+
+<p>Zend también publicó <a href="http://www.zend.com/en/resources/php7_infographic">esta otra infografía</a> en la cual se puede ver la mejora de rendimiento en algunas de las plataformas
+y frameworks PHP de mayor uso, como Magento o Drupal. En ella se puede ver como con PHP7 la cantidad de peticiones por segundo es mayor que incluso la de HHVM, el proyecto
+de Facebook para mejorar el rendimiento de PHP. Incluso destacan que PHP, es el más rápido de los lenguajes dinámicos en resolver un benchmark de computación intensiva, por lo
+que vuelve a haber un claro motivo para utilizar PHP, <strong>el rendimiento</strong>.</p>
+
+<h3 id="novedades">Novedades</h3>
+
+<p>Además de las mejoras en rendimiento, PHP7 incluye nuevas funcionalidades al lenguaje.
+El azúcar sintáctico siempre es bueno por lo que vamos a enumerar algunas de las novedades incorporadas.</p>
+
+<h4 id="operador-de-nave-espacial-spaceship-operator">Operador de nave espacial (<em>Spaceship operator</em>)</h4>
+
+<p>En primer lugar destacar el operador <em>&lt;=&gt;</em>, o como se le llama por la red, el <em>Spaceship Operator</em>.
+Este operador permite comparar tipos devolviendo lo esperado por comparadores, -1 si el primer elemento es menor al segundo, 0 si son iguales
+y 1 si el primer elemento es mayor que el segundo.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nv">$b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+<span class="k">echo</span> <span class="nv">$a</span> <span class="o">&lt;=&gt;</span> <span class="nv">$b</span><span class="p">;</span></code></pre></figure>
+
+<p>No es que este operador vaya a hacer que programemos páginas web en una mañana. El único caso de uso que se me ocurre es el de funciones anónimas
+esperadas por funciones de ordenación, como <a href="http://php.net/manual/en/function.usort.php">usort</a>.</p>
+
+<h4 id="un-lenguaje-más-tipado">Un lenguaje más tipado</h4>
+
+<p>Como siempre, PHP destaca por ser un lenguaje dinámico, pero en algunas ocasiones es útil definir que una función necesita un argumento de cierto tipo.
+Versiones anteriores de PHP permitían esto solamente con clases, pero no con los tipos primitivos o <em>scalar</em>. PHP7 nos permitirá ahora utilizar estos tipos en los argumentos de las funciones y también
+definir qué tipo de datos devuelve una función. Preparaos pues para un mejor autocompletado en el lenguaje en IDEs, ya que supongo que gran parte de frameworks PHP7 incluirán esta serie
+de funcionalidades de base.</p>
+
+<h4 id="operador-de-fusión-operador-coalesce">Operador de fusión (Operador <em>coalesce</em>)</h4>
+
+<p>En mi vida como desarrollador PHP estoy seguro de la estructura de código que he tenido que escribir más veces es la siguiente.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$x</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="cm">/* valores que vienen
+por $_POST */</span>
+<span class="p">);</span>
+
+<span class="nv">$value</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$x</span><span class="p">[</span><span class="s1">'value'</span><span class="p">])</span> <span class="o">?</span>
+    <span class="nv">$x</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span></code></pre></figure>
+
+<p>¿Verdad? ¿A que también lo habéis usado en infinidad de ocasiones? Para evitar el <em>Notice</em> que sale cuando no compruebas una clave de un array,
+te toca escribir todo este trozo de código. La solución que algunos le daban era utilizar el operador que anula los errores (operador arroba),
+algo totalmente en contra de cualquier buena práctica de programación.
+Es más corto, sí, pero enmascara posibles errores que no se detectarían en la aplicación.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$x</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="cm">/* valores que vienen
+por $_POST */</span>
+<span class="p">);</span>
+
+<span class="nv">$value</span> <span class="o">=</span> <span class="o">@</span><span class="nv">$x</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]);</span></code></pre></figure>
+
+<p>En PHP7, se ha introducido el operador de fusión u <em>operador coalesce</em> que nos permitirá hacer este tipo de operaciones sin comprometer
+la calidad de nuestro código.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$x</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="cm">/* valores que vienen
+por $_POST */</span>
+<span class="p">);</span>
+
+<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$x</span><span class="p">[</span><span class="s1">'value'</span><span class="p">])</span> <span class="o">??</span> <span class="kc">null</span><span class="p">;</span></code></pre></figure>
+
+<h4 id="declaraciones-use-en-grupo">Declaraciones <em>use</em> en grupo</h4>
+
+<p>A partir de PHP5.3, donde se introdujo la sentencia <em>use</em>, por cada clase de otro espacio de nombres utilizada, se debía escribir una sentencia <em>use</em>.
+En PHP7 se incorporan las declaraciones de un grupo de sentencias <em>use</em>, por lo que si se incluyen distintas clases de un mismo espacio de nombres, se pueden añadir
+solamente en una línea.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="c1">// Antes
+</span><span class="k">use</span> <span class="nx">some\namespace\ClassA</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">some\namespace\ClassB</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">some\namespace\ClassC</span> <span class="k">as</span> <span class="nx">AliasClassC</span><span class="p">;</span>
+
+<span class="c1">// Ahora
+</span><span class="k">use</span> <span class="nx">some\namespace\</span><span class="p">{</span><span class="nx">ClassA</span><span class="p">,</span> <span class="nx">ClassB</span><span class="p">,</span> <span class="nx">ClassC</span> <span class="k">as</span> <span class="nx">AliasClassC</span><span class="p">};</span></code></pre></figure>
+
+<h4 id="división-entera">División entera</h4>
+
+<p>La función <a href="http://php.net/manual/es/function.intdiv.php">intdiv</a> nos permitirá ejecutar la división entera sin ningún tipo de trucos, como nos tocaba hacer
+hasta ahora.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="c1">// Antes
+</span><span class="nv">$a</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="mi">3</span><span class="p">);</span>
+
+<span class="c1">// Ahora
+</span><span class="nv">$a</span> <span class="o">=</span> <span class="nx">intdiv</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre></figure>
+
+<h3 id="constantes-con-expresiones">Constantes con expresiones</h3>
+
+<p>Ahora se podrán definir constantes como resultado de una expresión.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">class</span> <span class="nc">A</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="no">DAY_SECONDS</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<h3 id="retrocompatibilidad">Retrocompatibilidad</h3>
+
+<p>Aquí es donde viene el mayor de los problemas con las versiones mayores de un lenguaje, algunas características no son retrocompatibles. Esto significa que si
+ya tenemos un proyecto desarrollado y no contamos con pruebas unitarias ni un procedimiento manual claro de pruebas establecido, tenemos un gran problema si lo
+queremos migrar a esta nueva versión mayor asegurándonos que todo funciona como se espera.</p>
+
+<p>En el caso de PHP7, se ha prometido que no será un dolor migrar de las versiones PHP5 a la versión PHP7.
+Aún así, hay ciertos cambios a tener en cuenta.</p>
+
+<h4 id="cambios-en-el-manejo-de-excepciones">Cambios en el manejo de excepciones</h4>
+
+<p>Se han introducido cambios en la jerarquía de excepciones. Ahora además de <a href="http://php.net/manual/es/class.exception.php">excepciones</a> hay <a href="http://php.net/manual/es/class.error.php">errores</a>.
+Situaciones en las que se lanzaba un fatal error, ahora se lanzará un <em>Error</em> que se podrá capturar con una sentencia try/catch,
+ya que esta clase implementará la interfaz <em>Throwable</em> que será la nueva manera de capturar cualquier excepción o error.</p>
+
+<p>Esto nos permitirá capturar ciertos errores que antes obligaban a parar la ejecución, o simplemente disparan un warning del cual no se podía
+hacer nada, como la división por cero, moviendo el lenguaje a un estilo más enfocado al manejo de excepciones.</p>
+
+<h4 id="cambios-en-la-sentencia-foreach">Cambios en la sentencia <em>foreach</em></h4>
+
+<p>Un cambio notable es el de la sentencia <em>foreach</em>, ya que no se comportará como antes en algunos casos. <em>foreach</em> tendrá dos maneras
+diferenciadas de trabajar en función de si se utiliza por referencia o por valor. Por valor, <em>foreach</em> hará una copia del array y trabajará sobre ella eliminando cualquier
+posibilidad de modificación del array origen. Por referencia, se permitirá que se añadan nuevos valores al array y que estos se iteren en el propio bucle.
+A parte de todo esto, ninguna de las dos opciones de <em>foreach</em> actualizará el puntero del array, es decir, si utilizamos la función <em>current</em> sobre el array recorrido
+siempre nos va a devolver el primer elemento del array.
+Para una explicación más detallada, puedes consultar <a href="/es/blog/PHP7/2015/10/26/foreach-en-php7.html">este post sobre el nuevo <em>foreach</em></a> con ejemplos.</p>
+
+<h4 id="no-se-puede-asignar-por-referencia-un-nuevo-objeto">No se puede asignar por referencia un nuevo objeto</h4>
+
+<p>El resultado de un nuevo objecto creado con la sentencia <em>new</em> no podrá ser asignado por referencia. Este tipo de estructura de código se utilizaba mucho antes por motivos
+de rendimiento en versiones antiguas de PHP, por lo que si tienes código legacy o te has acostumbrado a usar esta estructura en tus aplicaciones, es buen momento para 
+actualizar ese código.</p>
+
+<h4 id="más-cambios-de-compatibilidad">Más cambios de compatibilidad</h4>
+
+<p>Estos son los cambios más importantes a mi juicio pero podéis encontrar otros como funciones eliminadas y demás en el <a href="http://php.net/manual/en/migration70.incompatible.php">enlace oficial</a>
+o en este <a href="https://github.com/tpunt/PHP7-Reference#changes">repositorio en Github</a>.</p>
+
+<h3 id="php7-viene-para-quedarse">PHP7 viene para quedarse</h3>
+
+<p>En mi opinión, es una nueva versión mayor con pocos cambios que rompan la compatibilidad, algo positivo, pero que le ha quitado alcance a un proyecto que hubiera podido
+mejorar considerablemente el lenguaje.
+También han mejorado poco los tipos básicos y funciones aportadas por el lenguaje, como por ejemplo desarrollar un tipo nativo <em>decimal</em> que permitiera hacer operaciones de coma fija,
+algo básico en otros lenguajes de alto nivel enfocados al uso general como Java o C#.
+De todos modos, para estar a la última, es importante ir viendo las mejoras que aporta esta nueva versión ya que más pronto o
+más tarde nos va a tocar hacer proyectos con él, y por las mejoras que introduce PHP7 viene para quedarse.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP7</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Rendimiento</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Novedades</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Compatibilidad</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

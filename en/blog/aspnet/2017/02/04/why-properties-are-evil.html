@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Why properties are evil - Jorgonor</title>
+<meta property="og:title" content="Why properties are evil" />
+<meta name="description" content="Why properties are evil? Examples of bad practices" />
+<meta property="og:description" content="Why properties are evil? Examples of bad practices" />
+<link rel="canonical" href="https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html" />
+<meta property="og:url" content="https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-02-04T17:30:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Why properties are evil",
+"datePublished": "2017-02-04T17:30:00+01:00",
+"description": "Why properties are evil? Examples of bad practices",
+"url": "https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="Properties, .NET" >
+
+  
+  <meta name="content-language" content="en">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/en">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/contact.html">Contact</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Why properties are evil</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Feb 4, 2017</p>
+              </header>
+
+              <article class="post-content">
+                <p>As many of you might already know, properties are a neat way to define getters and setters. Many languages, such as C#, Delphi, Javascript or PHP support them
+and they are first-class citizens in the .NET ecosystem. Although properties are a handy resource, some property implementations can turn out to be evil.
+Very evil. Let’s dive into them.</p>
+
+<h3 id="side-effects-in-property-code">Side-effects in property code</h3>
+
+<p>Causing side-effects is the worst practice when using properties, and it’s more spread than it seems at first. What can we consider side-effects?
+Modifying a nested object state, making a database query that modifies database state or change values in other fields that have nothing
+to do with the actual Property are side-effects examples. Properties are an abstraction to fields, so noone will expect that when I get a value in a property,
+other values change. This principle is also applicable to getters and setters in languages where properties are not available.</p>
+
+<h3 id="slow-properties">Slow properties</h3>
+
+<p>Properties are an abstraction to fields and fields are expected to be as fast as reading/writing a memory address.
+If you are reviewing why your code is slow, you are not going to expect a property is the responsible at first.
+Use methods instead of properties for slow methods, even better if you can make these methods async if I/O is involved.</p>
+
+<h3 id="properties-as-method-arguments">Properties as method arguments</h3>
+
+<p>Some APIs, use properties as method arguments. Imagine a ZIP compressor that works like this.</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">zip</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ZIPCompressor</span><span class="p">();</span>
+<span class="n">zip</span><span class="p">.</span><span class="n">InputFiles</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">"foo.txt"</span><span class="p">,</span> <span class="s">"bar.odt"</span><span class="p">,</span> <span class="s">"baz.png"</span> <span class="p">};</span>
+<span class="n">zip</span><span class="p">.</span><span class="n">OutputFile</span> <span class="p">=</span> <span class="s">"file.zip"</span><span class="p">;</span>
+<span class="n">zip</span><span class="p">.</span><span class="nf">Compress</span><span class="p">();</span></code></pre></figure>
+
+<p><em>InputFiles</em> and <em>OutputFile</em> are not natural <em>ZipCompressor</em> properties, they look more like <em>Compress</em> method arguments.
+Wouldn’t it be cleaner if instead of properties, regular method arguments were used?</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">zip</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ZIPCompressor</span><span class="p">();</span>
+<span class="kt">var</span> <span class="n">inputFiles</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">"foo.txt"</span><span class="p">,</span> <span class="s">"bar.odt"</span><span class="p">,</span> <span class="s">"baz.png"</span> <span class="p">};</span>
+<span class="kt">var</span> <span class="n">outputFile</span> <span class="p">=</span> <span class="s">"file.zip"</span><span class="p">;</span>
+<span class="n">zip</span><span class="p">.</span><span class="nf">Compress</span><span class="p">(</span><span class="n">inputFiles</span><span class="p">,</span> <span class="n">outputFile</span><span class="p">);</span></code></pre></figure>
+
+<p>This code smell can be found with methods that would need several arguments because of high configuration.
+In these cases it’s better to define a value object that would have the default arguments already set.
+We could simply instantiate it and set the properties we need to customize the configuration to our needs.</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">zip</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ZIPCompressor</span><span class="p">();</span>
+<span class="kt">var</span> <span class="n">zipCompressionSettings</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ZIPCompressionSettings</span><span class="p">();</span>
+<span class="n">zipCompressionSettings</span><span class="p">.</span><span class="n">InputFiles</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">"foo.txt"</span><span class="p">,</span> <span class="s">"bar.odt"</span><span class="p">,</span> <span class="s">"baz.png"</span> <span class="p">};</span>
+<span class="n">zipCompressionSettings</span><span class="p">.</span><span class="n">OutputFile</span> <span class="p">=</span> <span class="s">"file.zip"</span><span class="p">;</span>
+<span class="n">zip</span><span class="p">.</span><span class="nf">Compress</span><span class="p">(</span><span class="n">zipCompressionSettings</span><span class="p">);</span></code></pre></figure>
+
+<p>This way code is far cleaner. Code is not going to mislead the reader to think that the code is mutating the <em>ZIPCompressor</em> object and
+the API user would not have to remember to reset all these properties in future calls to the <em>Compress</em> method.</p>
+
+<h2 id="when-to-use-properties-then">When to use properties then?</h2>
+
+<p>Rule of thumb, use them as getters and setters. Just that. Some other legitimate cases would be caching
+values or making helper methods to object attributes. For example, calculate the Age from the BirthDate.
+The best advice is to keep always in mind that <strong>properties are an abstraction to fields</strong>. Keep that in mind
+when writing your properties and WTFs will decrease in your codebase.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Properties</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">.NET</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Software Developer and Web passionate.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Technologies</h5>
+                
+                <ul>
+                    <li><a href="/en/php-developer.html" class="white-text">PHP</a></li>
+                    <li><a href="/en/web-developer.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Spain
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

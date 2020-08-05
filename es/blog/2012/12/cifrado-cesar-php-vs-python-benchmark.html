@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Cifrado César (PHP vs Python) - Jorgonor</title>
+<meta property="og:title" content="Cifrado César (PHP vs Python)" />
+<meta name="description" content="Vuelvo con un pequeño problema al que le he estado dando vueltas, el del cifrado césar. No sé vosotros pero almenos a mi en seguridad informática fue el algoritmo con el que nos enseñaron qué era el cifrado." />
+<meta property="og:description" content="Vuelvo con un pequeño problema al que le he estado dando vueltas, el del cifrado césar. No sé vosotros pero almenos a mi en seguridad informática fue el algoritmo con el que nos enseñaron qué era el cifrado." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-12-25T20:26:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Cifrado César (PHP vs Python)",
+"datePublished": "2012-12-25T20:26:00+01:00",
+"description": "Vuelvo con un pequeño problema al que le he estado dando vueltas, el del cifrado césar. No sé vosotros pero almenos a mi en seguridad informática fue el algoritmo con el que nos enseñaron qué era el cifrado.",
+"url": "https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="Python, PHP" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Cifrado César (PHP vs Python)</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Dec 25, 2012</p>
+              </header>
+
+              <article class="post-content">
+                <p>
+    Vuelvo con un pequeño problema al que le he estado dando vueltas,
+    el del cifrado césar. No sé vosotros pero almenos a mi en seguridad informática fue el primer problema que nos hicieron desarrollar,
+    por lo que a mi ya me resultaba bastante familiar. Visto que es el problema del mes en 12meses12katas
+    vamos a intentar hacer un benchmark para ver cual es el rendimiento en este problema resuelto en Python y en PHP.
+</p>
+
+<p>
+    Pensé en como desarrollarlo, y se me ocurrió hacerlo con un histórico en plan git,
+    realizando diferentes pequeñas mejoras y haciendo medidas de rendimiento sobre la solución,
+    viendo como diferentes cambios podían afectar al rendimiento tanto en Python como en PHP.
+    Este histórico de mejoras puede consultarse en el repositorio <a href="https://github.com/jorgonor/caesar">caesar</a>
+    en el que publiqué la solución en mi cuenta de github.
+</p>
+
+<p>
+    Bueno, vayamos al pequeño resumen que quería poner aquí del desarrollo.
+    Al principio, pensé en realizar una solución directa, tanto en Python como en PHP.
+    En ella, no se ha hecho uso de funciones ni otros mecanismos de abstracción.
+    Está claro que eso hace que el código no sea tan fácil de seguir, pero para el fin con el que yo quería realizar este ejercicio me resultaba más interesante
+    no meter estos mecanismos de por medio para la medición de rendimiento.
+    Por otro lado, aprovechando que las implementaciones funcionan por entrada y salida estándar,
+    las pruebas se pueden hacer para ambas implementaciones, utilizando un shell script que se puede encontrar en el repositorio de la solución.
+</p>
+
+<h4>Versión PHP</h4>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">function</span> <span class="nf">error_die</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$STDERR</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">'php://stderr'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">);</span>
+    <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="nv">$message</span><span class="p">);</span>
+    <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="nx">PHP_EOL</span><span class="p">);</span>
+    <span class="nb">fclose</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">);</span>
+    <span class="k">die</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">error_die</span><span class="p">(</span><span class="s1">'Usage: ./caesar.php N'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nv">$N</span> <span class="o">=</span> <span class="nv">$argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">is_numeric</span><span class="p">(</span><span class="nv">$N</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">error_die</span><span class="p">(</span><span class="s2">"</span><span class="nv">$N</span><span class="s2"> should be numeric"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nb">define</span><span class="p">(</span><span class="s1">'CHUNK_SIZE'</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>
+<span class="nv">$N</span> <span class="o">=</span> <span class="nb">intval</span><span class="p">(</span><span class="nv">$N</span><span class="p">);</span>
+<span class="nv">$low_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">);</span>
+<span class="nv">$up_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span> <span class="s1">'Z'</span><span class="p">);</span>
+<span class="nv">$diff</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'Z'</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nv">$ord_low_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">'a'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'z'</span><span class="p">));</span>
+<span class="nv">$ord_up_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">'A'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'Z'</span><span class="p">));</span>
+<span class="nv">$fp</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">'php://stdin'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">);</span>
+
+<span class="k">while</span> <span class="p">(</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span> <span class="nx">CHUNK_SIZE</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$buffer</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nb">str_split</span><span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$c</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$ord_c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="nv">$c</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$ord_c</span> <span class="o">&gt;=</span> <span class="nv">$ord_low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span>
+            <span class="nv">$ord_c</span> <span class="o">&lt;=</span> <span class="nv">$ord_low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="nv">$x</span> <span class="o">=</span> <span class="nv">$ord_c</span> <span class="o">+</span> <span class="nv">$N</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">&gt;</span> <span class="nv">$ord_low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nv">$x</span> <span class="o">-=</span> <span class="nv">$diff</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">&lt;</span> <span class="nv">$ord_low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nv">$x</span> <span class="o">+=</span> <span class="nv">$diff</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nv">$c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nv">$x</span><span class="p">);</span>
+
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$ord_c</span> <span class="o">&gt;=</span> <span class="nv">$ord_up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span>
+            <span class="nv">$ord_c</span> <span class="o">&lt;=</span> <span class="nv">$ord_up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+
+            <span class="nv">$x</span> <span class="o">=</span> <span class="nv">$ord_c</span> <span class="o">+</span> <span class="nv">$N</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">&gt;</span> <span class="nv">$ord_up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nv">$x</span> <span class="o">-=</span> <span class="nv">$diff</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">&lt;</span> <span class="nv">$ord_up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nv">$x</span> <span class="o">+=</span> <span class="nv">$diff</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nv">$c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nv">$x</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nv">$buffer</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$c</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">echo</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="nv">$buffer</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="nb">fclose</span><span class="p">(</span><span class="nv">$fp</span><span class="p">);</span></code></pre></figure>
+<p>Por otro lado, tenemos la solución en python. </p>
+
+<h4>Versión Python</h4>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">def</span> <span class="nf">error_die</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">error_die</span><span class="p">(</span><span class="s">'Usage: ./caesar.php N'</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">N</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'-'</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">N</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">())</span> <span class="p">:</span>
+    <span class="n">error_die</span><span class="p">(</span><span class="s">"{} should be numeric"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+
+<span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+<span class="n">low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'z'</span><span class="p">]</span>
+<span class="n">up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'Z'</span><span class="p">]</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'Z'</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">ord_low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s">'a'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'z'</span><span class="p">)]</span>
+<span class="n">ord_up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'Z'</span><span class="p">)]</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="nb">buffer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">ord_low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">c</span> <span class="o">-=</span> <span class="n">diff</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">ord_low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="n">diff</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">ord_up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">c</span> <span class="o">-=</span> <span class="n">diff</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">ord_up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="n">diff</span>
+
+            <span class="n">c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="nb">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span></code></pre></figure>
+
+<p>
+    Como podeis ver, las diferencias son mínimas.
+    La diferencia más curiosa es la que en PHP se está comparando a los caracteres fronteras como enteros y en Python como strings.
+    Aún sigo preguntándome el porqué, pero demostrado por las pruebas de rendimiento, que en Python la solución es más rápida comparando caracteres como strings que como su equivalente numérico y en PHP
+    lo hace más rápido con comparaciones numéricas.
+</p>
+<p>
+    Bueno, en cuanto a resultados, PHP como siempre me decepciona demasiado.
+    Dejando claro las versiones de Python y PHP que estamos usando (Python 2.7.3 y PHP 5.4.9),
+    podemos ver una tabla de tiempos tomada con time ante una entrada que ronda los 10MB.
+</p>
+
+<table>
+    <tr>
+        <th>PHP</th>
+        <th>Python</th>
+    </tr>
+    <tr>
+        <td>real  0m41.481s<br/>user  0m41.391s<br/>sys  0m0.056s </td>
+        <td>real  0m14.330s<br/>user  0m14.301s<br/>sys  0m0.040s </td>
+    </tr>
+</table>
+
+<p>
+    Evidentemente, los tiempos varían dependiendo de la ejecución.
+    No tomé medias ni medianas, pero la verdad es que pensé que no valía la pena, dada que la diferencia
+    es de 3 órdenes de magnitud y que estos benchmarks tampoco es que sean una verdad absoluta,
+    por lo que perder precisión tampoco me resulta demasiado desconcertante.
+</p>
+
+<p>
+    En mi opinión, PHP muy mal. Como prácticamente en cualquier comparación que se haga de un problema, la solución en Python siempre suele ser más eficiente.
+    No sé si el motivo viene relacionado con las estructuras de datos, o bien con que simplemente el intérprete es más eficiente.
+</p>
+
+<p>
+    Bueno, volviendo al problema, es evidente que estamos haciendo más cálculos de los necesarios.
+    Podemos cachear estos resultados con un diccionario/hash/array o como queramos llamarle dependiendo de nuestro lenguaje (hash me parece la nomenclatura más acertada).
+    Esto acelerará en mucho el problema, ya que tomar el dato del diccionario será más rápido que calcularlo de nuevo.
+</p>
+
+<h4>Versión PHP</h4>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">function</span> <span class="nf">error_die</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$STDERR</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">'php://stderr'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">);</span>
+    <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="nv">$message</span><span class="p">);</span>
+    <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="nx">PHP_EOL</span><span class="p">);</span>
+    <span class="nb">fclose</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">);</span>
+    <span class="k">die</span><span class="p">();</span>
+<span class="p">}</span>
+
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">error_die</span><span class="p">(</span><span class="s1">'Usage: ./caesar.php N'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nv">$N</span> <span class="o">=</span> <span class="nv">$argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">is_numeric</span><span class="p">(</span><span class="nv">$N</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">error_die</span><span class="p">(</span><span class="s2">"</span><span class="nv">$N</span><span class="s2"> should be numeric"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nb">define</span><span class="p">(</span><span class="s1">'CHUNK_SIZE'</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>
+
+<span class="nv">$N</span> <span class="o">=</span> <span class="nb">intval</span><span class="p">(</span><span class="nv">$N</span><span class="p">);</span>
+
+<span class="nv">$low_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">);</span>
+<span class="nv">$up_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span> <span class="s1">'Z'</span><span class="p">);</span>
+<span class="nv">$diff</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'Z'</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nv">$ord_low_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">'a'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'z'</span><span class="p">));</span>
+<span class="nv">$ord_up_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">'A'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'Z'</span><span class="p">));</span>
+
+<span class="nv">$cache</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+<span class="nv">$fp</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">'php://stdin'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span> <span class="nx">CHUNK_SIZE</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$buffer</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nb">str_split</span><span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$c</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$r</span> <span class="o">=</span> <span class="o">@</span><span class="nv">$cache</span><span class="p">[</span><span class="nv">$c</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$r</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$r</span> <span class="o">=</span> <span class="nv">$c</span><span class="p">;</span>
+            <span class="nv">$ord_c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="nv">$c</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$ord_c</span> <span class="o">&gt;=</span> <span class="nv">$ord_low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="o">&amp;&amp;</span> <span class="nv">$ord_c</span> <span class="o">&lt;=</span> <span class="nv">$ord_low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">{</span>
+                <span class="nv">$x</span> <span class="o">=</span> <span class="nv">$ord_c</span> <span class="o">+</span> <span class="nv">$N</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">&gt;</span> <span class="nv">$ord_low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                    <span class="nv">$x</span> <span class="o">-=</span> <span class="nv">$diff</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">&lt;</span> <span class="nv">$ord_low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+                    <span class="nv">$x</span> <span class="o">+=</span> <span class="nv">$diff</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nv">$r</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nv">$x</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$ord_c</span> <span class="o">&gt;=</span> <span class="nv">$ord_up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="o">&amp;&amp;</span> <span class="nv">$ord_c</span> <span class="o">&lt;=</span> <span class="nv">$ord_up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nv">$x</span> <span class="o">=</span> <span class="nv">$ord_c</span> <span class="o">+</span> <span class="nv">$N</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">&gt;</span> <span class="nv">$ord_up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                    <span class="nv">$x</span> <span class="o">-=</span> <span class="nv">$diff</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">&lt;</span> <span class="nv">$ord_up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+                    <span class="nv">$x</span> <span class="o">+=</span> <span class="nv">$diff</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="nv">$r</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nv">$x</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nv">$cache</span><span class="p">[</span><span class="nv">$c</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$r</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nv">$buffer</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$r</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">echo</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="nv">$buffer</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nb">fclose</span><span class="p">(</span><span class="nv">$fp</span><span class="p">);</span></code></pre></figure>
+<p>
+    Antes de pasar a la versión Python, me gustaría comentar el "uso" del operador @ para evitar el error_reporting del notice debido al no estar comprobando la existencia en el array de la clave con la que accedemos al array <i>$cache</i>.
+    Si no estoy mal informado, esto es más eficiente que el tener q comprobar la existencia, por lo que ya que estamos intentando ser lo más rápidos posible, seamos lo suficientemente sucios :)
+</p>
+
+<h4>Versión Python</h4>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">def</span> <span class="nf">error_die</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">error_die</span><span class="p">(</span><span class="s">'Usage: ./caesar.php N'</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">N</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'-'</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">N</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">())</span> <span class="p">:</span>
+    <span class="n">error_die</span><span class="p">(</span><span class="s">"{} should be numeric"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+
+<span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+<span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'z'</span><span class="p">]</span>
+<span class="n">up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'Z'</span><span class="p">]</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'Z'</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">ord_low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s">'a'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'z'</span><span class="p">)]</span>
+<span class="n">ord_up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'Z'</span><span class="p">)]</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="nb">buffer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">c</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">ord_low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">x</span> <span class="o">-=</span> <span class="n">diff</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">ord_low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">x</span> <span class="o">+=</span> <span class="n">diff</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">ord_up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">x</span> <span class="o">-=</span> <span class="n">diff</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">ord_up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">x</span> <span class="o">+=</span> <span class="n">diff</span>
+
+                <span class="n">r</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+
+        <span class="nb">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span></code></pre></figure>
+<p>Y esta sería la tabla con los tiempos. </p>
+
+<table>
+    <tr>
+        <td>PHP </td>
+        <td>Python </td>
+    </tr>
+    <tr>
+        <td>real 0m11.322s<br/>user 0m11.289s<br/>sys 0m0.040s </td>
+        <td>real 0m6.001s<br/>user 0m5.984s<br/>sys 0m0.032s </td>
+    </tr>
+</table>
+
+<p>
+    Volvemos a ver una  gran diferencia entre intérpretes.
+    Aunque PHP ha mejorado 4 veces su tiempo, Python sigue siendo más rápido que PHP,
+    aunque ahora del orden de 2 veces y no de 3, por lo que con una solución mejor pensada la diferencia no se hace tan notable.
+</p>
+
+<h4>Conclusiones</h4>
+
+<p>
+    Mi opinión es que en el intérprete de PHP hay trabajo por hacer.
+    Cada vez se lo ponen más difícil sus competidores Python y Ruby,
+    lenguajes mucho más expresivos y mucho más elegantes sintácticamente.
+    PHP no tiene ventaja alguna si almenos no muestra mejores prestaciones.
+    Hay opiniones que comentan que el desarrollo en PHP es más rápido, que rindes más.
+    En mi opinión nada más lejos de la realidad.
+    Tienes que hacer más "keystrokes" por culpa de su sintaxis enrevesada, sus comportamientos suelen ser muy inconsitentes y, si no es más rápido que el resto, ¿qué motivo hay para usarlo?
+</p>
+
+<p>
+    También es cierto, que al estar usando PHP desde CLI, no estoy del todo seguro si se puede sacar alguna mejora de APC.
+    Creo que este módulo es específico de apache para mantener el opcode de los ficheros PHP para no tener que reinterpretarlos en cada petición.
+    En CLI no tiene demasiado sentido, ambos lenguajes compiten igual interpretando su código.
+    Pero es cierto, que en un entorno Web puede que PHP funcionara mejor.
+    Mi desconocimiento en herramientas para otros lenguajes como APC me hace darle aún esa posibilidad a PHP, pero si existen alternativas similares para Python, a PHP la única posibilidad que le queda es desaparecer del mapa.
+</p>
+
+<h4>Implementación en C</h4>
+
+<p>
+    Dándole otra vuelta de tuerca, también he desarrollado una versión del algoritmo de cifrado en C.
+    Esta versión se encuentra en el repositorio y, para mí, no tiene perdida.
+    Hacía mucho tiempo que no tocaba C, así que si tiene algún fallo gordo, no dudéis en comentarlo.
+    Acabo con la tabla de tiempos de la versión con cache de resultados en los tres lenguajes para observar la gran diferencia de rendimiento que ofrece bajar al nivel de C.
+</p>
+
+<table>
+    <tr>
+        <th>C</th>
+        <th>Python</th>
+        <th>PHP</th>
+    </tr>
+    <tr>
+        <td>real 0m0.106s<br/>user 0m0.104s<br/>sys 0m0.008s </td>
+        <td>real 0m6.073s<br/>user 0m6.044s<br/>sys 0m0.044s </td>
+        <td>real 0m11.322s<br/>user 0m11.289s<br/>sys 0m0.040s </td>
+    </tr>
+</table>
+
+<p>
+    C se muestra del orden de 60 veces más rápido que Python y del orden de casi 120 veces más rápido que PHP.
+    Y eso compilando sin usar opción alguna de optimización. Asombroso.
+</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Python</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

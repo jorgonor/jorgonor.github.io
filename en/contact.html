@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Contact - Jorgonor</title>
+<meta property="og:title" content="Contact" />
+<meta name="description" content="Contact. Contact with me to any kind of feedback about services or programming projects." />
+<meta property="og:description" content="Contact. Contact with me to any kind of feedback about services or programming projects." />
+<link rel="canonical" href="https://jorgonor.com/en/contact.html" />
+<meta property="og:url" content="https://jorgonor.com/en/contact.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "WebPage",
+"headline": "Contact",
+"description": "Contact. Contact with me to any kind of feedback about services or programming projects.",
+"url": "https://jorgonor.com/en/contact.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="" >
+
+  
+  <meta name="content-language" content="en">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/en">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/contact.html">Contact</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Contact</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                Contact with me to any kind of feedback about services or programming projects.
+
+<div class="row">
+    <form id="frm_contact" class="col s12" data-action="/scripts/contact.php?l=en" method="POST">
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="email" name="email" type="email" class="validate" required>
+                <label for="email">e-mail *</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="subject" name="subject" type="text" class="validate" required>
+                <label for="subject">Subject *</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="message" name="message" type="text" class="materialize-textarea" required ></textarea>
+                <label for="message">Message *</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <div class="g-recaptcha" data-sitekey="6LfWog4TAAAAAGgVEfu8l2ylFBRkOToJq6wwhPov"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <button type="submit" class="waves-effect waves-light btn indigo">Send<i class="material-icons right">send</i></button>
+                <div id="preloader" class="preloader-wrapper small">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+  
+</div>
+<script>
+    $('#frm_contact').submit(function(evt) {
+    evt.preventDefault();
+    $('#frm_contact button[type="submit"]').prop('disabled', true);
+    $('#preloader').addClass('active');
+    $.post($(this).data('action'), $(this).serializeArray(), function(response) {
+        $('#frm_contact button[type="submit"]').prop('disabled', false);
+        $('#preloader').removeClass('active');
+        if (window.Materialize && Materialize.toast) {
+            var message;
+            if (response.error === 0) {
+                message = "Message sent successfully";
+            } else {
+                message = "Verify you&#39;re not a robot";
+            }
+
+            Materialize.toast(message, 4000);
+        }
+    });
+});
+</script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Software Developer and Web passionate.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Technologies</h5>
+                
+                <ul>
+                    <li><a href="/en/php-developer.html" class="white-text">PHP</a></li>
+                    <li><a href="/en/web-developer.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Spain
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+  </body>
+</html>

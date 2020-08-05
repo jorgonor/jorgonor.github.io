@@ -1,0 +1,1351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jorgonor</title>
+    <description></description>
+    <link>https://jorgonor.com/</link>
+    <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 07 Oct 2018 15:09:10 +0200</pubDate>
+    <lastBuildDate>Sun, 07 Oct 2018 15:09:10 +0200</lastBuildDate>
+    <generator>Jekyll v3.3.1</generator>
+    
+      <item>
+        <title>Promesas con async/await y carga concurrente de recursos</title>
+        <description>&lt;p&gt;En este mismo blog &lt;a href=&quot;/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html&quot;&gt;he hablado de la potencia de las promesas&lt;/a&gt; para manejar la comunicación cliente servidor de manera asíncrona en Javascript o, resumiendo, cualquier operación de entrada/salida.
+Como con cualquier poder viene la responsabilidad de gestionarlo correctamente, veremos en este post cómo configurar &lt;a href=&quot;https://webpack.js.org/&quot;&gt;Webpack&lt;/a&gt; + &lt;a href=&quot;https://babeljs.io/&quot;&gt;Babel&lt;/a&gt; para poder utilizar async/await en nuestro proyecto Javascript para tener compatibilidad máxima
+y así utilizar esta sintaxis que nos ayudará a usar las promesas de una manera mucho más entendible.&lt;/p&gt;
+
+&lt;h3 id=&quot;configurando-el-proyecto&quot;&gt;Configurando el proyecto&lt;/h3&gt;
+
+&lt;p&gt;Instalemos pues todo lo necesario para empezar el proyecto.
+Nuestro caso de uso va a ser un proyecto en cliente para cargar un listado de repositorios o información adicional a través de la &lt;a href=&quot;https://developer.github.com/v3/&quot;&gt;API REST de Github&lt;/a&gt;.
+La solución completa está en &lt;a href=&quot;https://github.com/jorgonor/es2017-async-await-demo&quot;&gt;este repositorio&lt;/a&gt;, eso sí, en el post veremos paso por paso como llegar a esta solución.&lt;/p&gt;
+
+&lt;p&gt;Veamos pues como configurar nuestro proyecto para usar &lt;a href=&quot;https://webpack.js.org/&quot;&gt;Webpack&lt;/a&gt; + &lt;a href=&quot;https://babeljs.io/&quot;&gt;Babel&lt;/a&gt;, con el fin de usar la funcionalidad &lt;strong&gt;async/await&lt;/strong&gt;.
+El primer paso es ejecutar este comando. Usaré &lt;a href=&quot;https://yarnpkg.com&quot;&gt;yarn&lt;/a&gt;, aunque también se podría hacer con &lt;a href=&quot;https://www.npmjs.com/&quot;&gt;NPM&lt;/a&gt;.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/jorgonor/4f2e83afe076c12c4ed60d081fa814e8.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Ejecutando este comando, tendremos un archivo &lt;em&gt;package.json&lt;/em&gt; con lo mínimo para usar Webpack + Babel con promesas.
+Como nuestros ejemplos usarán &lt;a href=&quot;https://reactjs.org/&quot;&gt;React.js&lt;/a&gt;, también será necesario instalar las siguientes dependencias.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/jorgonor/b3e6c36d8ff5c82ca46f5c1cfbf7b3f7.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Para facilitar las cosas, el &lt;em&gt;package.json&lt;/em&gt; final que debemos tener debería tener un contenido similar al siguiente.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/jorgonor/84e2a3fc4010f6c87ed1581994c30282.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Finalmente deberemos escribir en un fichero &lt;em&gt;.babelrc&lt;/em&gt; el siguiente contenido.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/jorgonor/49535c6e0a3069f44608c2202f3e6be9.js&quot;&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;un-ejemplo-simple&quot;&gt;Un ejemplo simple&lt;/h3&gt;
+
+&lt;p&gt;Veamos como podemos cargar un listado de repositorios desde la API de Github sin despeinarnos usando &lt;strong&gt;async/await&lt;/strong&gt;.
+Usaremos la función &lt;em&gt;fetch&lt;/em&gt; que nos devuelve una promesa y manejaremos la respuesta que nos devuelva la API de Github.
+Si devuelve un código HTTP correcto, devolveremos los datos devueltos directamente, sino, lanzaremos una excepción informando del error.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/jorgonor/a4a3531f942950d1b470fe76675d072d.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;En el código podemos ver como encapsulamos en la clase &lt;em&gt;Client&lt;/em&gt; la lógica para tomar nuestros datos y desde el componente &lt;em&gt;ListReposApp&lt;/em&gt;
+los cargamos en la función &lt;em&gt;componentDidMount&lt;/em&gt; para devolver una representación de estos en la función &lt;em&gt;renderRepos&lt;/em&gt;.
+No vamos a entrar en detalles respecto al ciclo de vida de los componentes React, ya que eso daría para un post entero, pero sí vamos a tratar
+el uso de &lt;strong&gt;async&lt;/strong&gt; en la función &lt;em&gt;componentDidMount&lt;/em&gt;. &lt;strong&gt;async&lt;/strong&gt; nos permite utilizar en el cuerpo de la función la palabra clave &lt;strong&gt;await&lt;/strong&gt;.
+Con &lt;strong&gt;await&lt;/strong&gt; lo que hacemos es algo así como convertir el código asíncrono a síncrono, aunque esto sería una explicación bastante simplona.&lt;/p&gt;
+
+&lt;p&gt;Con &lt;strong&gt;await&lt;/strong&gt;, el código que viene tras la instrucción a la que se aplica la palabra clave no se ejecutará hasta que la operación asíncrona haya finalizado, en este caso la petición HTTP.
+Es como si el “compilador” (Babel en este caso) generara él mismo un &lt;em&gt;callback&lt;/em&gt; con todo el código que continúa a la ejecución de &lt;strong&gt;await&lt;/strong&gt; y otro con el manejo de un posible error.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/jorgonor/826742ddf4ddfc25a5f822e9e942e57e.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;async/await&lt;/strong&gt; nos servirá como una manera de hacer un código más entendible y que escala mejor ante &lt;em&gt;callbacks&lt;/em&gt; anidados,
+aunque también comentaremos algunos casos en los que, aunque sea más fácil entender el código,
+&lt;strong&gt;async/await&lt;/strong&gt; no sería la manera más adecuada de cargar información remota, siempre y cuando el tiempo de carga sea una de nuestras prioridades.&lt;/p&gt;
+
+&lt;h3 id=&quot;await-y-la-carga-de-n-recursos-de-manera-concurrente&quot;&gt;&lt;strong&gt;await&lt;/strong&gt; y la carga de N recursos de manera concurrente&lt;/h3&gt;
+
+&lt;p&gt;En el repositorio podemos consultar &lt;a href=&quot;https://github.com/jorgonor/es2017-async-await-demo/blob/master/containers/UserDashboardAppAsyncAwait.js&quot;&gt;la implementación de un componente&lt;/a&gt;
+(o &lt;em&gt;container&lt;/em&gt; en el vocabulario React) que carga más información a partir de un usuario de Github.
+En este caso estamos cargando cuatro recursos distintos con &lt;strong&gt;await&lt;/strong&gt;. Este uso de &lt;strong&gt;await&lt;/strong&gt; hace que para empezar a cargar el segundo recurso,
+sea necesario que el primero ya haya sido devuelto por el servidor de Github,
+por lo que no estamos aprovechando una posible concurrencia que nos permitiría tener la información antes y cargar los cuatro recursos en paralelo.&lt;/p&gt;
+
+&lt;p&gt;Aunque el tiempo de carga está bien, y puede que por simplicidad prefiramos tener el código con &lt;strong&gt;async/await&lt;/strong&gt;,
+debemos conocer mecanismos para poder cargar N recursos de manera concurrente, ya que en muchas aplicaciones no podemos
+dictar el diseño de las APIs desde las que tomamos la información y puede que nos sea útil cargar toda esta información para mostrar
+listados a los usuarios de nuestra aplicación.&lt;/p&gt;
+
+&lt;p&gt;Una solución para problemas como este es usar &lt;em&gt;Promise.all&lt;/em&gt;. Esta función estándar de Javascript permite esperar a que N promesas se resuelvan o cualquiera de ellas falle.
+En este &lt;em&gt;container&lt;/em&gt; vemos como cargamos los cuatro recursos con &lt;em&gt;Promise.all&lt;/em&gt;.
+Abajo está también el código en el que vemos como se maneja como si la promesa devuelta de &lt;em&gt;Promise.all&lt;/em&gt; fuera la unión de las N promesas.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/jorgonor/8af646a583d6be05e2309fd2425f57cc.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Usando las herramientas de desarrollo de Chrome podemos ver como si cargamos en la vista el componente &lt;a href=&quot;https://github.com/jorgonor/es2017-async-await-demo/blob/master/containers/UserDashboardAppPromiseAll.js&quot;&gt;&lt;strong&gt;UserDashboardAppPromiseAll&lt;/strong&gt;&lt;/a&gt;
+o &lt;a href=&quot;https://github.com/jorgonor/es2017-async-await-demo/blob/master/containers/UserDashboardAppAsyncAwait.js&quot;&gt;&lt;strong&gt;UserDashboardAppAsyncAwait&lt;/strong&gt;&lt;/a&gt;
+vemos la diferencia entre cargar los cuatro recursos de manera concurrente y la línea temporal en la que un recurso se carga tras otro.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusiones&quot;&gt;Conclusiones&lt;/h3&gt;
+
+&lt;p&gt;Aunque no todos los navegadores soportan &lt;strong&gt;async/await&lt;/strong&gt;, con &lt;a href=&quot;https://babeljs.io/&quot;&gt;Babel&lt;/a&gt; podemos utilizar esta funcionalidad
+sin tener que preocuparnos de si nuestro código es soportado directamente o no.&lt;/p&gt;
+
+&lt;p&gt;Algunos frameworks de desarrollo con Javascript, como &lt;a href=&quot;https://facebook.github.io/react-native/&quot;&gt;React Native&lt;/a&gt; incorporan &lt;strong&gt;async/await&lt;/strong&gt; de casa,
+por lo que en muchos casos nos será más natural utilizarlo que usar los métodos de la clase &lt;em&gt;Promise&lt;/em&gt;.
+Espero que con este pequeño tutorial os sea más fácil usarlo en vuestro código y conocer su potencia.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 30 Jun 2018 12:00:00 +0200</pubDate>
+        <link>https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html</guid>
+        
+        <category>javascript</category>
+        
+        <category>programación asíncrona</category>
+        
+        
+        <category>es</category>
+        
+        <category>blog</category>
+        
+        <category>javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>How to log SQL queries using Entity Framework 6 like in EF Core</title>
+        <description>&lt;p&gt;Watching the SQL queries Entity Framework executes is quite useful when a slow
+query needs optimization. If you’re already using ASP.NET Core, you might have already noticed
+that the debugging stream already outputs these SQL queries for you. But, if you’re working
+with ASP.NET MVC or ASP.NET Web API projects, by default you won’t see the SQL queries executed by EF.&lt;/p&gt;
+
+&lt;p&gt;Even though, there’s a very simple trick to be able to see the actual SQL.
+Simply add the following code in your &lt;em&gt;DbContext&lt;/em&gt; constructor.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/jorgonor/e9cd3db5e2fe480332c33508a0be0d18.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Once this piece of code has been added, you will be able to see the SQL queries your code executes
+in the Output tab. Have a look at the screenshot below.&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col s12&quot;&gt;
+        &lt;img src=&quot;/img/posts/ef6-sql-query-debugging.png&quot; class=&quot;img-responsive img-center&quot; alt=&quot;EF6 Context SQL query debugging&quot; /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;With the output generated by the &lt;em&gt;Debugger.Log&lt;/em&gt; method it’s possible to find out slow queries. A good
+idea would be even to generate a neat report from these messages. However, for quick and dirty debugging,
+this trick works.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 29 May 2017 22:00:00 +0200</pubDate>
+        <link>https://jorgonor.com/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html</guid>
+        
+        <category>Entity Framework</category>
+        
+        <category>ASP.NET</category>
+        
+        <category>EF Core</category>
+        
+        
+        <category>en</category>
+        
+        <category>blog</category>
+        
+        <category>aspnet</category>
+        
+      </item>
+    
+      <item>
+        <title>Why properties are evil</title>
+        <description>&lt;p&gt;As many of you might already know, properties are a neat way to define getters and setters. Many languages, such as C#, Delphi, Javascript or PHP support them
+and they are first-class citizens in the .NET ecosystem. Although properties are a handy resource, some property implementations can turn out to be evil.
+Very evil. Let’s dive into them.&lt;/p&gt;
+
+&lt;h3 id=&quot;side-effects-in-property-code&quot;&gt;Side-effects in property code&lt;/h3&gt;
+
+&lt;p&gt;Causing side-effects is the worst practice when using properties, and it’s more spread than it seems at first. What can we consider side-effects?
+Modifying a nested object state, making a database query that modifies database state or change values in other fields that have nothing
+to do with the actual Property are side-effects examples. Properties are an abstraction to fields, so noone will expect that when I get a value in a property,
+other values change. This principle is also applicable to getters and setters in languages where properties are not available.&lt;/p&gt;
+
+&lt;h3 id=&quot;slow-properties&quot;&gt;Slow properties&lt;/h3&gt;
+
+&lt;p&gt;Properties are an abstraction to fields and fields are expected to be as fast as reading/writing a memory address.
+If you are reviewing why your code is slow, you are not going to expect a property is the responsible at first.
+Use methods instead of properties for slow methods, even better if you can make these methods async if I/O is involved.&lt;/p&gt;
+
+&lt;h3 id=&quot;properties-as-method-arguments&quot;&gt;Properties as method arguments&lt;/h3&gt;
+
+&lt;p&gt;Some APIs, use properties as method arguments. Imagine a ZIP compressor that works like this.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zip&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ZIPCompressor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InputFiles&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;foo.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;bar.odt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;baz.png&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OutputFile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;file.zip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Compress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;em&gt;InputFiles&lt;/em&gt; and &lt;em&gt;OutputFile&lt;/em&gt; are not natural &lt;em&gt;ZipCompressor&lt;/em&gt; properties, they look more like &lt;em&gt;Compress&lt;/em&gt; method arguments.
+Wouldn’t it be cleaner if instead of properties, regular method arguments were used?&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zip&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ZIPCompressor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputFiles&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;foo.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;bar.odt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;baz.png&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outputFile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;file.zip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Compress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inputFiles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outputFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;This code smell can be found with methods that would need several arguments because of high configuration.
+In these cases it’s better to define a value object that would have the default arguments already set.
+We could simply instantiate it and set the properties we need to customize the configuration to our needs.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zip&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ZIPCompressor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zipCompressionSettings&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ZIPCompressionSettings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zipCompressionSettings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InputFiles&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;foo.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;bar.odt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;baz.png&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zipCompressionSettings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OutputFile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;file.zip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Compress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zipCompressionSettings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;This way code is far cleaner. Code is not going to mislead the reader to think that the code is mutating the &lt;em&gt;ZIPCompressor&lt;/em&gt; object and
+the API user would not have to remember to reset all these properties in future calls to the &lt;em&gt;Compress&lt;/em&gt; method.&lt;/p&gt;
+
+&lt;h2 id=&quot;when-to-use-properties-then&quot;&gt;When to use properties then?&lt;/h2&gt;
+
+&lt;p&gt;Rule of thumb, use them as getters and setters. Just that. Some other legitimate cases would be caching
+values or making helper methods to object attributes. For example, calculate the Age from the BirthDate.
+The best advice is to keep always in mind that &lt;strong&gt;properties are an abstraction to fields&lt;/strong&gt;. Keep that in mind
+when writing your properties and WTFs will decrease in your codebase.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 04 Feb 2017 17:30:00 +0100</pubDate>
+        <link>https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html</guid>
+        
+        <category>Properties</category>
+        
+        <category>.NET</category>
+        
+        
+        <category>en</category>
+        
+        <category>blog</category>
+        
+        <category>aspnet</category>
+        
+      </item>
+    
+      <item>
+        <title>Primeros pasos con ASP.NET Core sobre Linux</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://www.asp.net/core&quot;&gt;ASP.NET Core&lt;/a&gt; es la nueva apuesta de Microsoft por una solución multiplataforma de desarrollo web.
+Soporta tanto Windows como Mac come Linux, y permite una transición de páginas web desarrolladas con ASP.NET MVC a su versión
+multiplataforma ASP.NET MVC Core. Esta nueva tecnología además, destaca por ser una de las soluciones con mejor rendimiento a
+la hora de desarrollar aplicaciones web.&lt;/p&gt;
+
+&lt;h3 id=&quot;instalando-el-sdk&quot;&gt;Instalando el SDK&lt;/h3&gt;
+
+&lt;p&gt;Para poder trabajar con ASP.NET Core, necesitamos descargarnos el &lt;a href=&quot;https://www.microsoft.com/net/core&quot;&gt;runtime de .NET Core&lt;/a&gt;. Estos son los pasos a seguir para instalarlo sobre Ubuntu 16.04 LTS.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Seguimos los pasos para instalar .NET Core a través de los repositorios de Microsoft. &lt;a href=&quot;https://www.microsoft.com/net/core#linuxubuntu&quot;&gt;https://www.microsoft.com/net/core#linuxubuntu&lt;/a&gt; Para ejecutar estos pasos basta con abrir una consola y ejecutar:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Añadimos los repositorios a nuestro sistema&lt;/span&gt;
+sudo sh -c &lt;span class=&quot;s1&quot;&gt;'echo &quot;deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main&quot; &amp;gt; /etc/apt/sources.list.d/dotnetdev.list'&lt;/span&gt;
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
+sudo apt-get update
+
+&lt;span class=&quot;c&quot;&gt;# Instalamos .NET Core 1.1 y 1.0&lt;/span&gt;
+sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Si queremos usar un IDE para desarrollar, podemos usar &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt;, el IDE multiplataforma de Microsoft.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;crear-un-proyecto-web&quot;&gt;Crear un proyecto web&lt;/h3&gt;
+
+&lt;p&gt;Una vez instalado todo lo necesario, pasamos a crear nuestro proyecto web con las siguientes instrucciones.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir DotNetCoreWeb &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;DotNetCoreWeb
+dotnet new -t web
+dotnet restore
+&lt;span class=&quot;c&quot;&gt;# Para instalar las dependencias del lado del cliente&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Necesitamos tener Node.js instalado&lt;/span&gt;
+npm -g install bower gulp
+bower install
+npm install
+
+&lt;span class=&quot;c&quot;&gt;# Inicializamos la base de datos&lt;/span&gt;
+dotnet ef database update
+
+&lt;span class=&quot;c&quot;&gt;# Iniciamos el entorno para activar el modo desarrollo&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ASPNETCORE_ENVIRONMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;development
+
+&lt;span class=&quot;c&quot;&gt;# Ejecutamos el proyecto&lt;/span&gt;
+dotnet run&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Tras ejecutar estos comandos, podremos abrir un navegador a la URL &lt;a href=&quot;http://localhost:5000&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;http://localhost:5000&lt;/a&gt;
+donde podremos ver la web plantilla creada por el comando &lt;em&gt;dotnet new -t web&lt;/em&gt;.
+Este proyecto plantilla ya viene con &lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/&quot;&gt;ASP.NET Core MVC&lt;/a&gt; y
+&lt;a href=&quot;https://docs.microsoft.com/en-us/ef/core/index&quot;&gt;Entity Framework Core&lt;/a&gt;.
+Es recomendable echar un ojo al código con el editor que más nos guste para ver ejemplos de controladores, vistas y modelos que nos puedan luego
+ayudar en como utilizar todas las herramientas ofrecidas por la plataforma ASP.NET Core MVC.&lt;/p&gt;
+
+&lt;h3 id=&quot;un-caso-práctico-todolist-crud&quot;&gt;Un caso práctico, &lt;em&gt;TodoList&lt;/em&gt; CRUD.&lt;/h3&gt;
+
+&lt;p&gt;Vamos a empezar a añadir código propio a la aplicación plantilla. Crearemos un listado de &lt;em&gt;todos&lt;/em&gt; y un formulario para añadirlos. Para ello
+vamos a poner el código necesario para hacer un ejemplo funcional básico.
+También puedes bajarte el proyecto completo desde &lt;a href=&quot;https://github.com/jorgonor/DotNetCoreWeb&quot;&gt;este repositorio de Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Data/ApplicationContext.cs
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationDbContext&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...
+&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Añadir esta línea
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Todos&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// ...
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Models/Todo.cs
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.ComponentModel.DataAnnotations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.ComponentModel.DataAnnotations.Schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;WebApplication.Models&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Todo&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;DatabaseGenerated&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DatabaseGeneratedOption&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TodoId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Required&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Title&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Comments&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DateTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DueDate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Controllers/TodoController.cs
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Threading.Tasks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Microsoft.AspNetCore.Mvc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Microsoft.EntityFrameworkCore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;WebApplication.Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;WebApplication.Models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;WebApplication.Controllers&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TodoController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Controller&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;readonly&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ApplicationDbContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;TodoController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ApplicationDbContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;_context&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IActionResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;View&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToListAsync&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;View&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpPost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ValidateAntiForgeryToken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IActionResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Bind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Title, Comments, DueDate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModelState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IsValid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;_context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;SaveChangesAsync&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;RedirectToAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Index&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;View&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;También añadiremos las vistas que se cargaran desde el controlador &lt;em&gt;TodoController&lt;/em&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Views/Todo/Index.cshtml --&amp;gt;&lt;/span&gt;
+
+@model IEnumerable&lt;span class=&quot;nt&quot;&gt;&amp;lt;WebApplication&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Models&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+
+@{
+    string emptySymbol = &quot;-&quot;;
+}
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-action=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Add&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Add Todo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;table&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;table table-responsive&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;thead&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;Id&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;Title&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;Comments&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;Due Date&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/thead&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;tbody&amp;gt;&lt;/span&gt;
+        @foreach(var item in Model) {
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;
+                @Html.DisplayFor(modelItem =&amp;gt; item.TodoId)
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;
+                @Html.DisplayFor(modelItem =&amp;gt; item.Title)
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;
+                @if(!String.IsNullOrEmpty(item.Comments)) {
+                    @Html.DisplayFor(modelItem =&amp;gt; item.Comments)
+                } else {
+                    @emptySymbol
+                }
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;
+                @if (item.DueDate.HasValue) {
+                    @Html.DisplayFor(modelItem =&amp;gt; item.DueDate)
+                } else {
+                    @emptySymbol
+                }
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
+        }
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/tbody&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/table&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Views/Todo/Add.cshtml --&amp;gt;&lt;/span&gt;
+@model WebApplication.Models.Todo
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-action=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Add&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;form-horizontal&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;h4&amp;gt;&lt;/span&gt;Add Todo&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h4&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-validation-summary=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ModelOnly&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text-danger&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;form-group&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Title&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-md-2 control-label&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-md-10&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Title&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-validation-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Title&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text-danger&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;form-group&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Comments&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-md-2 control-label&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-md-10&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;textarea&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Comments&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/textarea&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-validation-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Comments&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text-danger&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+       &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;form-group&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;DueDate&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-md-2 control-label&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-md-10&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;date&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;DueDate&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;form-control&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;asp-validation-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;DueDate&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text-danger&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;form-group&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-md-offset-2 col-md-10&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Save Todo&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn btn-default&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Tras añadir los modelos, controladores y vistas necesarios para ejecutar nuestro ejemplo, vamos a tener que actualizar la base de datos
+de nuevo. Podemos hacerlo fácilmente con la herramienta de consola de Entity Framework Core.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;dotnet ef migrations add Todo1
+dotnet ef database update&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Tras estos pasos podemos volver a ejecutar &lt;strong&gt;dotnet run&lt;/strong&gt; y abrir un navegador a la URL &lt;a href=&quot;http://localhost:5000/Todo&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;http://localhost:5000/Todo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-md-12 text-center&quot;&gt;
+        &lt;img src=&quot;/img/posts/aspnet-core-screen.png&quot; class=&quot;img-responsive&quot; alt=&quot;ASP.NET Core application running on Linux&quot; /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Ya tenemos nuestro listado de &lt;em&gt;Todos&lt;/em&gt; y un formulario para poder añadir &lt;em&gt;Todos&lt;/em&gt; nuevos.&lt;/p&gt;
+
+&lt;h3 id=&quot;dándole-más-sabor-a-linux-a-nuestra-aplicación-web&quot;&gt;Dándole más sabor a Linux a nuestra aplicación web&lt;/h3&gt;
+
+&lt;p&gt;Ahora ya tenemos una aplicación web que corre sobre Linux y usa .NET Core. La plantilla que viene con ASP.NET Core está configurada para usar Sqlite, opción
+multiplataforma y muy útil para desarrollo, pero que pudiendo usar MySQL como motor de bases de datos queda un poco floja. Por ese motivo, vamos a
+modificar nuestra aplicación para usar MySQL como gestor de bases de datos.&lt;/p&gt;
+
+&lt;p&gt;Desgraciadamente, &lt;a href=&quot;https://docs.microsoft.com/en-us/ef/core/providers/&quot;&gt;el proveedor de base de datos oficial para MySQL aún no es estable&lt;/a&gt;, pero podemos
+usar el &lt;a href=&quot;https://docs.microsoft.com/en-us/ef/core/providers/pomelo/&quot;&gt;proveedor proporcionado por Pomelo&lt;/a&gt;. Para hacer esto basta con actualizar
+el fichero &lt;em&gt;project.json&lt;/em&gt; con una nueva dependencia y ejecutar &lt;strong&gt;dotnet restore&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;project.json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;dependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+       &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+       &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;Pomelo.EntityFrameworkCore.MySQL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0.1&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;También tendremos que hacerle saber al servicio &lt;em&gt;ApplicationDbContext&lt;/em&gt; que ahora debe usar MySQL como motor y actualizar la cadena de conexión en el fichero &lt;em&gt;appsettings.json&lt;/em&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Startup.cs
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ConfigureServices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IServiceCollection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Add framework services.
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddDbContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ApplicationDbContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UseMySql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetConnectionString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;DefaultConnection&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)));&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Other services configuration ...
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;appsettings.json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;ConnectionStrings&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;DefaultConnection&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;server=localhost;database=dotnetcore;uid=root;pwd=password&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Tras esto va a ser necesario regenerar nuestra última migración y actualizar la base de datos desde el modelo de nuevo.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;dotnet ef migrations remove
+dotnet ef migrations add Todo1
+dotnet ef database update&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Ya tenemos nuestra aplicación usando MySQL como motor de base de datos.&lt;/p&gt;
+
+&lt;h3 id=&quot;desplegar-nuestra-web-aspnet-core-en-un-servidor-linux&quot;&gt;Desplegar nuestra web ASP.NET Core en un servidor Linux&lt;/h3&gt;
+
+&lt;p&gt;Para acabar de cerrar el círculo, necesitamos saber como desplegaremos esta aplicación web. No vamos a entrar en detalle en esta sección,
+pero sí vamos a explicar como ejecutar una instancia de nuestra aplicación preparada para producción detrás de un &lt;em&gt;reverse proxy&lt;/em&gt; como Nginx,
+usando &lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction&quot;&gt;esta guía de Microsoft como referencia&lt;/a&gt;. Para instalar Nginx basta con ejecutar:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt-get install nginx&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Con nginx instalado, tendremos que publicar nuestro proyecto para que sea lo más eficiente posible en producción
+y copiar el resultado de nuestra compilación a un directorio utilizable por el usuario &lt;em&gt;www-data&lt;/em&gt;, como haríamos
+con un proyecto LAMP.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Compilamos en modo Release&lt;/span&gt;
+dotnet publish -c Release
+&lt;span class=&quot;c&quot;&gt;# Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción&lt;/span&gt;
+cp -r bin/Release/netcoreapp1.1/publish/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /var/aspnetcore/DotNetCoreWeb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Finalmente, pasaremos a seguir los pasos descritos en la guía de Microsoft para crear un servicio manejado a través de &lt;em&gt;systemd&lt;/em&gt;. Algo que esta guía no nos dice, es que en el descriptor del servicio,
+hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por eso, añadimos el descriptor del servicio utilizado en el proyecto de ejemplo.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;nn&quot;&gt;[Unit]&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.NET running on Ubuntu 16.04&lt;/span&gt;
+
+&lt;span class=&quot;nn&quot;&gt;[Service]&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;SyslogIdentifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;dotnet-example&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;www-data&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ASPNETCORE_ENVIRONMENT=Production&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/aspnetcore/DotNetCoreWeb&lt;/span&gt;
+
+&lt;span class=&quot;nn&quot;&gt;[Install]&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;multi-user.target&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;referencias&quot;&gt;Referencias&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.microsoft.com/net/core&quot;&gt;Instalar .NET Core&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/ef/core/providers/&quot;&gt;Proveedores de bases de datos de EF Core&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction&quot;&gt;Publicar un proyecto ASP.NET Core en Linux&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 27 Nov 2016 18:00:00 +0100</pubDate>
+        <link>https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html</guid>
+        
+        <category>.NET Core</category>
+        
+        <category>ASP.NET Core</category>
+        
+        <category>Linux</category>
+        
+        
+        <category>es</category>
+        
+        <category>blog</category>
+        
+        <category>dotnet</category>
+        
+      </item>
+    
+      <item>
+        <title>Entity Framework 6 and &quot;There is already an open DataReader&quot;</title>
+        <description>&lt;p&gt;Entity Framework is an amazing ORM. It has differences with other ORMs like Hibernate or Doctrine, but
+at the same time feels more comfortable. Two key differences with other ORMs are LINQ as its query language
+(LINQ it’s a compiled language, if you like to rename stuff you know how many errors this feature can prevent)
+and being able to use foreign key values without having to join with the related entity.&lt;/p&gt;
+
+&lt;p&gt;But, it has a &lt;strong&gt;poor proxy pattern&lt;/strong&gt;. Navigation properties, the Entity Framework name for relationships between entities,
+can be accessed with lazy loading like in other ORMs, but in Entity Framework you must load the entire result set in a list
+before traversing it or an exception will show up saying “There is already an open DataReader associated with this Connection”.
+This happens because Entity Framework attempts to start a new data reader while it is already reading the data
+reader for the previous collection.&lt;/p&gt;
+
+&lt;p&gt;While it’s not a big deal when you have an upfront database design that won’t ever change,
+this usually breaks code when a new relationship is added to an entity that already exists if you
+need to use this new relationship in data transfer objects or in every place where you are retrieving
+data from this entity.
+So, what can we do to make our codebase more reliable and prevent production errors? SQL Server has a feature called
+&lt;a href=&quot;https://msdn.microsoft.com/en-us/library/ms131686.aspx&quot;&gt;Multiple Active Result Sets (MARS)&lt;/a&gt;.
+This feature allows the client code to open more than one DataReader at the same time.
+It clearly fixes it, while I don’t recommend using it in development because this error is actually telling us that we are probably
+doing something wrong. In development, this exception can help you to prevent performance problems lead by lazy loading
+with big datasets. When retrieving data from a navigation property, there is a 99% chance that what you actually wanted to do was
+to load your data eagerly. So, if you don’t have MARS enabled in Debug Mode, these issues will show up with the
+so-called exception. But if you don’t want your production code to fail unexpectedly after a database update,
+then enable MARS only in Release. The only needed change is to change your Connection String like this.&lt;/p&gt;
+
+&lt;pre&gt;
+Data Source=MSSQL; Initial Catalog=AdventureWorks; Integrated Security=SSPI; MultipleActiveResultSets=True
+&lt;/pre&gt;
+
+&lt;p&gt;Hope this helps!&lt;/p&gt;
+</description>
+        <pubDate>Sat, 06 Aug 2016 18:30:00 +0200</pubDate>
+        <link>https://jorgonor.com/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html</guid>
+        
+        <category>C#</category>
+        
+        <category>.NET</category>
+        
+        <category>ASP.NET</category>
+        
+        <category>Entity Framework</category>
+        
+        
+        <category>en</category>
+        
+        <category>blog</category>
+        
+        <category>aspnet</category>
+        
+      </item>
+    
+      <item>
+        <title>ETagFilePathResult, an ActionResult to save bandwidth in ASP.NET MVC.</title>
+        <description>&lt;p&gt;&lt;a href=&quot;http://www.asp.net/mvc&quot;&gt;ASP.NET MVC&lt;/a&gt; provides several ways to serve files from controllers,
+but all of them require to serve the entire file content through the network, something that
+will make our website slow and more expensive while it’s ridiculous to transfer the same content
+over the network every time the resource is requested.
+Client-side HTTP caching can easily prevent downloading all those extra bytes. In this post
+we offer a solution to it without doing any complicated stuff,
+using the ActionResult abstract class to integrate a solution based on &lt;a href=&quot;https://en.wikipedia.org/wiki/HTTP_ETag&quot;&gt;ETags&lt;/a&gt;
+in ASP.NET MVC to implement the client-side caching.&lt;/p&gt;
+
+&lt;h3 id=&quot;why-do-i-need-to-return-static-files-from-a-controller&quot;&gt;Why do I need to return static files from a controller?&lt;/h3&gt;
+
+&lt;p&gt;It might seem ridiculous to return static files from a controller. Well, &lt;strong&gt;it is not&lt;/strong&gt;. In several
+scenarios it is very useful and secures your web application.
+For instance, when there are private resources that might be readable only for a subset of users
+you &lt;strong&gt;must&lt;/strong&gt; validate in the controller if the resource is readable for the user who requests it,
+if not you’re creating a security hole by mistake.
+Other use cases are dynamically generated files backed by a
+server-side cache, or even customized stylesheets backed on a server file too.&lt;/p&gt;
+
+&lt;h3 id=&quot;alright-but-let-me-see-the-code&quot;&gt;Alright, but let me see the code!&lt;/h3&gt;
+
+&lt;p&gt;This class is analogous to other classes that are already in ASP.NET MVC like
+&lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.web.mvc.filepathresult(v=vs.118).aspx&quot;&gt;FilePathResult&lt;/a&gt; or
+&lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.web.mvc.filestreamresult(v=vs.118).aspx&quot;&gt;FileStreamResult&lt;/a&gt;.
+While these classes work, they do not implement any client-side caching mechanism.
+So, with &lt;em&gt;ETagFilePathResult&lt;/em&gt; an ETag will be calculated from the server file full path and the file last write time and returned
+to the client, letting the client know that the resource can be cached and indexed by this ETag.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Find the image that matches with the incoming id.
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ETagFilePathResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;imagePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;If-None-Match&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;err&quot;&gt;﻿&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ETagFilePathResult&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;previousETag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uniqueSource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ETagFilePathResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;previousETag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uniqueSource&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;contentType&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;previousETag&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;previousETag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniqueSource&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uniqueSource&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ExecuteResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ControllerContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ArgumentNullException&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;context&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;HttpResponseBase&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ContentType&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;FileInfo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileInfo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;FileInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eTag&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;CalculateETag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Content-Length&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;SetCacheability&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpCacheability&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ServerAndPrivate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;SetETag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eTag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eTag&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;previousETag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StatusCode&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpStatusCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NotModified&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;TransmitFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;virtual&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;CalculateETag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FileInfo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;            
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hashSource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bContentsToHash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;hashSource&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;-&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;fileInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FullName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;fileInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LastWriteTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;uniqueSource&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;bContentsToHash&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Encoding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Unicode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hashSource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HashAlgorithm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CryptoConfig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;CreateFromName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;MD5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                                            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ComputeHash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bContentsToHash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eTag&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BitConverter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                                  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;-&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                                  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToLower&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eTag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The next time the browser asks for this resource, it will add an If-None-Match header with the ETag,
+and the server will check if that ETag matches the current file stored in the filesystem. If it does, it returns only an HTTP
+&lt;a href=&quot;https://httpstatuses.com/304&quot;&gt;Not Modified&lt;/a&gt; status code, and doesn’t transmit the file content to the client, authorizing the browser
+to keep using the same copy it downloaded previously for this resource.
+Isn’t it cool? And no extra code needed in your controller!&lt;/p&gt;
+
+&lt;p&gt;Given this code, it is pretty straightforward to implement alternatives,
+such as an ActionResult that serves a file from a stream or a byte array
+and &lt;em&gt;etags&lt;/em&gt; it. In this case we would not be able to use the last write time,
+but we could simply hash the content of the stream and calculate the ETag
+from that.&lt;/p&gt;
+
+&lt;p&gt;I hope this helps and if you implement any alternative don’t hesitate to share in comments!&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 Jul 2016 23:00:00 +0200</pubDate>
+        <link>https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html</guid>
+        
+        <category>C#</category>
+        
+        <category>.NET</category>
+        
+        <category>ASP.NET</category>
+        
+        
+        <category>en</category>
+        
+        <category>blog</category>
+        
+        <category>aspnet</category>
+        
+      </item>
+    
+      <item>
+        <title>Programación asíncrona con promesas</title>
+        <description>&lt;p&gt;Las promesas son una solución para implementar código asíncrono que aparece con el objetivo de reemplazar
+a los &lt;em&gt;callbacks&lt;/em&gt;. Al ser una abstracción más avanzada, las promesas permiten operaciones
+como esperar a que diversas operaciones asíncronas terminen de ejecutarse de manera concurrente, mejoran la legibilidad del código
+y facilitan el manejo de errores. En definitiva, &lt;strong&gt;no son simplemente una moda&lt;/strong&gt; sino que también aportan ventajas competitivas frente a los &lt;em&gt;callbacks&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;entendiendo-las-promesas&quot;&gt;Entendiendo las promesas&lt;/h3&gt;
+
+&lt;p&gt;Una promesa, como concepto, es un objeto que nos va a devolver un resultado cuando una operación haya finalizado. Este resultado puede
+ser o bien el valor resultante de la operación o bien un error que se ha producido durante la ejecución. En el &lt;a href=&quot;https://promisesaplus.com/&quot;&gt;estándar de promesas A+&lt;/a&gt;,
+la promesa se crea a partir de un &lt;em&gt;callback&lt;/em&gt; en el que ejecutaremos aquella operación necesaria para producir dicho resultado y, en función de esta ejecución, llamaremos
+a las funciones pasadas como argumento &lt;em&gt;resolve&lt;/em&gt; y &lt;em&gt;reject&lt;/em&gt;. Cuando llamemos a &lt;em&gt;resolve&lt;/em&gt;, se considera que la promesa ha resuelto correctamente y que la
+operación ha sido un éxito. Si llamamos a &lt;em&gt;reject&lt;/em&gt; es que ha ocurrido un error y deberíamos propagar ese error como argumento de la función &lt;em&gt;reject&lt;/em&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;readFilePromise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;readFilePromise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;file.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FILE CONTENTS&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FILE READ ERROR&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;de-callbacks-a-promesas&quot;&gt;De callbacks a promesas&lt;/h3&gt;
+
+&lt;p&gt;Por poco Javascript que hayas hecho, habrás utilizado algún &lt;em&gt;callback&lt;/em&gt; para recuperar datos desde el cliente de una web,
+o si también lo habéis utilizado del lado del servidor (Node.js), otros casos de uso son operaciones de entrada salida como
+la lectura/escritura de ficheros o acceso a base de datos.&lt;/p&gt;
+
+&lt;p&gt;Los &lt;em&gt;callbacks&lt;/em&gt; tienen ciertos problemas, ya que en los casos en los que necesitamos los resultados de un callback para poder empezar
+a ejecutar otra operación, se suele caer en &lt;a href=&quot;https://news.ycombinator.com/item?id=5185450&quot;&gt;la pirámide de la muerte&lt;/a&gt;, que complica la legibilidad del código.
+El siguiente ejemplo muestra claramente un ejemplo de pirámide de la muerte.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;doSomeAsyncStuff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unexpected error reading file &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unexpected error retrieving &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;nx&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chunks'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;error inserting chunk data!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stringify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}),&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Las promesas resuelven este problema siguiendo una cadena de callbacks que se ejecuta al mismo nivel,
+mejorando la legibilidad del código.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;doSomeAsyncStuff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dbRecord&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+            &lt;span class=&quot;nx&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'dumps'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dbRecord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;error inserting contents&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dbRecord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unexpected error requesting &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+        
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unexpected error reading file &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;A parte de esto, en los casos totalmente opuestos en los que nos importa es esperar a que una serie
+de acciones concurrentes finalice, las promesas ofrecen mayor facilidad de uso.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetchMultipleUrls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Este ejemplo se descarga una serie de URLs en paralelo. La solución utilizada necesita mucho código para propagar los resultados y errores
+de cada url y además nuestra solución no es estándar, por lo que el programador que debiera utilizar este método tendría
+que conocer como le vamos a notificar qué urls han funcionado y cuales no. Veamos el mismo ejemplo con promesas.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetchMultipleUrls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Con promesas, utilizamos un mecanismo estándar, que es devolver una promesa como unión de todas las promesas.
+Con ello, seremos notificados de si todas las peticiones han funcionado o bien si alguna de ellos ha fallado.&lt;/p&gt;
+
+&lt;p&gt;En general, las promesas son muy útiles cuando tenemos diferentes operaciones asíncronas en paralelo, y
+abstraen mucho mejor el código asíncrono que los &lt;em&gt;callbacks&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;promesas-en-nodejs&quot;&gt;Promesas en Node.js&lt;/h3&gt;
+
+&lt;p&gt;Node.js incluye a partir de la versión 0.12 la clase nativa &lt;strong&gt;Promise&lt;/strong&gt; que cumple el estándar A+,
+con la cual podemos utilizar promesas sin necesidad de utilizar una librería. A pesar de ello, la &lt;a href=&quot;https://www.npmjs.com/package/promise&quot;&gt;librería promise&lt;/a&gt;
+incorpora utilidades estándar como &lt;strong&gt;Promise.denodeify&lt;/strong&gt;, para transformar una función que devuelve un callback típica de Node.js en una
+función que nos devuelve una promesa, facilitando la transición entre ambas interfaces.&lt;/p&gt;
+
+&lt;h3 id=&quot;promesas-en-navegadores&quot;&gt;Promesas en navegadores&lt;/h3&gt;
+
+&lt;p&gt;Diversos navegadores implementan de manera nativa las promesas A+. Firefox, Chrome e IE+12 soportan esta funcionalidad, por lo que se puede
+considerar que las promesas están muy extendidas en los navegadores de escritorio. No podemos decir lo mismo para los navegadores para móvil,
+en los cuales ninguno soporta de manera nativa las promesas.&lt;/p&gt;
+
+&lt;p&gt;A pesar de ello, existen &lt;a href=&quot;https://www.promisejs.org/&quot;&gt;polyfills muy ligeros&lt;/a&gt; a utilizar en navegadores que no soporten promesas de manera nativa,
+por lo que la falta de soporte en el entorno mobile no debería desanimar completamente si quieres empezar a utilizar promesas.&lt;/p&gt;
+
+&lt;h3 id=&quot;el-futuro-de-las-promesas-asyncawait&quot;&gt;El futuro de las promesas: async/await&lt;/h3&gt;
+
+&lt;p&gt;Algunos lenguajes como C# implementan un modelo asíncrono dentro del propio lenguaje, con las palabras clave &lt;strong&gt;async&lt;/strong&gt;/&lt;strong&gt;await&lt;/strong&gt;. &lt;a href=&quot;https://www.infoq.com/news/2016/05/webkit-v8-edge-es2015-support&quot;&gt;Google y Microsoft
+están trabajando para importar este modelo asíncrono&lt;/a&gt; a Javascript en sus navegadores basándose en las promesas A+
+. Esto eliminaría completamente los &lt;em&gt;callbacks&lt;/em&gt;, haciendo muy sencillo esperar a que una promesa resuelva su resultado. Además, &lt;strong&gt;async&lt;/strong&gt;/&lt;strong&gt;await&lt;/strong&gt;
+entran dentro del estándar EcmaScript 7 por lo que en el futuro la funcionalidad se incorporará también a otros navegadores.&lt;/p&gt;
+
+&lt;h3 id=&quot;referencias&quot;&gt;Referencias&lt;/h3&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;https://promisesaplus.com/&quot;&gt;Promises A+&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;https://www.promisejs.org/&quot;&gt;promisejs.org&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;http://kangax.github.io/compat-table/es6/&quot;&gt;Tabla compatibilidad ES6&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 10 Jun 2016 22:00:00 +0200</pubDate>
+        <link>https://jorgonor.com/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html</guid>
+        
+        <category>javascript</category>
+        
+        <category>programación asíncrona</category>
+        
+        
+        <category>es</category>
+        
+        <category>blog</category>
+        
+        <category>javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>Nativescript. The native alternative to Ionic.</title>
+        <description>&lt;p&gt;If we had to pick an emerging and changing field in technology throughout development today, Mobile application development
+would be the most accurate choice. Tools and frameworks in this field are more exposed to bigger changes. That is why,
+new hybrid mobile app frameworks are emerging again and one of these new frameworks is &lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt;.
+&lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt; is a new open-source technology by 
+&lt;a href=&quot;http://www.telerik.com/&quot;&gt;&lt;strong&gt;Telerik&lt;/strong&gt;&lt;/a&gt; that enables developing native apps using Javascript or Typescript,
+that can run on Android, iOS and, in the near future, Windows, with the Windows Universal Apps flavour.
+This native feature is what puts the &lt;em&gt;de facto&lt;/em&gt; hybrid mobile app framework &lt;a href=&quot;http://ionicframework.com/&quot;&gt;&lt;strong&gt;Ionic&lt;/strong&gt;&lt;/a&gt; in peril,
+making it possible to be replaced by &lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt;, a more performant alternative.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-native-is-nativescript&quot;&gt;How &lt;em&gt;native&lt;/em&gt; is Nativescript?&lt;/h3&gt;
+
+&lt;p&gt;I guess you’re surprised that &lt;strong&gt;Nativescript&lt;/strong&gt; supports developing native mobile apps using Javascript as the programming language, using also
+a subset of CSS for UI customization and XML for component view definition and layouts. This new
+technology uses the native UI components in the mobile platform where the app runs, making the user
+experience faster, smoother and more familiar. Invoking native platform methods is also possible,
+and you don’t have to use a different language, you can simply use them from Javascript.
+This feature is amazing, allowing you to use the good native things while you use Javascript as the glue-code
+to put everything together and leave heavy-weight operations and UI to the device native APIs. But, how does this work?
+To make this possible, Nativescript uses different Javascript engines depending on the platform, and expose
+Javascript objects with the native APIs, calling native APIs like if they were just methods and objects in Javascript.
+A thorough explanation is available &lt;a href=&quot;http://developer.telerik.com/featured/nativescript-works/&quot;&gt;in this post&lt;/a&gt;
+focusing on the Javascript/Native bridge mechanism. Also, a less extense but maybe easier explanation can be
+found in the next video.&lt;/p&gt;
+
+&lt;iframe width=&quot;100%&quot; height=&quot;480&quot; src=&quot;https://www.youtube.com/embed/I3_ZnWTj-NA&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;community-and-plugins&quot;&gt;Community and plugins&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Nativescript&lt;/strong&gt; community is growing day by day. A &lt;a href=&quot;http://developer.telerik.com/wp-login.php?action=slack-invitation&quot;&gt;Slack channel&lt;/a&gt; 
+is available and they are also putting some effort in the project internationalization.&lt;/p&gt;
+
+&lt;p&gt;Many plugins have already been developed to be able to use native components in Nativescript,
+and there is also an official marketplace of plugins called the &lt;a href=&quot;https://plugins.telerik.com/nativescript&quot;&gt;Telerik Verified Plugins Marketplace&lt;/a&gt;
+Some good examples are, an &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/admob&quot;&gt;Admob&lt;/a&gt; plugin, &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/sqlite&quot;&gt;Sqlite&lt;/a&gt;,
+&lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/social-share&quot;&gt;Social Share&lt;/a&gt;
+or &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/firebase&quot;&gt;Firebase&lt;/a&gt;. 
+And, remember, you will always be able to use the native Javascript bridge if you need to invoke native platform methods.&lt;/p&gt;
+
+&lt;p&gt;There are also utilities that make using Nativescript less painful for those who are not used to the terminal.
+&lt;strong&gt;Telerik&lt;/strong&gt; is developing a Visual Studio Code extension that can be installed from the &lt;a href=&quot;https://www.nativescript.org/nativescript-for-visual-studio-code&quot;&gt;following link&lt;/a&gt;.
+With this extension, you can launch your application from the IDE without having to execute manually the Nativescript commands.&lt;/p&gt;
+
+&lt;h3 id=&quot;is-it-a-mature-technology&quot;&gt;Is it a mature technology?&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt; is a new technology and there are still some points where it can be improved.
+After having tested the tool, its development workflow could be difficult to the beginner, and there are some execution
+options, like livesync, where finding that you have some error in the XML markup might get unnoticed. I guess some of these things
+will get improved in future releases.&lt;/p&gt;
+
+&lt;p&gt;Apart from this, a key point is the community. Ionic, the framework that made hybrid-app development mainstream,
+has a mature community and it’s still a Javascript framework widely used, so here is a big challenge for the Nativescript
+team in order to grow a community around it.&lt;/p&gt;
+
+&lt;h3 id=&quot;native-against-standard&quot;&gt;Native against standard.&lt;/h3&gt;
+
+&lt;p&gt;Ionic is in a tough situation. &lt;a href=&quot;http://blog.ionic.io/announcing-the-release-of-ionic-2-beta-6/&quot;&gt;Ionic’s team is working on Ionic 2&lt;/a&gt;
+which will give support to &lt;a href=&quot;https://angular.io/docs/ts/latest/quickstart.html&quot;&gt;Angular.js 2&lt;/a&gt;.
+This new framework is a revolution in Frontend development, and it was a must to have it in its version 2, but that has made them lose
+steam against technologies like &lt;a href=&quot;https://facebook.github.io/react-native/&quot;&gt;Facebook’s &lt;strong&gt;React Native&lt;/strong&gt;&lt;/a&gt; or &lt;strong&gt;Nativescript&lt;/strong&gt; in things
+like performance. Nativescript 2.0 &lt;a href=&quot;https://www.nativescript.org/blog/details/nativescript-2.0---the-best-way-to-build-cross-platform-native-mobile-apps&quot;&gt;also supports Angular.js 2&lt;/a&gt;,
+what could be summed up as that Ionic might be less competitive than Nativescript for those developers
+who start an app from scratch.&lt;/p&gt;
+
+&lt;p&gt;All in all, hybrid apps framework market is in a revolution (again). There are good prospects for solutions that are closer to native,
+while Ionic should consider including some of them in their framework unless these native-UI solutions
+are not so valued by developers as they should be.
+We’ll see in the near future if &lt;strong&gt;Nativescript&lt;/strong&gt; becomes the reference
+in hybrid app development, or &lt;strong&gt;Ionic Framework&lt;/strong&gt; stands still in its current top position.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 06 May 2016 23:00:00 +0200</pubDate>
+        <link>https://jorgonor.com/en/blog/javascript/2016/05/06/nativescript-native-alternative-to-ionic.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/en/blog/javascript/2016/05/06/nativescript-native-alternative-to-ionic.html</guid>
+        
+        <category>javascript</category>
+        
+        <category>app</category>
+        
+        <category>mobile</category>
+        
+        
+        <category>en</category>
+        
+        <category>blog</category>
+        
+        <category>javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>Nativescript. El sucesor natural de Ionic.</title>
+        <description>&lt;p&gt;El desarrollo de aplicaciones móviles es hoy en día uno de los sectores de la informática más pujantes y, por ello,
+está mucho más expuesto a cambios disruptivos en su entorno. Dentro de este entorno tan competitivo, hace aparición
+&lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt;. &lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt; es una nueva tecnología open-source de 
+&lt;a href=&quot;http://www.telerik.com/&quot;&gt;&lt;strong&gt;Telerik&lt;/strong&gt;&lt;/a&gt; para poder desarrollar aplicaciones nativas para Android e iOS
+utilizando como lenguaje de programación Javascript, o también el nuevo primo-hermano de Microsoft, Typescript.
+Esta característica nativa es la que hace que el framework referencia para desarrollar apps en Javascript,
+&lt;a href=&quot;http://ionicframework.com/&quot;&gt;&lt;strong&gt;Ionic&lt;/strong&gt;&lt;/a&gt;, pueda verse reemplazado por &lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt; con el tiempo.&lt;/p&gt;
+
+&lt;h3 id=&quot;qué-ofrece-y-como-de-nativo-es-nativescript&quot;&gt;Qué ofrece y como de &lt;em&gt;nativo&lt;/em&gt; es Nativescript&lt;/h3&gt;
+
+&lt;p&gt;Te habrá sorprendido que &lt;strong&gt;Nativescript&lt;/strong&gt; permita desarrollar aplicaciones móviles usando tecnologías nativas desde
+Javascript. Esta tecnología utiliza los componentes visuales nativos de la plataforma móvil sobre la que se ejecuta,
+ofreciendo una fluidez superior, a parte de ofrecer la invocación desde código Javascript de métodos y objetos
+nativos de la plataforma. Además de Javascript, se apoya en XML para la definición del interfaz y un 
+subconjunto de CSS para personalización.&lt;/p&gt;
+
+&lt;p&gt;Esto nos ofrece poder utilizar las bonanzas de la plataforma utilizando Javascript como el &lt;em&gt;glue-code&lt;/em&gt; que se encarga
+de juntar las piezas y dejar el procesamiento pesado y la interfaz a las APIs nativas del dispositivo.
+Para ello, Nativescript utiliza el motor V8, en el cual nos permite incluso ejecutar código nativo utilizando objetos predefinidos.
+Para una explicación detallada inmejorable, &lt;a href=&quot;http://developer.telerik.com/featured/nativescript-works/&quot;&gt;consultar este post&lt;/a&gt;
+donde se explica muy bien este mecanismo de &lt;em&gt;bridge&lt;/em&gt; entre el motor V8 y la plataforma sobre la que se ejecuta Nativescript (sólo disponible en inglés).
+También puedes ver el siguiente video que explica de manera sencilla como funciona este &lt;em&gt;bridge&lt;/em&gt; entre Javascript y
+las APIs nativas del dispositivo.&lt;/p&gt;
+
+&lt;iframe width=&quot;100%&quot; height=&quot;480&quot; src=&quot;https://www.youtube.com/embed/I3_ZnWTj-NA&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h3 id=&quot;comunidad-y-plugins&quot;&gt;Comunidad y plugins&lt;/h3&gt;
+
+&lt;p&gt;La comunidad de &lt;strong&gt;Nativescript&lt;/strong&gt; está creciendo día a día.
+Disponen de &lt;a href=&quot;http://developer.telerik.com/wp-login.php?action=slack-invitation&quot;&gt;canal de Slack&lt;/a&gt;,
+repositorio de Github y están trabajando en internacionalizar más el proyecto.&lt;/p&gt;
+
+&lt;p&gt;Por otro lado, ya se dispone de muchos plugins para poder utilizar componentes nativos de manera fluida
+dentro de Nativescript, además de tener una garantía extra en el &lt;a href=&quot;https://plugins.telerik.com/nativescript&quot;&gt;Marketplace de plugins verificados de Telerik&lt;/a&gt;.
+Algunos ejemplos sonados son, un plugin para &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/admob&quot;&gt;Admob&lt;/a&gt;,
+&lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/sqlite&quot;&gt;Sqlite&lt;/a&gt;, &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/social-share&quot;&gt;Social Share&lt;/a&gt;
+o &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/firebase&quot;&gt;Firebase&lt;/a&gt;.
+Y recuerda, siempre puedes utilizar el &lt;em&gt;bridge&lt;/em&gt; nativo Javascript si quieres invocar métodos de la plataforma destino.&lt;/p&gt;
+
+&lt;p&gt;Además, si eres de los que le tienen alergia a la terminal, &lt;strong&gt;Telerik&lt;/strong&gt; está desarrollando una extensión para Visual Studio Code
+que puedes descargar e instalar desde el &lt;a href=&quot;https://www.nativescript.org/nativescript-for-visual-studio-code&quot;&gt;siguiente enlace&lt;/a&gt;.
+Ofrece lanzar la aplicación desde el propio IDE sin tener que ir ejecutando los comandos de manera manual.&lt;/p&gt;
+
+&lt;h3 id=&quot;está-la-fruta-madura&quot;&gt;¿Está la fruta madura?&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt; es una tecnología nueva y, como tal, tiene aún ciertos puntos a mejorar.
+El flujo de desarrollo no acaba de ser el ideal. En caso de cometer algún error en el marcado, puede llegar a ser
+complicado darse cuenta de en qué vista tenemos el error.&lt;/p&gt;
+
+&lt;p&gt;A parte de esto, un punto muy interesante es el de la comunidad. Como ocurre en estos casos, Ionic tiene una comunidad con más
+años tras de sí y sigue siendo el framework Javascript más utilizado para el desarrollo de apps móviles.&lt;/p&gt;
+
+&lt;h3 id=&quot;lo-nativo-contra-lo-estándar&quot;&gt;Lo nativo contra lo estándar&lt;/h3&gt;
+
+&lt;p&gt;La situación actual de Ionic es complicada. &lt;a href=&quot;http://blog.ionic.io/announcing-the-release-of-ionic-2-beta-6/&quot;&gt;El equipo de Ionic está trabajando en la versión 2&lt;/a&gt;
+que dará soporte al nuevo framework &lt;a href=&quot;https://angular.io/docs/ts/latest/quickstart.html&quot;&gt;Angular.js 2&lt;/a&gt;.
+Hay bastante hype con el lanzamiento de este nuevo framework, y era de vital importancia que Ionic incorporara esta segunda versión,
+pero han perdido competitividad con alternativas que utilizan la vista nativa del dispositivo como puede ser el mismo &lt;strong&gt;Nativescript&lt;/strong&gt; o alternativas
+como &lt;a href=&quot;https://facebook.github.io/react-native/&quot;&gt;&lt;strong&gt;React Native&lt;/strong&gt; de Facebook&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;En esta situación podemos llegar a ver cómo soluciones que ofrecen una experiencia de usuario más fluida pueden ir ganando terreno,
+mientras que Ionic podría llegar el mismo a incorporarlas dentro de su framework o ver si los desarrolladores no valoran tanto
+esta mejora en experiencia UI. En el futuro próximo, veremos si &lt;strong&gt;Nativescript&lt;/strong&gt;
+se convierte en referencia, &lt;strong&gt;Ionic Framework&lt;/strong&gt; se mantiene u otras soluciones ganan protagonismo.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 01 May 2016 11:30:00 +0200</pubDate>
+        <link>https://jorgonor.com/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html</guid>
+        
+        <category>javascript</category>
+        
+        <category>app</category>
+        
+        <category>mobile</category>
+        
+        
+        <category>es</category>
+        
+        <category>blog</category>
+        
+        <category>javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>Bash para Windows 10</title>
+        <description>&lt;p&gt;Como se anunció en la &lt;strong&gt;Build 2016&lt;/strong&gt; de Microsoft, Microsoft está trabajando con Canonical para &lt;strong&gt;traer Bash a Windows sobre un
+entorno Ubuntu&lt;/strong&gt; para poder ejecutar aplicaciones Linux sobre Windows incluso poder &lt;strong&gt;instalar
+software con apt-get&lt;/strong&gt;. Para los amantes de Bash, esto es una muy buena noticia, ya que nos podemos imaginar utilizando Visual Studio para programar
+por ejemplo aplicaciones Node.js, Ionic o incluso Webs en PHP, mientras utilizamos nuestro intérprete de comandos favorito para hacer tareas automatizadas,
+buscar en el sistema de ficheros de manera eficiente, y conectarnos a nuestros servidores usando ssh.&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+&lt;div class=&quot;col s12&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;card-image&quot;&gt;
+        &lt;iframe src=&quot;https://channel9.msdn.com/Events/Build/2016/P488/player&quot; width=&quot;100%&quot; height=&quot;500&quot; allowfullscreen=&quot;&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card-content&quot;&gt;
+        Demostración de como ejecutar Bash en Windows. Sólo disponible en inglés me temo.
+    &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Por lo que podemos ver en el vídeo, podemos ejecutar binarios Linux sobre Windows e instalarlos directamente desde la misma consola.
+Ideal para desarrollar webs apoyadas en intérpretes como PHP, Python o Ruby.&lt;/p&gt;
+
+&lt;p&gt;Si formáis parte del programa &lt;a href=&quot;https://insider.windows.com/&quot;&gt;Windows Insider&lt;/a&gt; podéis probar &lt;strong&gt;Bash on Windows&lt;/strong&gt; siguiendo &lt;a href=&quot;http://blog.dustinkirkland.com/2016/04/howto-ubuntu-on-windows.html&quot;&gt;este tutorial&lt;/a&gt;
+hecho por un famoso &lt;a href=&quot;http://blog.dustinkirkland.com/&quot;&gt;blogger&lt;/a&gt; de Canonical, Dustin Kirkland. Curioso como mínimo 🙂 .&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+&lt;div class=&quot;col s12 offset-l2 l8&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+        &lt;div class=&quot;card-image&quot;&gt;
+            &lt;img src=&quot;/img/posts/bash_on_windows.png&quot; class=&quot;img-responsive&quot; /&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;card-content&quot;&gt;
+            Bash en Windows 10 en el Build 2016.
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;ul class=&quot;collection&quot;&gt;
+    &lt;li class=&quot;collection-item avatar&quot;&gt;
+      &lt;img src=&quot;/img/posts/cygwin-logo.png&quot; alt=&quot;Cygwin Logo&quot; width=&quot;60&quot; height=&quot;60&quot; /&gt;
+      &lt;span class=&quot;title&quot;&gt;&lt;a href=&quot;https://www.cygwin.com/&quot;&gt;Cygwin&lt;/a&gt;&lt;/span&gt;
+      &lt;p&gt;
+        &lt;b&gt;&lt;a href=&quot;https://www.cygwin.com/&quot;&gt;Cygwin&lt;/a&gt;&lt;/b&gt; es una especie de distribución que permite ejecutar los programas de shell Unix tradicionales
+        sobre Windows. Como podemos ver en su Web, los propios programas han de ser compilados adrede para esa plataforma y, cualquier que lo
+        haya utilizado sabe que su rendimiento deja mucho que desear.
+      &lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li class=&quot;collection-item avatar&quot;&gt;
+      &lt;img src=&quot;/img/posts/git-logo.png&quot; alt=&quot;Git Logo&quot; width=&quot;60&quot; height=&quot;60&quot; /&gt;
+      &lt;span class=&quot;title&quot;&gt;&lt;a href=&quot;https://git-scm.com/&quot;&gt;Git para Windows&lt;/a&gt;&lt;/span&gt;
+      &lt;p&gt;
+        &lt;b&gt;&lt;a href=&quot;https://git-scm.com/&quot;&gt;Git para Windows&lt;/a&gt;&lt;/b&gt; lleva integrado un intérprete bash con bastantes funcionalidades parecidas a Cygwin.
+        Si usas git, probablemente lo hayas utilizado en alguna ocasión. La verdad que yo prefiero utilizar este a Cygwin, ya que es mucho
+        más sencillo de instalar y lleva prácticamente lo necesario, aunque si necesitas más programas sueles ir a morir a Cygwin.
+      &lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li class=&quot;collection-item avatar&quot;&gt;
+      &lt;img src=&quot;/img/posts/conemu-logo.png&quot; alt=&quot;Conemu Logo&quot; width=&quot;60&quot; height=&quot;60&quot; /&gt;
+      &lt;span class=&quot;title&quot;&gt;&lt;a href=&quot;https://conemu.github.io/&quot;&gt;Conemu&lt;/a&gt;&lt;/span&gt;
+      &lt;p&gt;
+        &lt;b&gt;&lt;a href=&quot;https://conemu.github.io/&quot;&gt;Conemu&lt;/a&gt;&lt;/b&gt; es una mejora importante a la terminal de Windows. Aunque en Windows 10, han mejorado bastante
+el terminal de Windows y ya se puede ampliar a pantalla completa y demás, Conemu permite la ejecución de diversos intérpretes de comandos
+e incorpora pestañas. Dentro de él se pueden ejecutar Cygwin, Git Bash o incluso CMD. Una gozada para los amantes de la productividad.
+      &lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ahora no nos queda más que esperar a nuevas noticias para poder aumentar nuestra productividad en Windows para aquellos que nos manejamos
+bien sobre el viejo pero increiblemente productivo Bash.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 Apr 2016 21:30:00 +0200</pubDate>
+        <link>https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html</guid>
+        
+        <category>tech</category>
+        
+        <category>bash</category>
+        
+        <category>windows</category>
+        
+        
+        <category>es</category>
+        
+        <category>blog</category>
+        
+        <category>tech</category>
+        
+      </item>
+    
+  </channel>
+</rss>

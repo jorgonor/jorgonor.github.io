@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii) - Jorgonor</title>
+<meta property="og:title" content="Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii)" />
+<meta name="description" content="Benchmark de frameworks PHP. CakePHP, Symfony2 y Yii. Rendimiento de operación sencilla de acceso a datos." />
+<meta property="og:description" content="Benchmark de frameworks PHP. CakePHP, Symfony2 y Yii. Rendimiento de operación sencilla de acceso a datos." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-09-29T20:53:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii)",
+"datePublished": "2012-09-29T20:53:00+02:00",
+"description": "Benchmark de frameworks PHP. CakePHP, Symfony2 y Yii. Rendimiento de operación sencilla de acceso a datos.",
+"url": "https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="MVC, Yii, APC, Symfony2, Framework, PHP, Cakephp" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii)</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Sep 29, 2012</p>
+              </header>
+
+              <article class="post-content">
+                Hola a todos,
+
+Hoy llueve y hace algo de frío. El otoño ha venido y, bueno, qué mejor que un poco de programación para pasar la tarde.
+
+Entremos al punto a tratar en este post. He realizado un pequeño código con tres frameworks PHP de los más utilizados.
+<a href="http://cakephp.org/">CakePHP</a> es el framework que utilizo en mi día a día y que en cierto modo da buenos resultados,
+pero que para proyectos de cierto tamaño puede llegar a quedarse corto.
+<a href="http://symfony.com/">Symfony2</a> es el framework de moda en el mundo PHP, el mejor en cuanto a calidad del código y aplicación de patrones de diseño.
+Por otro lado, tenemos <a href="http://www.yiiframework.com/">Yii</a> puede que sea el más desconocido de los tres.
+Yii me llamó la atención por la disponibilidad por la que presume, y por su organización modular al igual que Symfony2.
+Probablemente el framework más fuerte que se ha quedado fuera ha sido <a href="http://framework.zend.com/">Zend</a>, básicamente por cuestiones de tiempo del autor :).
+
+
+Bueno, entremos en matería. Se ha desarrollado un pequeño ejemplo que emula la típica petición ajax que hacemos para tomar una serie de datos del servidor, unos datos de productos de nuestra base de datos,
+proporcionados por un servicio <a href="http://es.wikipedia.org/wiki/Arquitectura_orientada_a_servicios">SOA</a>.
+
+
+Primero mostraremos el código de ejemplo desarrollado en cada framework. Al ser un problema tan pequeño, con mostrar el código del controlador y el del modelo en cuestión será suficiente en la mayoría de los casos.
+
+<h3>CakePHP</h3>
+
+<p>Este es el código para CakePHP utilizando la versión 2.1.3
+
+
+<h4>Modelo <i>Product</i></h4>
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">Product</span> <span class="k">extends</span> <span class="nx">AppModel</span> <span class="p">{}</span></code></pre></figure>
+<h4>Controlador <i>SoaController</i></h4>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="nx">App</span><span class="o">::</span><span class="na">uses</span><span class="p">(</span><span class="s1">'AppController'</span><span class="p">,</span> <span class="s1">'Controller'</span><span class="p">);</span>
+<span class="nx">App</span><span class="o">::</span><span class="na">uses</span><span class="p">(</span><span class="s1">'CakeResponse'</span><span class="p">,</span> <span class="s1">'Network'</span><span class="p">);</span>
+
+<span class="k">class</span> <span class="nc">SoaController</span> <span class="k">extends</span> <span class="nx">AppController</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="nv">$uses</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'Product'</span><span class="p">);</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$products</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">Product</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="s1">'all'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'conditions'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">'price  &gt;= 25.0'</span>
+            <span class="p">),</span>
+            <span class="s1">'order'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="s1">'DESC'</span><span class="p">)</span>
+        <span class="p">));</span>
+
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">CakeResponse</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'body'</span> <span class="o">=&gt;</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$products</span><span class="p">)));</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Como podemos ver el código es sencillo, simplemente con hacer una llamada <i>find</i> con el ORM de Cake y haciendo un <i>json_encode</i> conseguimos el resultado deseado.
+</p>
+<br/>
+<h3>Symfony2</h3>
+
+
+En Symfony2 (versión 2.1.2), he utilizado como base el <b>DemoBundle</b> que viene con al instalación del framework.
+No sé si esto puede haber influido en los resultados, a la vista de un no experto la cantidad de código aboga a un framework prácticamente vacío.
+
+
+
+<h4>Entidad </h4>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">namespace</span> <span class="nx">Acme\DemoBundle\Entity</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Doctrine\ORM\Mapping</span> <span class="k">as</span> <span class="nx">ORM</span><span class="p">;</span>
+
+<span class="sd">/** Acme\DemoBundle\Entity\Product */</span>
+<span class="k">class</span> <span class="nc">Product</span> <span class="p">{</span>
+<span class="sd">/**
+     * @var integer $id
+     */</span>
+    <span class="k">private</span> <span class="nv">$id</span><span class="p">;</span>
+
+    <span class="sd">/**
+     * @var float $price
+     */</span>
+    <span class="k">private</span> <span class="nv">$price</span><span class="p">;</span>
+
+    <span class="sd">/**
+     * @var string $description
+     */</span>
+    <span class="k">private</span> <span class="nv">$description</span><span class="p">;</span>
+
+
+    <span class="sd">/**
+     * Get id
+     *
+     * @return integer 
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getId</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Set price
+     *
+     * @param float $price
+     * @return Product
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">setPrice</span><span class="p">(</span><span class="nv">$price</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">price</span> <span class="o">=</span> <span class="nv">$price</span><span class="p">;</span>
+    
+        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Get price
+     *
+     * @return float 
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getPrice</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">price</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Set description
+     *
+     * @param string $description
+     * @return Product
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">setDescription</span><span class="p">(</span><span class="nv">$description</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">description</span> <span class="o">=</span> <span class="nv">$description</span><span class="p">;</span>
+    
+        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+     * Get description
+     *
+     * @return string 
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getDescription</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">description</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">toArray</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">(),</span>
+            <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getDescription</span><span class="p">(),</span>
+            <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getPrice</span><span class="p">()</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Como se puede ver, se ha utilizado básicamente la clase generada por el asistente de consola del framework,
+añadiendo un método <b>toArray</b> para hacer más fácil posteriormente la conversión a JSON.
+</p>
+
+<h4>Controlador</h4>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">namespace</span> <span class="nx">Acme\DemoBundle\Controller</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Symfony\Bundle\FrameworkBundle\Controller\Controller</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\RedirectResponse</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Acme\DemoBundle\Form\ContactType</span><span class="p">;</span>
+
+<span class="c1">// these import the "@Route" and "@Template" annotations
+</span><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Template</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">DemoController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="c1">//...
+</span>    
+    <span class="sd">/**
+     * @Route("/soa")
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">soaAction</span><span class="p">()</span> <span class="p">{</span>
+     <span class="nv">$repository</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getDoctrine</span><span class="p">()</span>
+     <span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">'AcmeDemoBundle:Product'</span><span class="p">);</span>
+
+     <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$repository</span><span class="o">-&gt;</span><span class="na">createQueryBuilder</span><span class="p">(</span><span class="s1">'p'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'p.price &gt; :price'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="na">setParameter</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span> <span class="s1">'25.00'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="na">orderBy</span><span class="p">(</span><span class="s1">'p.price'</span><span class="p">,</span> <span class="s1">'DESC'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="na">getQuery</span><span class="p">();</span>
+
+     <span class="nv">$products</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">getResult</span><span class="p">();</span>
+     
+     <span class="nv">$narr</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+     
+     <span class="k">foreach</span><span class="p">(</span><span class="nv">$products</span> <span class="k">as</span> <span class="nv">$product</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nv">$narr</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$product</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+     <span class="p">}</span>
+     
+     <span class="nv">$response</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">();</span>
+     <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">setContent</span><span class="p">(</span><span class="nb">json_encode</span><span class="p">(</span><span class="nv">$narr</span><span class="p">));</span> 
+     <span class="k">return</span> <span class="nv">$response</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//...
+</span><span class="p">}</span></code></pre></figure>
+<p>
+Como se puede ver, he tenido que hacer un foreach que puede haber supuesto un extra de carga, pero realmente no veía otro modo de solucionar el problema de la conversión
+propiedades del objeto a JSON de manera más eficiente.
+</p>
+
+<h3>Yii</h3>
+<p>
+En Yii 1.1.12, a mi gusto la solución es la más elegante de todas. Sin demasiadas complicaciones como en Symfony2, ni demasiada directa y un poco sucia como en CakePHP.
+A mi gusto, Yii es un framework realmente interesante y que ofrece una modularidad equiparable a los Bundles de Symfony2.
+</p>
+
+<h4>Modelo <i>Product</i></h4>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="sd">/**
+ * This is the model class for table "products".
+ *
+ * The followings are the available columns in table 'products':
+ * @property integer $id
+ * @property string $price
+ * @property string $description
+ */</span>
+<span class="k">class</span> <span class="nc">Product</span> <span class="k">extends</span> <span class="nx">CActiveRecord</span>
+<span class="p">{</span>
+ <span class="sd">/**
+  * Returns the static model of the specified AR class.
+  * @param string $className active record class name.
+  * @return Product the static model class
+  */</span>
+ <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">model</span><span class="p">(</span><span class="nv">$className</span><span class="o">=</span><span class="nx">__CLASS__</span><span class="p">)</span>
+ <span class="p">{</span>
+  <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">model</span><span class="p">(</span><span class="nv">$className</span><span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="sd">/**
+  * @return string the associated database table name
+  */</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="nf">tableName</span><span class="p">()</span>
+ <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">'products'</span><span class="p">;</span>
+ <span class="p">}</span>
+
+ <span class="sd">/**
+  * @return array validation rules for model attributes.
+  */</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="nf">rules</span><span class="p">()</span>
+ <span class="p">{</span>
+  <span class="c1">// NOTE: you should only define rules for those attributes that
+</span>  <span class="c1">// will receive user inputs.
+</span>  <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+   <span class="k">array</span><span class="p">(</span><span class="s1">'price, description'</span><span class="p">,</span> <span class="s1">'required'</span><span class="p">),</span>
+   <span class="k">array</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span> <span class="s1">'length'</span><span class="p">,</span> <span class="s1">'max'</span><span class="o">=&gt;</span><span class="mi">10</span><span class="p">),</span>
+   <span class="k">array</span><span class="p">(</span><span class="s1">'description'</span><span class="p">,</span> <span class="s1">'length'</span><span class="p">,</span> <span class="s1">'max'</span><span class="o">=&gt;</span><span class="mi">255</span><span class="p">),</span>
+   <span class="c1">// The following rule is used by search().
+</span>   <span class="c1">// Please remove those attributes that should not be searched.
+</span>   <span class="k">array</span><span class="p">(</span><span class="s1">'id, price, description'</span><span class="p">,</span> <span class="s1">'safe'</span><span class="p">,</span> <span class="s1">'on'</span><span class="o">=&gt;</span><span class="s1">'search'</span><span class="p">),</span>
+  <span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="sd">/**
+  * @return array relational rules.
+  */</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="nf">relations</span><span class="p">()</span>
+ <span class="p">{</span>
+  <span class="c1">// NOTE: you may need to adjust the relation name and the related
+</span>  <span class="c1">// class name for the relations automatically generated below.
+</span>  <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+  <span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="sd">/**
+  * @return array customized attribute labels (name=&gt;label)
+  */</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="nf">attributeLabels</span><span class="p">()</span>
+ <span class="p">{</span>
+  <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+   <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="s1">'ID'</span><span class="p">,</span>
+   <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="s1">'Price'</span><span class="p">,</span>
+   <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="s1">'Description'</span><span class="p">,</span>
+  <span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="sd">/**
+  * Retrieves a list of models based on the current search/filter conditions.
+  * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+  */</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="nf">search</span><span class="p">()</span>
+ <span class="p">{</span>
+  <span class="c1">// Warning: Please modify the following code to remove attributes that
+</span>  <span class="c1">// should not be searched.
+</span>
+  <span class="nv">$criteria</span><span class="o">=</span><span class="k">new</span> <span class="nx">CDbCriteria</span><span class="p">;</span>
+
+  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="na">compare</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span>
+  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="na">compare</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">price</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="na">compare</span><span class="p">(</span><span class="s1">'description'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">description</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">CActiveDataProvider</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+   <span class="s1">'criteria'</span><span class="o">=&gt;</span><span class="nv">$criteria</span><span class="p">,</span>
+  <span class="p">));</span>
+ <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+<p>
+Esta es la clase autogenerada por la herramienta <b>Gii</b>.
+Para aquellos que no gustan del shell puede resultar más cómoda que el shell que lleva Symfony2, pero en mi opinión en este caso apoyo más la solución de Symfony,
+ya que el shell acaba incrementando la productividad del desarrollador.
+</p>
+
+<h4>Controlador</h4>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="sd">/**
+ * SiteController is the default controller to handle user requests.
+ */</span>
+<span class="k">class</span> <span class="nc">SiteController</span> <span class="k">extends</span> <span class="nx">CController</span>
+<span class="p">{</span>
+ <span class="sd">/**
+  * Index action is the default action in a controller.
+  */</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="nf">actionIndex</span><span class="p">()</span>
+ <span class="p">{</span>
+  
+  <span class="nv">$results</span> <span class="o">=</span> <span class="nx">Product</span><span class="o">::</span><span class="na">model</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">findAll</span><span class="p">(</span><span class="s1">'price&gt;=:price'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">':price'</span> <span class="o">=&gt;</span> <span class="mf">25.0</span><span class="p">));</span>
+  
+  <span class="nv">$narr</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+  
+  <span class="k">foreach</span><span class="p">(</span><span class="nv">$results</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$narr</span><span class="p">[]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">,</span> <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">price</span><span class="p">,</span> <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">description</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="k">echo</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$narr</span><span class="p">);</span>
+ <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+<p>
+En Yii, también he terminado por usar un bucle foreach para preparar la salida para la conversión JSON, aunque no utilicé un método toArray.
+Estas diferencias sútiles pueden resultar algo críticas en un benchmark, aunque con una acción tan sencilla y teniendo detrás todo el código de un framework no me parecen muy significativas.
+</p>
+
+<p>Bueno, ¿qué es un benchmark sin los datos de tiempos y demás? Ahora viene esa parte, antes quería exponer abiertamente el código para evitar malinterpretaciones y dejando claro que es un código muy básico,
+por lo que los resultados no pueden aplicarse a una aplicación real en producción.
+</p>
+
+<p>La configuración del servidor utilizada ha sido un servidor LAMP con las siguientes versiones:
+
+<table>
+    <tr>
+        <td>
+            <b>Sistema Operativo</b>
+        </td>
+        <td>Ubuntu 12.04 LTS Linux 3.2.0-30-generic</td>
+    </tr>
+    <tr>
+        <td><b>Apache</b></td>
+        <td>Apache/2.2.22</td>
+    </tr>
+    <tr>
+        <td><b>MySQL Server</b></td>
+        <td>5.5.24</td>
+    </tr>
+    <tr>
+        <td><b>PHP</b></td>
+        <td>
+            PHP 5.3.10-1ubuntu3.4 with Suhosin-Patch
+
+            Zend Engine v2.3.0, Copyright (c) 1998-2012 Zend Technologies
+
+            with Xdebug v2.1.0, Copyright (c) 2002-2010, by Derick Rethans
+        </td>
+    </tr>
+</table>
+
+<p>
+Como herramienta para el benchmark he utilizado <a href="http://www.joedog.org/siege-home/">siege</a>. <b>siege</b> permite el benchmarking de una o varios URLs dada una concurrencia.
+
+Estos son los resultados, de aplicar el siguiente comando con <b>siege</b> con diferentes configuraciones de Apache:
+</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">siege -c 5 -b -t30s <span class="nv">$URL</span></code></pre></figure>
+<p>
+    Veamos la primera tabla de resultados:
+</p>
+
+<style>table.padded td,th {   padding: 3%; } </style>
+
+<h3>Modo desarrollo sin APC</h3>
+<table class="padded">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>CakePHP 2.1.3</th>
+            <th>Symfony 2.1.2</th>
+            <th>Yii 1.1.12</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Transactions (hits)</td>
+            <td>1150 hits</td>
+            <td>152 hits</td>
+            <td>1191 hits</td>
+        </tr>
+        <tr>
+            <td>Availability</td>
+            <td>100%</td>
+            <td>100%</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>Response time</td>
+            <td>0.13 s</td>
+            <td>0.96 s</td>
+            <td>0.12 s</td>
+        </tr>
+        <tr>
+            <td>Concurrency</td>
+            <td>4.97</td>
+            <td>4.96</td>
+            <td>4.99</td>
+        </tr>
+        <tr>
+            <td>Throughput</td>
+            <td>0.03 MB/s</td>
+            <td>0.00 MB/s</td>
+            <td>0.04 MB/s</td>
+        </tr>
+        <tr>
+            <td>Shortest Transaction</td>
+            <td>0.08 s</td>
+            <td>0.63 s</td>
+            <td>0.07 s</td>
+        </tr>
+        <tr>
+            <td>Longest Transaction</td>
+            <td>0.25 s</td>
+            <td>1.51 s</td>
+            <td>0.30 s</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Bueno, por lo visto Yii Framework supera en velocidad al resto en modo desarrollo.
+Aunque realmente, ¿quien despliega su aplicación en producción en modo desarrollo? Vamos pues a mostrar los datos poniendo cada uno de estos frameworks en modo producción.
+</p>
+
+<h3>Modo producción sin APC</h3>
+
+<table class="padded">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>CakePHP 2.1.3</th>
+            <th>Symfony 2.1.2</th>
+            <th>Yii 1.1.12</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Transactions (hits)</td>
+            <td>1135 hits</td>
+            <td>265 hits</td>
+            <td>1353 hits</td>
+        </tr>
+        <tr>
+            <td>Availability</td>
+            <td>100%</td>
+            <td>100%</td>
+            <td>100%</td>
+            </tr>
+        <tr>
+            <td>Response time</td>
+            <td>0.13 s</td>
+            <td>0.54 s</td>
+            <td>0.11 s</td>
+        </tr>
+        <tr>
+            <td>Concurrency</td>
+            <td>4.99</td>
+            <td>4.95</td>
+            <td>4.99</td>
+        </tr>
+        <tr>
+            <td>Throughput</td>
+            <td>0.03 MB/s</td>
+            <td>0.01 MB/s</td>
+            <td>0.04 MB/s</td>
+        </tr>
+        <tr>
+            <td>Shortest Transaction</td>
+            <td>0.08 s</td>
+            <td>0.33 s</td>
+            <td>0.06 s</td>
+        </tr>
+        <tr>
+            <td>Longest Transaction</td>
+            <td>0.32 s</td>
+            <td>1.28 s</td>
+            <td>0.30 s</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Symfony2 prácticamente duplica su rendimiento, mientras que Yii mejora un poco y CakePHP parece que su distinción entre modo desarrollo y modo producción es simplemente el error_reporting,...</p>
+
+<p>
+    Veamos ahora dándoles un poco más de caña
+</p>
+
+<h4>Modo producción sin APC (Concurrencia 50)</h4>
+
+<table class="padded">
+    <thead><tr> <th>&nbsp;</th> <th>CakePHP 2.1.3</th> <th>Symfony 2.1.2</th> <th>Yii 1.1.12</th> </tr></thead>
+    <tbody><tr> <td>Transactions (hits)</td> <td>1104 hits</td> <td>97 hits</td> <td>1336 hits</td> </tr><tr> <td>Availability</td> <td>100%</td> <td>100%</td> <td>100%</td> </tr><tr> <td>Response time</td> <td>1.31 s</td> <td>7.31 s</td> <td>1.09 s</td> </tr><tr> <td>Concurrency</td> <td>48.81</td> <td>24.14</td> <td>49.02</td> </tr><tr> <td>Throughput</td> <td>0.03 MB/s</td> <td>0.00 MB/s</td> <td>0.04 MB/s</td> </tr><tr> <td>Shortest Transaction</td> <td>0.15 s</td> <td>0.85 s</td> <td>0.11 s</td> </tr><tr> <td>Longest Transaction</td> <td>2.35 s</td> <td>25.23 s</td> <td>1.72 s</td> </tr></tbody>
+</table>
+<p>Symfony2 da un rendimiento muy pobre con 50 clientes concurrentes, mientras que Yii y Cake más o menos se mantienen, no bajando en concurrencia pero sí en tiempo de respuesta.
+
+<p>Bueno, añadamos ahora una mejora importante al rendimiento del PHP. Vamos a añadir el módulo <a href="http://php.net/manual/es/book.apc.php">APC</a> para ver como los distintos frameworks mejoran cuando el PHP tiene este módulo añadido.
+
+<h4>Modo producción con APC</h4>
+<table class="padded"><thead><tr> <th>&nbsp;</th> <th>CakePHP 2.1.3</th> <th>Symfony 2.1.2</th> <th>Yii 1.1.12</th> </tr></thead> <tbody><tr> <td>Transactions (hits)</td> <td>2358 hits</td> <td>542 hits</td> <td>2307 hits</td> </tr><tr> <td>Availability</td> <td>100%</td> <td>100%</td> <td>100%</td> </tr><tr> <td>Response time</td> <td>0.06 s</td> <td>0.28 s</td> <td>0.06 s</td> </tr><tr> <td>Concurrency</td> <td>4.99</td> <td>4.97</td> <td>4.99</td> </tr><tr> <td>Throughput</td> <td>0.07 MB/s</td> <td>0.01 MB/s</td> <td>0.07 MB/s</td> </tr><tr> <td>Shortest Transaction</td> <td>0.03 s</td> <td>0.19 s</td> <td>0.03 s</td> </tr><tr> <td>Longest Transaction</td> <td>0.41 s</td> <td>0.58 s</td> <td>0.16 s</td> </tr></tbody> </table>
+<p>La instalación ha sido crítica en todos los frameworks. La cantidad de código opcode cacheado por APC que no ha de volver a ser interpretado se nota con creces, teniendo todos los frameworks un aumento de rendimiento aproximadamente del 100%.
+
+<p>Pero volvamos a dar caña con concurrencia 50 :)
+
+<h4>Modo producción con APC (Concurrencia 50)</h4>
+<table class="padded"><thead><tr> <th>&nbsp;</th> <th>CakePHP 2.1.3</th> <th>Symfony 2.1.2</th> <th>Yii 1.1.12</th> </tr></thead> <tbody><tr> <td>Transactions (hits)</td> <td>2485 hits</td> <td>517 hits</td> <td>2429 hits</td> </tr><tr> <td>Availability</td> <td>100%</td> <td>100%</td> <td>100%</td> </tr><tr> <td>Response time</td> <td>0.60 s</td> <td>2.74 s</td> <td>0.60 s</td> </tr><tr> <td>Concurrency</td> <td>49.41</td> <td>47.51</td> <td>49.42</td> </tr><tr> <td>Throughput</td> <td>0.07 MB/s</td> <td>0.01 MB/s</td> <td>0.07 MB/s</td> </tr><tr> <td>Shortest Transaction</td> <td>0.07 s</td> <td>0.31 s</td> <td>0.05 s</td> </tr><tr> <td>Longest Transaction</td> <td>1.21 s</td> <td>5.87 s</td> <td>1.10 s</td> </tr></tbody> </table>
+<p>Finalmente podemos ver como Symfony2 con APC es capaz de mantener la concurrencia, aunque dando un tiempo de respuesto muy inferior al que Yii o CakePHP son capaces de responder. 
+
+<h3>Análisis</h3>
+Mi análisis sobre estos datos es que Symfony2 sin usar Varnish como el proyecto propone, puede dar un rendimiento bastante pobre, mientras que Yii y CakePHP con la instalación de APC son capaces de dar un rendimiento aceptable.
+
+Este aumento en rendimiento no justifica el no usar Symfony2, ya que es el framework mejor preparado para proyectos grandes, pero por este mismo motivo complica el desarrollo en equipos de pocas personas.
+
+Finalmente, quería hacer notar la demasiada igualdad de rendimiento entre Yii y CakePHP. Cuando empecé el benchmark creía que Yii mejoraría mucho más el rendimiento de CakePHP, ya que por lo que se ve en el algunos benchmarks publicados, es mucho más rápido que este. En cambio, en este caso no se ha notado la diferencia.
+
+
+Espero algún comentario que rebata este benchmark, sobretodo si viene de usuarios de Yii o Symfony2, para ver si hay algún punto en el que no se haya tratado en igualdad a estos frameworks con CakePHP.
+
+Esto es todo por hoy, espero seguir dando actividad al blog y hablando de PHP, Javascript y Web en general.
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">MVC</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Yii</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">APC</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Symfony2</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Framework</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Cakephp</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

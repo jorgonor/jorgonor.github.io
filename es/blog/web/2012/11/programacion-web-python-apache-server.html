@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Programacion web con Python y configuración del web server Apache - Jorgonor</title>
+<meta property="og:title" content="Programacion web con Python y configuración del web server Apache" />
+<meta name="description" content="Volviendo por aquí quería compartir con vosotros la siguiente entrada sobre programación Web. Esta vez, explicaremos como desarrollar utilizando Python para la programación de páginas web utilizando Apache como web server. Como en otras ocasiones, vamos a utilizar Ubuntu 12.04 como plataforma, ya que es bastante sencillo instalar todo lo necesario para que funcione nuestra configuración." />
+<meta property="og:description" content="Volviendo por aquí quería compartir con vosotros la siguiente entrada sobre programación Web. Esta vez, explicaremos como desarrollar utilizando Python para la programación de páginas web utilizando Apache como web server. Como en otras ocasiones, vamos a utilizar Ubuntu 12.04 como plataforma, ya que es bastante sencillo instalar todo lo necesario para que funcione nuestra configuración." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/web/2012/11/programacion-web-python-apache-server.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/web/2012/11/programacion-web-python-apache-server.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-11-03T12:56:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Programacion web con Python y configuración del web server Apache",
+"datePublished": "2012-11-03T12:56:00+01:00",
+"description": "Volviendo por aquí quería compartir con vosotros la siguiente entrada sobre programación Web. Esta vez, explicaremos como desarrollar utilizando Python para la programación de páginas web utilizando Apache como web server. Como en otras ocasiones, vamos a utilizar Ubuntu 12.04 como plataforma, ya que es bastante sencillo instalar todo lo necesario para que funcione nuestra configuración.",
+"url": "https://jorgonor.com/es/blog/web/2012/11/programacion-web-python-apache-server.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="Apache, Python, página web, WSGI" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Programacion web con Python y configuración del web server Apache</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Nov 3, 2012</p>
+              </header>
+
+              <article class="post-content">
+                <p>
+    Volviendo por aquí quería compartir con vosotros la siguiente entrada sobre <strong>programación Web</strong>.
+    Esta vez, explicaremos como desarrollar utilizando <a href="http://www.python.org/">Python</a> para la <strong>programación de páginas web</strong> utilizando <a href="http://www.apache.org/">Apache</a> como <strong>web server</strong>.
+</p>
+<p>Como en otras ocasiones, vamos a utilizar Ubuntu 12.04 como plataforma, ya que es bastante sencillo instalar todo lo necesario para que funcione nuestra configuración.</p>
+
+<p>
+    Para empezar, si vienes de la programación de páginas web con lenguajes como <a href="http://php.net/">PHP</a>, ya sabrás que con <a href="http://www.apache.org/">Apache</a>
+    puedes programarlas simplemente dejando ficheros en la raíz del documento o en la raíz de tus virtual hosts.
+    <br />
+    Existe un módulo para el web server Apache llamado mod_python que permite el desarrollo de páginas web con Python del mismo modo.
+</p>
+
+<p>Pero, no es el <i>estándar de facto</i> por lo que utilizaremos <a href="http://code.google.com/p/modwsgi/">mod_wsgi</a>.
+<a href="http://code.google.com/p/modwsgi/">mod_wsgi</a> es el módulo recomendado ya que para desarrollos serios es una mala práctica dejar los ficheros con el código fuente accesibles en la raíz del servidor,
+ya que un error en la configuración de este podría dejar visible el código fuente de nuestra aplicación, cosa que puede ser traumática en algunos casos.
+</p>
+
+<p>Dejando esto de lado, vayamos a la instalación utilizando apt-get</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install libapache2-mod-wsgi</code></pre></figure>
+
+<p>
+    Este comando ya debería descargar todas las dependencias necesarias.
+    Tras ello, la instalación de Apache habrá dejado un Virtual Host creado por defecto.
+    Si estás usando también Ubuntu o un sistema basado en Debian,
+    debes editar el fichero:
+</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo bash
+vim /etc/apache2/sites-available/default</code></pre></figure>
+
+<p>
+    Dentro de él tendrás el esquema original del Virtual Host que viene con Ubuntu por defecto.
+    Ahora debes añadir el siguiente texto para que puedas dejar ficheros .py que se ejecuten en la raíz del documento.
+</p>
+
+<figure class="highlight"><pre><code class="language-apache" data-lang="apache">WSGIScriptAliasMatch ^/([a-zA-Z]+[a-zA-z0-9]*).py$ /var/www/$1.py</code></pre></figure>
+
+<p>
+    Con esta directiva del web server Apache le estamos diciendo que queremos que ejecute con <i>mod_wsgi</i> todos los ficheros terminados con la extensión .py,
+    por lo que hemos conseguido emular el comportamiento por defecto de PHP.
+</p>
+
+<p>
+    Por otro lado, debemos saber cual es el esqueleto de una aplicación
+    <i>mod_wsgi</i>
+</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="s">'200 OK'</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s">'Hello World!'</span>
+    <span class="n">response_headers</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="s">'Content-type'</span><span class="p">,</span> <span class="s">'text/plain'</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">'Content-Length'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">)))</span> <span class="p">]</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">output</span><span class="p">]</span></code></pre></figure>
+
+<p>
+    Como puedes ver, <i>mod_wsgi</i> llama a una función <i>application</i> y nos pasa como argumento un <i>callback</i> el cual deberemos invocar para dejar preparado el estado,
+    devolviendo luego una lista con el contenido que queramos enviar al cliente web.
+</p>
+
+<p>
+    Es probable que pienses, ¿y como sustituyo las variables? ¿Cómo uso el templating del lenguaje? ¿Cómo embebo html con Python?
+    Incluso te estarás figurando que es muy engorrosa la programación web así.
+    Si te estás haciendo esas preguntas es porque echas un poco de menos estas características de PHP, pero en próximas entradas trataré de mostrar como el <strong>desarrollo web</strong> con <strong>Python</strong> puede ser mucho más productivo y elegante que con PHP,
+    utilizando template engines.
+    Además, también hay intención de incluir algún pequeño tutorial usando <a href="https://www.djangoproject.com/">Django</a>, el framework MVC de facto para desarrollar <strong>páginas Web</strong> con Python.
+</p>
+
+<p>
+    Esto es suficiente para tener el entorno configurado en el web server y empezar a hacer uno sus pinitos :D
+</p>
+
+<p>¡Hasta la próxima!</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Apache</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Python</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">página web</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">WSGI</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

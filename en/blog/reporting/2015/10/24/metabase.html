@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Metabase. A revolutionary reporting tool - Jorgonor</title>
+<meta property="og:title" content="Metabase. A revolutionary reporting tool" />
+<meta name="description" content="Metabase is a new open source tool built with Clojure that provides a new way to avoid wasting time on programming your company’s reports." />
+<meta property="og:description" content="Metabase is a new open source tool built with Clojure that provides a new way to avoid wasting time on programming your company’s reports." />
+<link rel="canonical" href="https://jorgonor.com/en/blog/reporting/2015/10/24/metabase.html" />
+<meta property="og:url" content="https://jorgonor.com/en/blog/reporting/2015/10/24/metabase.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-10-24T18:30:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Metabase. A revolutionary reporting tool",
+"datePublished": "2015-10-24T18:30:00+02:00",
+"description": "Metabase is a new open source tool built with Clojure that provides a new way to avoid wasting time on programming your company’s reports.",
+"url": "https://jorgonor.com/en/blog/reporting/2015/10/24/metabase.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="Metabase, Reporting, Business Intelligence" >
+
+  
+  <meta name="content-language" content="en">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/en">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/contact.html">Contact</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Metabase. A revolutionary reporting tool</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Oct 24, 2015</p>
+              </header>
+
+              <article class="post-content">
+                <p><strong><a href="http://www.metabase.com/">Metabase</a></strong> is a new open source tool built with Clojure that provides a new way to avoid wasting time on programming your company’s reports.
+With a very simple UI, users can configure their own reports and charts by themselves.
+Users would be able to retrieve very simple information almost instantly, without having to make a request to the IT team and waiting for them to develop the appropriate report.
+As a result, company’s business intelligence process gets considerably improved regarding timing and information feedback.</p>
+
+<p>Databases can be plugged in Metabase simply by setting the server where the database lives, the database name and its credentials.
+A name inside the application that will be visible by users can be set. And it supports <strong>four database engines</strong>, MySQL, MongoDB, PostgreSQL and H2.</p>
+
+<h3 id="how-to-set-it-up">How to set it up.</h3>
+
+<p>Metabase can be downloaded from this URL <a href="http://www.metabase.com/start/">http://www.metabase.com/start/</a>.
+As I use Linux, I’m going to explain how I have installed it using the “Other platforms” option.</p>
+
+<p>Simply run</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">java -jar metabase.jar</code></pre></figure>
+
+<p>After this step, you can open a browser and open the default Metabase URL <a href="http://localhost:3000">http://localhost:3000</a>. To get started, your personal
+information will be asked to set up your user. Apart from that, you can set up the first database or set it up afterwards. For more information on how to set it up
+in a production environment <a href="http://www.metabase.com/docs">http://www.metabase.com/docs</a>.</p>
+
+<h3 id="creating-questions">Creating questions</h3>
+
+<p>Simply click on “New Questions”, if you have already set up your database, all the database tables are ready to use.
+Metabase uses database metadata to populate the available filters depending on the column type. For example, if the data is “numeric”, it allows
+different filters such as “Greater than”, “Less than”, while when a column is a string, these filters are not available.
+It is also intelligent to use your schema foreign keys, so you can filter your information also by a related table column!</p>
+
+<div class="row">
+    <div class="col s12">
+        <img alt="Metabase filters" class="responsive-img" src="/img/posts/metabase_filters.png" />
+    </div>
+</div>
+
+<p>Questions can be added to the dashboard so that users can analyze information at a glance. And visualization is customizable.
+You can choose from many different views that can be used to customize how your users want to see information.</p>
+
+<div class="row">
+    <div class="col s12">
+        <img alt="Metabase visualization" class="responsive-img" src="/img/posts/metabase_visualization.png" />
+    </div>
+</div>
+
+<h3 id="drawbacks">Drawbacks</h3>
+
+<p>Unfortunately, as many other JVM solutions, Metabase has a high memory footprint. Without real users load in my personal computer running Linux Metabase is using <strong>about 700 MB</strong>.
+Even though, it’s not a lot when installed on a server and with the amount of work it can save you this shouldn’t put you off of using this awesome open-source solution.</p>
+
+<h3 id="lets-use-metabase">Let’s use metabase!</h3>
+
+<p>Metabase is a solution that can save your company loads of time and money. Remember that these kind of solutions have a considerable value, and Metabase is
+free! Apart from that, if some developers are working on reporting solutions, they will be free to work on other important tasks.
+So, if you aren’t using any business intelligence solution, Metabase is a good solution for you.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Metabase</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Reporting</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Business Intelligence</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Software Developer and Web passionate.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Technologies</h5>
+                
+                <ul>
+                    <li><a href="/en/php-developer.html" class="white-text">PHP</a></li>
+                    <li><a href="/en/web-developer.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Spain
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

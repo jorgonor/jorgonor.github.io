@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Functional PHP - Jorgonor</title>
+<meta property="og:title" content="Functional PHP" />
+<meta name="description" content="Functional programming. What is that thing some software gurus talk about? I am going to try to explain it with a basic example in PHP to show you how you can use this paradigm for your daily work, demistifying its difficulty in the process." />
+<meta property="og:description" content="Functional programming. What is that thing some software gurus talk about? I am going to try to explain it with a basic example in PHP to show you how you can use this paradigm for your daily work, demistifying its difficulty in the process." />
+<link rel="canonical" href="https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html" />
+<meta property="og:url" content="https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-09-06T17:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Functional PHP",
+"datePublished": "2015-09-06T17:00:00+02:00",
+"description": "Functional programming. What is that thing some software gurus talk about? I am going to try to explain it with a basic example in PHP to show you how you can use this paradigm for your daily work, demistifying its difficulty in the process.",
+"url": "https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="PHP, Functional programming" >
+
+  
+  <meta name="content-language" content="en">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/en">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/en/contact.html">Contact</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Functional PHP</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Sep 6, 2015</p>
+              </header>
+
+              <article class="post-content">
+                <p>
+    Functional programming. What is that thing some software gurus talk about? I am going to try to explain it with a basic example in PHP to show you
+    how you can use this paradigm for your daily work, demistifying its difficulty in the process. And, yeah, you can use functional programming in PHP, well,
+    with a PHP flavour.
+</p>
+
+<h3>What is functional programming?</h3>
+
+<p>
+    The functional programming paradigm is not modern at all. It is based on <a href="https://en.wikipedia.org/wiki/Lambda_calculus">Lambda Calculus</a>.
+    One of the first languages that allowed programming using this technique was <a href="https://en.wikipedia.org/wiki/Lisp_%28programming_language%29">Lisp</a>.
+</p>
+
+<p>Functional programming is all about functions and data structures, there are no objects in there. Pure functional programming languages do not allow mixing
+    data with behaviour. But some pieces of this paradigm have been used since the beginning of other languages, like function pointers in C. Usually,
+    pure functional languages like Haskell have capabilities that are out of the scope of this post, like <a href="http://stackoverflow.com/questions/36314/what-is-currying">Currying</a>,
+    <a href="https://en.wikipedia.org/wiki/Pattern_matching">Pattern Matching</a> and <a href="https://en.wikipedia.org/wiki/Lazy_initialization">Lazy Initialization</a>.
+</p>
+
+<p>
+    Given it is usually difficult to understand, we are going to show an example of functional programming using PHP. The example in this post is quite simple,
+    and it solves a mundane problem using functional programming, filtering a collection or array.
+</p>
+
+<h3>An example</h3>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">function</span> <span class="nf">index_and_value_are_even</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nv">$arr</span> <span class="k">as</span> <span class="nv">$index</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$index</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="nv">$index</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">var_export</span><span class="p">(</span><span class="nx">index_and_value_are_even</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]));</span></code></pre></figure>
+
+<p>
+    This code fragment exports an empty array, provided the array values and indices are not even in any element.
+</p>
+
+<p>
+    In many applications, pieces of code like these can be found, traversing a collection and applying a filter over it is a common task.
+    It is not a bad way to solve the problem, it is simple, standard and easy, but if we solve it like this, we have to write tons of
+    syntax that we actually don't need, repeating the same pattern over and over again and, in real world applications, the problem solved by
+    the foreach body isn't usually just like in the example, it can also be a cumbersome piece of code.
+</p>
+
+<p>
+    Let's see how this function would be implemented using the functional paradigm.
+</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">function</span> <span class="nf">is_even</span><span class="p">(</span><span class="nv">$n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nv">$n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">index_and_value_are_even</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">array_filter</span><span class="p">(</span><span class="nv">$arr</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$index</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">is_even</span><span class="p">(</span><span class="nv">$index</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">is_even</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>
+    Isn't this solution much better? It's obviously a subjective matter but in my opinion the code is more expressive using functional
+    programming.
+</p>
+
+<p>
+    Even though this piece of code is incorrect. <a href="http://php.net/manual/en/function.array-filter.php">array_filter</a> native function doesn't
+    send the index to the called filter function. This can make this function useless for your needs, more if the array keys have a meaning in your
+    application. But, we are programmers, aren't we? Let's do our own implementation.
+</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">function</span> <span class="nf">array_filter_with_indices</span><span class="p">(</span><span class="k">array</span> <span class="nv">$arr</span><span class="p">,</span> <span class="nx">callable</span> <span class="nv">$fn</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nv">$arr</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$fn</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>
+    Yes, it's a pretty straightforward implementation. Now we can reuse this filter function applying an anonymous function over it to decide which
+    elements fulfill the provided conditions. This implementation also preserves the original indices, not like the native <i>array_filter</i>.
+</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="p">[</span><span class="s1">'1'</span> <span class="o">=&gt;</span> <span class="s1">'value1'</span><span class="p">,</span> <span class="s1">'abc'</span> <span class="o">=&gt;</span> <span class="s1">'value3'</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></code></pre></figure>
+
+<p>
+    Another thing of note in this code is that it uses <a href="http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration">Type Hinting</a>,
+    a mechanism to check if the function arguments belong to the type the function expects.
+    As you can see, it's possible to type hint an argument as <i>callable</i>. This kind of <i>type hinting</i> has been added in version 5.4, so check this before you
+    decide to use it in your application.
+</p>
+
+<p>
+    I hope you've got the gist of this technique. Don't mind using it in real world applications!!
+</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Functional programming</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Software Developer and Web passionate.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Technologies</h5>
+                
+                <ul>
+                    <li><a href="/en/php-developer.html" class="white-text">PHP</a></li>
+                    <li><a href="/en/web-developer.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Spain
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

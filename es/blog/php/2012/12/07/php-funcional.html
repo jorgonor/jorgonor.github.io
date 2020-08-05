@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>PHP Funcional - Jorgonor</title>
+<meta property="og:title" content="PHP Funcional" />
+<meta name="description" content="Programación funcional. ¿Qué es ese paradigma de programación del que se habla tanto últimamente? En este post vamos a explicar de que se trata." />
+<meta property="og:description" content="Programación funcional. ¿Qué es ese paradigma de programación del que se habla tanto últimamente? En este post vamos a explicar de que se trata." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/php/2012/12/07/php-funcional.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/php/2012/12/07/php-funcional.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-12-07T20:24:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "PHP Funcional",
+"datePublished": "2012-12-07T20:24:00+01:00",
+"description": "Programación funcional. ¿Qué es ese paradigma de programación del que se habla tanto últimamente? En este post vamos a explicar de que se trata.",
+"url": "https://jorgonor.com/es/blog/php/2012/12/07/php-funcional.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="PHP, Functional programming" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>PHP Funcional</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Dec 7, 2012</p>
+              </header>
+
+              <article class="post-content">
+                <p>
+Programación funcional. ¿Qué es ese paradigma del que se habla tanto últimamente?
+En este post vamos a tratar de explicar más o menos de que trata la programación funcional, y vamos a poner algún ejemplo en PHP. <strong>Sí, en PHP</strong>.
+</p>
+
+<h3>El concepto</h3>
+
+<p>La programación funcional no es una corriente moderna, ya tiene sus años con la aparición del <a href="http://es.wikipedia.org/wiki/C%C3%A1lculo_lambda">Lambda Cálculo</a> con lenguajes como <a href="http://es.wikipedia.org/wiki/Lisp">Lisp</a>.</p>
+
+<p>
+    Se trata básicamente de que tenemos a nuestra disposición estructuras de datos y funciones, añadiendo comodidades al lenguaje de programación en cuestión para utilizar funciones como variables o pasarlas como argumento a otra función.
+    Otros mecanismos que se suelen relacionar con la programación funcional suele ser el <a href="http://en.wikipedia.org/wiki/Currying">Currying</a> la inicialización perezosa (<a href="http://en.wikipedia.org/wiki/Lazy_initialization">Lazy Initialization</a>) y la inmutabilidad.
+</p>
+
+<p>
+    El concepto es bastante abstracto, y es dificil de entender sin un ejemplo, así que mostremos un primer uso básico de programación funcional, utilizando una función como argumento de otra función.
+</p>
+
+<h3>Un ejemplo</h3>
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">function</span> <span class="nf">index_and_value_are_even</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nv">$arr</span> <span class="k">as</span> <span class="nv">$index</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$index</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="nv">$index</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">var_export</span><span class="p">(</span><span class="nx">index_and_value_are_even</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]));</span></code></pre></figure>
+
+<p>
+Este fragmento de código devuelve un array vacío, dado que nunca tenemos un valor par en el array pasado como argumento que tenga también un índice par.
+</p>
+
+<p>
+    En mil aplicaciones se pueden ver fragmentos de código así, recorriendo un array y aplicando una operación de filtrado sobre él.
+    No es que sea una mala manera de hacerlo, es sencillo de entender y estándar, aunque sin darnos cuenta estamos reinventando la rueda y utilizando mucha más sintaxis de la necesaria,
+    repetitiva y poco expresiva.
+</p>
+
+<p>
+    Veamos como sería la función anterior usando programación funcional.
+</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">function</span> <span class="nf">is_even</span><span class="p">(</span><span class="nv">$n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nv">$n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">index_and_value_are_even</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">array_filter</span><span class="p">(</span><span class="nv">$arr</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$index</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">is_even</span><span class="p">(</span><span class="nv">$index</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">is_even</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+<p>
+    ¿Mucho mejor, no? Aunque en esto de la programación para gustos los colores, a mi parecer el código es mucho más expresivo utilizando la programación funcional.
+</p>
+
+<p>
+    Como comentamos en el propio post, hay un problema con esta solución y es que PHP no ofrece una función nativa para filtrar arrays que nos proporcione el índice o clave en la función argumento.
+    Existe la función <a href="http://php.net/manual/es/function.array-filter.php">array_filter</a> pero solo permite filtrar por el valor.
+    Esto no acaba de ser lo óptimo, ya que sobretodo si utilizamos arrays como hashes, la clave puede tener mucho que ver en cuanto a nuestra operación de filtrado.
+    De todas formas, es trivial desarrollar por nuestra parte ésta función.
+</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">function</span> <span class="nf">array_filter_with_indices</span><span class="p">(</span><span class="k">array</span> <span class="nv">$arr</span><span class="p">,</span> <span class="nx">callable</span> <span class="nv">$fn</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nv">$arr</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$fn</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$result</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>
+    Sí, una implementación muy simple. Ahora cada vez que queramos quedarnos con parte de un array podemos utilizar nuestra función filter con una función anónima como argumento que nos diga que condiciones queremos que cumplan los objetos.
+    Hay que tener cuidado en que si le pasamos como argumento un array no hash en el que nos importe mantener los índices cohesionados, la función va a devolver el par índice valor original, por lo que si toma los elementos en las posiciones 1 y 25 va a devolver un array tal que así.
+</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="p">[</span>
+    <span class="mi">1</span> <span class="o">=&gt;</span> <span class="s1">'valor'</span><span class="p">,</span>
+    <span class="mi">25</span> <span class="o">=&gt;</span> <span class="s1">'valor'</span>
+<span class="p">];</span></code></pre></figure>
+<p>
+    Destacar de este fragmento de código el uso del <a href="http://php.net/manual/en/language.oop5.typehinting.php">Type Hinting</a>,
+    un mecanismo poco conocido de PHP con el que hacemos el lenguaje un poco estático añadiendo type checking en los argumentos de una función,
+    algo que es muy útil en ciertas ocasiones. Como podemos ver, existe la posibilidad de decir que una función o método recibe algo <i>callable</i>
+    es decir, que se puede llamar. Este tipo de <i>type hinting</i> se ha añadido en la versión 5.4, por lo que no puede usarse en versiones anteriores del lenguaje.
+</p>
+
+<p>
+    En próximos posts implementaremos más funciones básicas de la programación funcional en PHP,
+    y examinaremos más mecanismos que ofrece el lenguaje para desarrollar utilizando la programación funcional.
+</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Functional programming</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

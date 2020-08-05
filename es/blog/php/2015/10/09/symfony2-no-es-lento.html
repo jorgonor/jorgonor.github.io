@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Symfony2 no es lento - Jorgonor</title>
+<meta property="og:title" content="Symfony2 no es lento" />
+<meta name="description" content="Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos de esos benchmarks no sacan todo el jugo a las distintas tecnologías, siendo Symfony2 de los que suele salir perjudicado." />
+<meta property="og:description" content="Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos de esos benchmarks no sacan todo el jugo a las distintas tecnologías, siendo Symfony2 de los que suele salir perjudicado." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-10-09T12:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Symfony2 no es lento",
+"datePublished": "2015-10-09T12:00:00+02:00",
+"description": "Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos de esos benchmarks no sacan todo el jugo a las distintas tecnologías, siendo Symfony2 de los que suele salir perjudicado.",
+"url": "https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="Symfony2, PHP, Rendimiento, Framework" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Symfony2 no es lento</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Oct 9, 2015</p>
+              </header>
+
+              <article class="post-content">
+                <p>Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos
+de esos benchmarks no sacan todo el jugo a las distintas tecnologías que se comparan, simplemente por una cuestión de tiempo y
+conocimiento sobre ellas. Y <strong>Symfony2</strong> suele salir bastante perjudicado en los benchmarks, a pesar de que <strong>Symfony2 no es lento</strong>.</p>
+
+<p>Los benchmarks parecen ser siempre el argumento definitivo en las temidas <strong>flame wars</strong>, cuando un fanboy de una tecnología se
+saca de la manga el rendimiento, muchas veces sentimos que es un argumento que no se puede discutir pero,
+¿son siempre los benchmarks ciertos? Ya anticipo que es prácticamente imposible que lo sean.</p>
+
+<p>Uno de los benchmarks que más circula por Internet es el siguiente de <a href="https://www.techempower.com/benchmarks/">TechEmpower</a> que
+resuelve una serie de problemas en más de un centenar de tecnologías y con un nivel de detalle asombroso. Aún así, es imposible poder
+desarrollar esa misma solución en igualdad de condiciones para tal cantidad de tecnologías y frameworks.</p>
+
+<p>Centrándonos en el caso de <strong>Symfony2</strong>, el que haya experimentado un poco con él sabe que para ponerlo en producción con un buen rendimiento
+es necesario realizar unos ajustes para que mucho trabajo hecho por el framework se reutilice entre peticiones. Una de las optimizaciones
+más increibles de <em>Symfony2</em> tiene que ver con su ORM por defecto, <em>Doctrine2</em>.</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">doctrine</span><span class="pi">:</span>
+    <span class="s">orm</span><span class="pi">:</span>
+        <span class="s">metadata_cache_driver</span><span class="pi">:</span> <span class="s">apc</span>
+        <span class="s">result_cache_driver</span><span class="pi">:</span> <span class="s">apc</span>
+        <span class="s">query_cache_driver</span><span class="pi">:</span> <span class="s">apc</span></code></pre></figure>
+
+<p>Como podemos ver en el ejemplo anterior, se puede configurar diferentes tipos de caché para Doctrine2. La caché de metadatos
+(<em>metadata_cache_driver</em>) permite que todos los mapeos definidos en los ficheros de configuración de Doctrine2 sean reutilizados.
+Pero la opción que más acelera el rendimiento es <em>query_cache_driver</em>. Al habilitar esto, Doctrine2 solamente transforma una query
+de DQL a SQL una vez y, ya que esto requiere de un compilado y de la construcción de un AST interno, evita un trabajo titánico en
+cada petición. De todos modos, a efectos prácticos, en producción he llegado a ver una diferencia entre un segundo por petición
+a menos de 50 milisegundos. Un auténtico regalo para el rendimiento de tu aplicación. En el ejemplo se utiliza el motor de caché APC,
+pero existen otros motores de caché en Symfony2 que se pueden configurar a cualquier nivel de detalle.</p>
+
+<p>Y este no es el único ajuste de optimización que se puede hacer. Existen centenares de recursos en Internet, como estas
+<a href="http://es.slideshare.net/raulfraile/symfony2-optimizacin-y-rendimiento">diapositivas</a> o estas <a href="http://es.slideshare.net/ricardclau/escalabilidad-alto-rendimiento">otras de Ricard Clau</a>
+que detallan muchos más ajustes para tener las ventajas de utilizar una tecnología como <em>Symfony2</em> a la hora de desarrollar sin
+tener que multiplicar el presupuesto en servidores.</p>
+
+<p>He de admitir que yo mismo cometí ese mismo error en el post <a href="/es/blog/2012/09/php-frameworks-benchmark.html">Benchmark de frameworks PHP</a>,
+y que en un futuro próximo tengo intención de regenerar los resultados de ese benchmark
+con las opciones más sencillas posibles en Symfony2, para así enmendar mi error y ver como con poco esfuerzo se puede mejorar mucho el
+rendimiento.</p>
+
+<p>Por último destacar que <strong>Symfony2</strong> es un framework con un rendimiento más que aceptable para la cantidad de funcionalidades que aporta.
+Este post lo he escrito sobretodo debido a que, aunque menos que antes, sigue existiendo el mantra de que los frameworks son demasiado lentos, sin
+tener en cuenta cómo aceleran el proceso de desarrollo y facilitan el uso de patrones de diseño.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Symfony2</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">PHP</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Rendimiento</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Framework</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

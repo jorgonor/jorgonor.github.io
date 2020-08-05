@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Bash para Windows 10 - Jorgonor</title>
+<meta property="og:title" content="Bash para Windows 10" />
+<meta name="description" content="Microsoft está trabajando con Canonical para traer Bash a Windows sobre un entorno Ubuntu para poder ejecutar aplicaciones Linux sobre Windows" />
+<meta property="og:description" content="Microsoft está trabajando con Canonical para traer Bash a Windows sobre un entorno Ubuntu para poder ejecutar aplicaciones Linux sobre Windows" />
+<link rel="canonical" href="https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:image" content="https://jorgonor.com/img/posts/bash_on_windows.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-04-04T21:30:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Bash para Windows 10",
+"image": "https://jorgonor.com/img/posts/bash_on_windows.png",
+"datePublished": "2016-04-04T21:30:00+02:00",
+"description": "Microsoft está trabajando con Canonical para traer Bash a Windows sobre un entorno Ubuntu para poder ejecutar aplicaciones Linux sobre Windows",
+"url": "https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="tech, bash, windows" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Bash para Windows 10</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Apr 4, 2016</p>
+              </header>
+
+              <article class="post-content">
+                <p>Como se anunció en la <strong>Build 2016</strong> de Microsoft, Microsoft está trabajando con Canonical para <strong>traer Bash a Windows sobre un
+entorno Ubuntu</strong> para poder ejecutar aplicaciones Linux sobre Windows incluso poder <strong>instalar
+software con apt-get</strong>. Para los amantes de Bash, esto es una muy buena noticia, ya que nos podemos imaginar utilizando Visual Studio para programar
+por ejemplo aplicaciones Node.js, Ionic o incluso Webs en PHP, mientras utilizamos nuestro intérprete de comandos favorito para hacer tareas automatizadas,
+buscar en el sistema de ficheros de manera eficiente, y conectarnos a nuestros servidores usando ssh.</p>
+
+<div class="row">
+<div class="col s12">
+    <div class="card">
+    <div class="card-image">
+        <iframe src="https://channel9.msdn.com/Events/Build/2016/P488/player" width="100%" height="500" allowfullscreen="" frameborder="0"></iframe>
+    </div>
+    <div class="card-content">
+        Demostración de como ejecutar Bash en Windows. Sólo disponible en inglés me temo.
+    </div>
+    </div>
+</div>
+</div>
+
+<p>Por lo que podemos ver en el vídeo, podemos ejecutar binarios Linux sobre Windows e instalarlos directamente desde la misma consola.
+Ideal para desarrollar webs apoyadas en intérpretes como PHP, Python o Ruby.</p>
+
+<p>Si formáis parte del programa <a href="https://insider.windows.com/">Windows Insider</a> podéis probar <strong>Bash on Windows</strong> siguiendo <a href="http://blog.dustinkirkland.com/2016/04/howto-ubuntu-on-windows.html">este tutorial</a>
+hecho por un famoso <a href="http://blog.dustinkirkland.com/">blogger</a> de Canonical, Dustin Kirkland. Curioso como mínimo 🙂 .</p>
+
+<div class="row">
+<div class="col s12 offset-l2 l8">
+    <div class="card">
+        <div class="card-image">
+            <img src="/img/posts/bash_on_windows.png" class="img-responsive" />
+        </div>
+        <div class="card-content">
+            Bash en Windows 10 en el Build 2016.
+        </div>
+    </div>
+</div>
+</div>
+
+<ul class="collection">
+    <li class="collection-item avatar">
+      <img src="/img/posts/cygwin-logo.png" alt="Cygwin Logo" width="60" height="60" />
+      <span class="title"><a href="https://www.cygwin.com/">Cygwin</a></span>
+      <p>
+        <b><a href="https://www.cygwin.com/">Cygwin</a></b> es una especie de distribución que permite ejecutar los programas de shell Unix tradicionales
+        sobre Windows. Como podemos ver en su Web, los propios programas han de ser compilados adrede para esa plataforma y, cualquier que lo
+        haya utilizado sabe que su rendimiento deja mucho que desear.
+      </p>
+    </li>
+    <li class="collection-item avatar">
+      <img src="/img/posts/git-logo.png" alt="Git Logo" width="60" height="60" />
+      <span class="title"><a href="https://git-scm.com/">Git para Windows</a></span>
+      <p>
+        <b><a href="https://git-scm.com/">Git para Windows</a></b> lleva integrado un intérprete bash con bastantes funcionalidades parecidas a Cygwin.
+        Si usas git, probablemente lo hayas utilizado en alguna ocasión. La verdad que yo prefiero utilizar este a Cygwin, ya que es mucho
+        más sencillo de instalar y lleva prácticamente lo necesario, aunque si necesitas más programas sueles ir a morir a Cygwin.
+      </p>
+    </li>
+    <li class="collection-item avatar">
+      <img src="/img/posts/conemu-logo.png" alt="Conemu Logo" width="60" height="60" />
+      <span class="title"><a href="https://conemu.github.io/">Conemu</a></span>
+      <p>
+        <b><a href="https://conemu.github.io/">Conemu</a></b> es una mejora importante a la terminal de Windows. Aunque en Windows 10, han mejorado bastante
+el terminal de Windows y ya se puede ampliar a pantalla completa y demás, Conemu permite la ejecución de diversos intérpretes de comandos
+e incorpora pestañas. Dentro de él se pueden ejecutar Cygwin, Git Bash o incluso CMD. Una gozada para los amantes de la productividad.
+      </p>
+    </li>
+</ul>
+
+<p>Ahora no nos queda más que esperar a nuevas noticias para poder aumentar nuestra productividad en Windows para aquellos que nos manejamos
+bien sobre el viejo pero increiblemente productivo Bash.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">tech</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">bash</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">windows</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

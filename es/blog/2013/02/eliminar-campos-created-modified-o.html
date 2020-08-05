@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Eliminar campos created, modified o updated en CakePHP - Jorgonor</title>
+<meta property="og:title" content="Eliminar campos created, modified o updated en CakePHP" />
+<meta name="description" content="¡Cuanto tiempo sin postear nada! Hoy vengo con la solución a un pequeño problema que suele ocurrir cuando se desarrolla con CakePHP y la base de datos te viene &quot;heredada&quot;. Todos sabemos lo doloroso que es cambiar el nombre de un campo de una tabla que ya se encuentra en producción si no hemos encapsulado correctamente el acceso a dichos datos. Y como aún no conozco ninguna aplicación donde todas las buenas prácticas conocidas por el desarrollador se apliquen, sé que es más que probable que en tu aplicación tengas una tabla donde a alguien se le hubiera ocurrido la magnífica idea de bautizar a una columna con uno de los tres nombres reservados que CakePHP utiliza para las marcas de tiempo en base de datos." />
+<meta property="og:description" content="¡Cuanto tiempo sin postear nada! Hoy vengo con la solución a un pequeño problema que suele ocurrir cuando se desarrolla con CakePHP y la base de datos te viene &quot;heredada&quot;. Todos sabemos lo doloroso que es cambiar el nombre de un campo de una tabla que ya se encuentra en producción si no hemos encapsulado correctamente el acceso a dichos datos. Y como aún no conozco ninguna aplicación donde todas las buenas prácticas conocidas por el desarrollador se apliquen, sé que es más que probable que en tu aplicación tengas una tabla donde a alguien se le hubiera ocurrido la magnífica idea de bautizar a una columna con uno de los tres nombres reservados que CakePHP utiliza para las marcas de tiempo en base de datos." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/2013/02/eliminar-campos-created-modified-o.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/2013/02/eliminar-campos-created-modified-o.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-02-28T20:17:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Eliminar campos created, modified o updated en CakePHP",
+"datePublished": "2013-02-28T20:17:00+01:00",
+"description": "¡Cuanto tiempo sin postear nada! Hoy vengo con la solución a un pequeño problema que suele ocurrir cuando se desarrolla con CakePHP y la base de datos te viene &quot;heredada&quot;. Todos sabemos lo doloroso que es cambiar el nombre de un campo de una tabla que ya se encuentra en producción si no hemos encapsulado correctamente el acceso a dichos datos. Y como aún no conozco ninguna aplicación donde todas las buenas prácticas conocidas por el desarrollador se apliquen, sé que es más que probable que en tu aplicación tengas una tabla donde a alguien se le hubiera ocurrido la magnífica idea de bautizar a una columna con uno de los tres nombres reservados que CakePHP utiliza para las marcas de tiempo en base de datos.",
+"url": "https://jorgonor.com/es/blog/2013/02/eliminar-campos-created-modified-o.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="MVC, ORM, Framework, Cakephp" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Eliminar campos created, modified o updated en CakePHP</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Feb 28, 2013</p>
+              </header>
+
+              <article class="post-content">
+                <p>¡Cuanto tiempo sin postear nada! </p>
+<p>
+    Hoy vengo con la solución a un pequeño problema que suele ocurrir cuando se desarrolla con CakePHP y la base de datos te viene "heredada".
+    Todos sabemos lo doloroso que es cambiar el nombre de un campo de una tabla que ya se encuentra en producción si no hemos encapsulado correctamente el acceso a dichos datos.
+    Y como aún no conozco ninguna aplicación donde todas las buenas prácticas conocidas por el desarrollador se apliquen, sé que es más que probable que en tu aplicación tengas una tabla donde a
+    alguien se le hubiera ocurrido la magnífica idea de bautizar a una columna con uno de los tres nombres reservados que CakePHP utiliza para las marcas de tiempo en base de datos.
+</p>
+
+<p>
+    Empezando por el principio, el ORM de CakePHP es muy mejorable.
+    En un intento de mejorar la experiencia del desarrollador, el equipo de CakePHP ha hecho que su ORM busque por tres columnas nombradas de manera estándar para que mágicamente en ellas se pongan
+    campos sin que el programador lo pida. Esto puede ser muy bueno si todas tus aplicaciones son CakePHP, y si tus desarrollos están orientados a hacer uso de este framework.
+    ¿Qué pasa si no? Pues que CakePHP va a tocar columnas sin que tu lo hayas pedido (manda huevos) y encima, no te va a ofrecer una alternativa "sencilla".
+</p>
+
+<p>Estas serían los columnas "malditas":</p>
+
+<ul>
+    <li>
+        <b>created:</b> Cuando se hace una inserción (<tt>INSERT</tt>),
+        pone la fecha actual (no utiliza NOW() ni su equivalente en otras bases de datos, sino la función date de PHP, ...).
+    </li>
+    <li>
+        <b>modified:</b> Cuando se realiza una actualización (<tt>UPDATE</tt>), pone la fecha actual sin tocar created.
+    </li>
+    <li>
+        <b>updated:</b> Se trata de un alias de <i>modified</i>
+</li>
+</ul>
+<p>
+    ¿Qué hacemos entonces si no queremos cambiar dicho valor?
+    Pues tenemos que definir un callback <a href="http://api.cakephp.org/2.3/class-Model.html#_beforeSave" target="_blank"><i>beforeSave</i></a>.
+    Si alguien ha encontrado una mejor manera, sería genial que lo compartiera en comentarios. Aunque pegándole un ojo al código de la clase <a href="http://api.cakephp.org/2.3/source-class-Model.html#36-3441" target="_blank">Model.php</a>
+    del framework, no he podido ver que se pueda hacer de otra forma.
+</p>
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nx">App</span><span class="o">::</span><span class="na">uses</span><span class="p">(</span><span class="s1">'AppModel'</span><span class="p">,</span> <span class="s1">'Model'</span><span class="p">);</span>
+<span class="k">class</span> <span class="nc">Product</span> <span class="k">extends</span> <span class="nx">AppModel</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">beforeSave</span><span class="p">(</span><span class="nv">$options</span> <span class="o">=</span> <span class="k">array</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">beforeSave</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>
+        <span class="nb">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">][</span><span class="s1">'updated'</span><span class="p">]);</span>
+        <span class="nb">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">][</span><span class="s1">'created'</span><span class="p">]);</span>
+        <span class="nb">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">][</span><span class="s1">'modified'</span><span class="p">]);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>  
+<p>
+    En el ejemplo, se cargaría los tres campos.
+    Hay que notar que para que el código sea <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">E_STRICT</a>,
+    hay que mantener el perfil del método heredado. Y como no, propagar los eventos hacia arriba, ya que si <i>Product</i> heredara de otro modelo que no
+    fuera <i>AppModel</i> debería mantener el comportamiento de los beforeSave definidos en la clase padre.
+</p>
+<p>
+    Otro detalle "Cakero" que se suele escapar, es el de la llamada a <a href="http://book.cakephp.org/2.0/en/core-utility-libraries/app.html#loading-classes" target="_blank"><i>App::uses</i>
+    </a> que parece innecesaria.
+    No lo es. Da la casualidad que si todos tus modelos heredan de AppModel no hace falta (el framework la incluye por tí) pero si es otro modelo porque utilizas algún tipo de clase común para
+    los modelos con funcionalidad compartida, no funcionará mágicamente.
+</p>
+<p>Bueno, espero que el post os sea de ayuda para lidiar con CakePHP y su ORM.</p>
+<p>Saludos y salud!</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">MVC</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">ORM</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Framework</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">Cakephp</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>

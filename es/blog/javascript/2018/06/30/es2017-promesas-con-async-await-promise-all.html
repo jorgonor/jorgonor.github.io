@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>Promesas con async/await y carga concurrente de recursos - Jorgonor</title>
+<meta property="og:title" content="Promesas con async/await y carga concurrente de recursos" />
+<meta name="description" content="Aprende como utilizar async/await en tu proyecto y a utilizar las promesas de manera eficiente con Promise.all." />
+<meta property="og:description" content="Aprende como utilizar async/await en tu proyecto y a utilizar las promesas de manera eficiente con Promise.all." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:image" content="https://jorgonor.com/img/posts/js-es2017.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-06-30T12:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "Promesas con async/await y carga concurrente de recursos",
+"image": "https://jorgonor.com/img/posts/js-es2017.png",
+"datePublished": "2018-06-30T12:00:00+02:00",
+"description": "Aprende como utilizar async/await en tu proyecto y a utilizar las promesas de manera eficiente con Promise.all.",
+"url": "https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="javascript, programación asíncrona" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  <script>
+if (/jorgonor\.com/.test(location)) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36061398-4', 'auto');
+    ga('send', 'pageview');
+}
+</script>
+
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+
+  <body>
+      
+    <div id="cookies_notice" >
+    <div class="card blue-grey darken-3">
+        <div class="card-content white-text">
+            <div class="row">
+                <div class="col s8 m10">
+                    <span class="card-title">Cookies</span>
+                    <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso</p>
+                </div>
+                <div class="col s4 m2">
+                    <a id="cookies_notice_close" class="indigo white-text" href="#">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="indigo" role="navigation">
+    <div class="nav-wrapper container">
+        <ul>
+            <li>
+                
+                <a class="page-link" href="/es">Home</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/blog.html">Blog</a>
+            </li>
+            <li>
+                
+                <a class="page-link" href="/es/contacto.html">Contacto</a>
+            </li>
+        </ul>
+        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
+    </div>
+</nav>
+<header class="container">
+    <h1>Promesas con async/await y carga concurrente de recursos</h1>
+</header>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l9 post">
+              <header class="post-header">
+                <p class="post-meta">Jun 30, 2018</p>
+              </header>
+
+              <article class="post-content">
+                <p>En este mismo blog <a href="/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html">he hablado de la potencia de las promesas</a> para manejar la comunicación cliente servidor de manera asíncrona en Javascript o, resumiendo, cualquier operación de entrada/salida.
+Como con cualquier poder viene la responsabilidad de gestionarlo correctamente, veremos en este post cómo configurar <a href="https://webpack.js.org/">Webpack</a> + <a href="https://babeljs.io/">Babel</a> para poder utilizar async/await en nuestro proyecto Javascript para tener compatibilidad máxima
+y así utilizar esta sintaxis que nos ayudará a usar las promesas de una manera mucho más entendible.</p>
+
+<h3 id="configurando-el-proyecto">Configurando el proyecto</h3>
+
+<p>Instalemos pues todo lo necesario para empezar el proyecto.
+Nuestro caso de uso va a ser un proyecto en cliente para cargar un listado de repositorios o información adicional a través de la <a href="https://developer.github.com/v3/">API REST de Github</a>.
+La solución completa está en <a href="https://github.com/jorgonor/es2017-async-await-demo">este repositorio</a>, eso sí, en el post veremos paso por paso como llegar a esta solución.</p>
+
+<p>Veamos pues como configurar nuestro proyecto para usar <a href="https://webpack.js.org/">Webpack</a> + <a href="https://babeljs.io/">Babel</a>, con el fin de usar la funcionalidad <strong>async/await</strong>.
+El primer paso es ejecutar este comando. Usaré <a href="https://yarnpkg.com">yarn</a>, aunque también se podría hacer con <a href="https://www.npmjs.com/">NPM</a>.</p>
+
+<script src="https://gist.github.com/jorgonor/4f2e83afe076c12c4ed60d081fa814e8.js"></script>
+
+<p>Ejecutando este comando, tendremos un archivo <em>package.json</em> con lo mínimo para usar Webpack + Babel con promesas.
+Como nuestros ejemplos usarán <a href="https://reactjs.org/">React.js</a>, también será necesario instalar las siguientes dependencias.</p>
+
+<script src="https://gist.github.com/jorgonor/b3e6c36d8ff5c82ca46f5c1cfbf7b3f7.js"></script>
+
+<p>Para facilitar las cosas, el <em>package.json</em> final que debemos tener debería tener un contenido similar al siguiente.</p>
+
+<script src="https://gist.github.com/jorgonor/84e2a3fc4010f6c87ed1581994c30282.js"></script>
+
+<p>Finalmente deberemos escribir en un fichero <em>.babelrc</em> el siguiente contenido.</p>
+
+<script src="https://gist.github.com/jorgonor/49535c6e0a3069f44608c2202f3e6be9.js"></script>
+
+<h3 id="un-ejemplo-simple">Un ejemplo simple</h3>
+
+<p>Veamos como podemos cargar un listado de repositorios desde la API de Github sin despeinarnos usando <strong>async/await</strong>.
+Usaremos la función <em>fetch</em> que nos devuelve una promesa y manejaremos la respuesta que nos devuelva la API de Github.
+Si devuelve un código HTTP correcto, devolveremos los datos devueltos directamente, sino, lanzaremos una excepción informando del error.</p>
+
+<script src="https://gist.github.com/jorgonor/a4a3531f942950d1b470fe76675d072d.js"></script>
+
+<p>En el código podemos ver como encapsulamos en la clase <em>Client</em> la lógica para tomar nuestros datos y desde el componente <em>ListReposApp</em>
+los cargamos en la función <em>componentDidMount</em> para devolver una representación de estos en la función <em>renderRepos</em>.
+No vamos a entrar en detalles respecto al ciclo de vida de los componentes React, ya que eso daría para un post entero, pero sí vamos a tratar
+el uso de <strong>async</strong> en la función <em>componentDidMount</em>. <strong>async</strong> nos permite utilizar en el cuerpo de la función la palabra clave <strong>await</strong>.
+Con <strong>await</strong> lo que hacemos es algo así como convertir el código asíncrono a síncrono, aunque esto sería una explicación bastante simplona.</p>
+
+<p>Con <strong>await</strong>, el código que viene tras la instrucción a la que se aplica la palabra clave no se ejecutará hasta que la operación asíncrona haya finalizado, en este caso la petición HTTP.
+Es como si el “compilador” (Babel en este caso) generara él mismo un <em>callback</em> con todo el código que continúa a la ejecución de <strong>await</strong> y otro con el manejo de un posible error.</p>
+
+<script src="https://gist.github.com/jorgonor/826742ddf4ddfc25a5f822e9e942e57e.js"></script>
+
+<p><strong>async/await</strong> nos servirá como una manera de hacer un código más entendible y que escala mejor ante <em>callbacks</em> anidados,
+aunque también comentaremos algunos casos en los que, aunque sea más fácil entender el código,
+<strong>async/await</strong> no sería la manera más adecuada de cargar información remota, siempre y cuando el tiempo de carga sea una de nuestras prioridades.</p>
+
+<h3 id="await-y-la-carga-de-n-recursos-de-manera-concurrente"><strong>await</strong> y la carga de N recursos de manera concurrente</h3>
+
+<p>En el repositorio podemos consultar <a href="https://github.com/jorgonor/es2017-async-await-demo/blob/master/containers/UserDashboardAppAsyncAwait.js">la implementación de un componente</a>
+(o <em>container</em> en el vocabulario React) que carga más información a partir de un usuario de Github.
+En este caso estamos cargando cuatro recursos distintos con <strong>await</strong>. Este uso de <strong>await</strong> hace que para empezar a cargar el segundo recurso,
+sea necesario que el primero ya haya sido devuelto por el servidor de Github,
+por lo que no estamos aprovechando una posible concurrencia que nos permitiría tener la información antes y cargar los cuatro recursos en paralelo.</p>
+
+<p>Aunque el tiempo de carga está bien, y puede que por simplicidad prefiramos tener el código con <strong>async/await</strong>,
+debemos conocer mecanismos para poder cargar N recursos de manera concurrente, ya que en muchas aplicaciones no podemos
+dictar el diseño de las APIs desde las que tomamos la información y puede que nos sea útil cargar toda esta información para mostrar
+listados a los usuarios de nuestra aplicación.</p>
+
+<p>Una solución para problemas como este es usar <em>Promise.all</em>. Esta función estándar de Javascript permite esperar a que N promesas se resuelvan o cualquiera de ellas falle.
+En este <em>container</em> vemos como cargamos los cuatro recursos con <em>Promise.all</em>.
+Abajo está también el código en el que vemos como se maneja como si la promesa devuelta de <em>Promise.all</em> fuera la unión de las N promesas.</p>
+
+<script src="https://gist.github.com/jorgonor/8af646a583d6be05e2309fd2425f57cc.js"></script>
+
+<p>Usando las herramientas de desarrollo de Chrome podemos ver como si cargamos en la vista el componente <a href="https://github.com/jorgonor/es2017-async-await-demo/blob/master/containers/UserDashboardAppPromiseAll.js"><strong>UserDashboardAppPromiseAll</strong></a>
+o <a href="https://github.com/jorgonor/es2017-async-await-demo/blob/master/containers/UserDashboardAppAsyncAwait.js"><strong>UserDashboardAppAsyncAwait</strong></a>
+vemos la diferencia entre cargar los cuatro recursos de manera concurrente y la línea temporal en la que un recurso se carga tras otro.</p>
+
+<h3 id="conclusiones">Conclusiones</h3>
+
+<p>Aunque no todos los navegadores soportan <strong>async/await</strong>, con <a href="https://babeljs.io/">Babel</a> podemos utilizar esta funcionalidad
+sin tener que preocuparnos de si nuestro código es soportado directamente o no.</p>
+
+<p>Algunos frameworks de desarrollo con Javascript, como <a href="https://facebook.github.io/react-native/">React Native</a> incorporan <strong>async/await</strong> de casa,
+por lo que en muchos casos nos será más natural utilizarlo que usar los métodos de la clase <em>Promise</em>.
+Espero que con este pequeño tutorial os sea más fácil usarlo en vuestro código y conocer su potencia.</p>
+
+              </article>
+
+            <div id="disqus_thread"></div>
+            <script>
+                var canonicalUrl = document.location.toString(); 
+                var disqus_config = function () {
+                    this.page.url = canonicalUrl;
+                    this.page.identifier = "";
+                };
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    
+                    s.src = '//jorgonorcom.disqus.com/embed.js';
+                    
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+
+              <div class="post-footer">
+                  <div class="row post-labels">
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">javascript</span>
+                      
+                      <span rel="tag" class="tag white-text indigo accent-4">programación asíncrona</span>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3">
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <footer class="section page-footer indigo">
+    <div class="container">
+        <div class="row white-text">
+            <div class="col s12 m6 l6">
+                <h3>Jorgonor</h3>
+                <p>Desarrollador de Software y apasionado de la Web.</p>
+            </div>
+
+            <div class="col s12 m3 l3">
+                    <h5>Tecnologías</h5>
+                
+                <ul>
+                    <li><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+                    <li><a href="/es/programador/web.html" class="white-text">Web</a></li>
+                </ul>
+                
+            </div>
+            <div class="col s12 m3 l3">
+                <h5>Social</h5>
+
+                
+                <a aria-label="Follow @jorgonor on GitHub"
+                   data-count-aria-label="# followers on GitHub"
+                   data-count-api="/users/jorgonor#followers"
+                   data-count-href="/jorgonor/followers"
+                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
+                
+                
+                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
+                
+
+                <a href="http://stackoverflow.com/users/6254934/jorgonor">
+                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
+                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+                </a>
+            </div>
+        </div>
+        <div id="footer-copy" class="row white-text">
+            <div class="col s12">
+                © 2016-2018 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+               Vila-real, Castellón España
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
+<script type="text/javascript" src="/app/app.js"></script>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-570427b5cfc021f1"></script>
+  </body>
+</html>
