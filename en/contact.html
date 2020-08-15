@@ -103,18 +103,11 @@ if (/jorgonor\.com/.test(location)) {
                 Contact with me to any kind of feedback about services or programming projects.
 
 <div class="row">
-    <form id="frm_contact" class="col s12" data-action="/scripts/contact.php?l=en" method="POST">
+    <form id="frm_contact" class="col s12" action="https://formspree.io/mknqeabj" method="POST">
         <div class="row">
             <div class="input-field col s12">
-                <input id="email" name="email" type="email" class="validate" required>
-                <label for="email">e-mail *</label>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="subject" name="subject" type="text" class="validate" required>
-                <label for="subject">Subject *</label>
+                <input id="_replyto" name="_replyto" type="email" class="validate" required>
+                <label for="_replyto">e-mail *</label>
             </div>
         </div>
         <div class="row">
@@ -124,26 +117,8 @@ if (/jorgonor\.com/.test(location)) {
             </div>
         </div>
         <div class="row">
-            <div class="input-field col s12">
-                <div class="g-recaptcha" data-sitekey="6LfWog4TAAAAAGgVEfu8l2ylFBRkOToJq6wwhPov"></div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col s12">
                 <button type="submit" class="waves-effect waves-light btn indigo">Send<i class="material-icons right">send</i></button>
-                <div id="preloader" class="preloader-wrapper small">
-                    <div class="spinner-layer spinner-blue-only">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="gap-patch">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </form>
@@ -152,29 +127,6 @@ if (/jorgonor\.com/.test(location)) {
 <div class="row">
   
 </div>
-<script>
-    $('#frm_contact').submit(function(evt) {
-    evt.preventDefault();
-    $('#frm_contact button[type="submit"]').prop('disabled', true);
-    $('#preloader').addClass('active');
-    $.post($(this).data('action'), $(this).serializeArray(), function(response) {
-        $('#frm_contact button[type="submit"]').prop('disabled', false);
-        $('#preloader').removeClass('active');
-        if (window.Materialize && Materialize.toast) {
-            var message;
-            if (response.error === 0) {
-                message = "Message sent successfully";
-            } else {
-                message = "Verify you&#39;re not a robot";
-            }
-
-            Materialize.toast(message, 4000);
-        }
-    });
-});
-</script>
-<script src="https://www.google.com/recaptcha/api.js"></script>
-
 
             </div>
         </div>
