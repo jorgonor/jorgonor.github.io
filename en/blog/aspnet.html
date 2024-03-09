@@ -42,18 +42,15 @@
   <meta name="content-language" content="en">
   
 
-  <script>
-if (/jorgonor\.com/.test(location)) {
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    ga('create', 'UA-36061398-4', 'auto');
-    ga('send', 'pageview');
-}
+  gtag('config', 'G-4HH511444Z');
 </script>
-
   <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
@@ -108,12 +105,7 @@ if (/jorgonor\.com/.test(location)) {
             <a class="post-link" href="/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html">How to log SQL queries using Entity Framework 6 like in EF Core</a>
         </h4>
         <p>
-            Watching the SQL queries Entity Framework executes is quite useful when a slow
-query needs optimization. If you’re already using ASP.NET Core, you might have already noticed
-that the debugging stream already outputs these SQL queries for you. But, if you’re working
-with ASP.NET MVC or ASP.NET Web API projects, by default you won’t see the SQL queries executed by EF.
-
-
+            Watching the SQL queries Entity Framework executes is quite useful when a slow query needs optimization. If you’re already using ASP.NET Core, you might have already noticed that the debugging stream already outputs these SQL queries for you. But, if you’re working with ASP.NET MVC or ASP.NET Web API projects, by default you won’t see the SQL queries executed by EF. Even though, there’s a very simple trick to be able to see the actual SQL. Simply add the following code in your DbContext constructor. Once this piece of code has been added, you will be able to see the...
         </p>
     </div>
 </div>
@@ -126,11 +118,7 @@ with ASP.NET MVC or ASP.NET Web API projects, by default you won’t see the SQL
             <a class="post-link" href="/en/blog/aspnet/2017/02/04/why-properties-are-evil.html">Why properties are evil</a>
         </h4>
         <p>
-            As many of you might already know, properties are a neat way to define getters and setters. Many languages, such as C#, Delphi, Javascript or PHP support them
-and they are first-class citizens in the .NET ecosystem. Although properties are a handy resource, some property implementations can turn out to be evil.
-Very evil. Let’s dive into them.
-
-
+            As many of you might already know, properties are a neat way to define getters and setters. Many languages, such as C#, Delphi, Javascript or PHP support them and they are first-class citizens in the .NET ecosystem. Although properties are a handy resource, some property implementations can turn out to be evil. Very evil. Let’s dive into them. Side-effects in property code Causing side-effects is the worst practice when using properties, and it’s more spread than it seems at first. What can we consider side-effects? Modifying a nested object state, making a database query that modifies database state or change...
         </p>
     </div>
 </div>
@@ -143,12 +131,7 @@ Very evil. Let’s dive into them.
             <a class="post-link" href="/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html">Entity Framework 6 and "There is already an open DataReader"</a>
         </h4>
         <p>
-            Entity Framework is an amazing ORM. It has differences with other ORMs like Hibernate or Doctrine, but
-at the same time feels more comfortable. Two key differences with other ORMs are LINQ as its query language
-(LINQ it’s a compiled language, if you like to rename stuff you know how many errors this feature can prevent)
-and being able to use foreign key values without having to join with the related entity.
-
-
+            Entity Framework is an amazing ORM. It has differences with other ORMs like Hibernate or Doctrine, but at the same time feels more comfortable. Two key differences with other ORMs are LINQ as its query language (LINQ it’s a compiled language, if you like to rename stuff you know how many errors this feature can prevent) and being able to use foreign key values without having to join with the related entity. But, it has a poor proxy pattern. Navigation properties, the Entity Framework name for relationships between entities, can be accessed with lazy loading like in other ORMs, but...
         </p>
     </div>
 </div>
@@ -161,16 +144,7 @@ and being able to use foreign key values without having to join with the related
             <a class="post-link" href="/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html">ETagFilePathResult, an ActionResult to save bandwidth in ASP.NET MVC.</a>
         </h4>
         <p>
-            ASP.NET MVC provides several ways to serve files from controllers,
-but all of them require to serve the entire file content through the network, something that
-will make our website slow and more expensive while it’s ridiculous to transfer the same content
-over the network every time the resource is requested.
-Client-side HTTP caching can easily prevent downloading all those extra bytes. In this post
-we offer a solution to it without doing any complicated stuff,
-using the ActionResult abstract class to integrate a solution based on ETags
-in ASP.NET MVC to implement the client-side caching.
-
-
+            ASP.NET MVC provides several ways to serve files from controllers, but all of them require to serve the entire file content through the network, something that will make our website slow and more expensive while it’s ridiculous to transfer the same content over the network every time the resource is requested. Client-side HTTP caching can easily prevent downloading all those extra bytes. In this post we offer a solution to it without doing any complicated stuff, using the ActionResult abstract class to integrate a solution based on ETags in ASP.NET MVC to implement the client-side caching. Why do I need...
         </p>
     </div>
 </div>
@@ -183,16 +157,7 @@ in ASP.NET MVC to implement the client-side caching.
             <a class="post-link" href="/en/blog/aspnet/2016/02/05/ilmerge-target-assembly-lists-itself-as-an-external-reference.html">Ilmerge. The target assembly lists itself as an external reference</a>
         </h4>
         <p>
-            I’ve made my mind to do this post just because I saw there wasn’t a solution to what happened to me with this problem, even though the solution to it was pretty naive to me.
-The thing is, in an ASP.NET project, I have a publish profile with precompilation enabled and with the advanced precompile option “Merge all outputs to a single assembly” enabled too.
-I decided to set to this output assembly my project name, something that seemed to me the right thing to do. But then, suddenly a misterious error showed up.
-
-    
-        
-    
-
-
-
+            I’ve made my mind to do this post just because I saw there wasn’t a solution to what happened to me with this problem, even though the solution to it was pretty naive to me. The thing is, in an ASP.NET project, I have a publish profile with precompilation enabled and with the advanced precompile option “Merge all outputs to a single assembly” enabled too. I decided to set to this output assembly my project name, something that seemed to me the right thing to do. But then, suddenly a misterious error showed up. An error occurred when merging assemblies:...
         </p>
     </div>
 </div>
@@ -243,7 +208,7 @@ I decided to set to this output assembly my project name, something that seemed 
         </div>
         <div id="footer-copy" class="row white-text">
             <div class="col s12">
-                © 2016-2020 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+                © 2016-2024 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
                Spain
             </div>
         </div>

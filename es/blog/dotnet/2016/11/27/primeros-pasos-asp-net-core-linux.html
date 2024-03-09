@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Jorgonor" />
 <meta property="og:image" content="https://jorgonor.com/img/posts/aspnetcore-logo.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2016-11-27T18:00:00+01:00" />
+<meta property="article:published_time" content="2016-11-27T17:00:00+00:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
@@ -33,7 +33,7 @@
 "@type": "BlogPosting",
 "headline": "Primeros pasos con ASP.NET Core sobre Linux",
 "image": "https://jorgonor.com/img/posts/aspnetcore-logo.png",
-"datePublished": "2016-11-27T18:00:00+01:00",
+"datePublished": "2016-11-27T17:00:00+00:00",
 "description": "Las promesas son una solución para implementar código asíncrono que aparece como una abstracción más avanzada con la que reemplazar los callbacks.",
 "url": "https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html"}</script>
 <!-- End Jekyll SEO tag -->
@@ -47,18 +47,15 @@
   <meta name="content-language" content="es">
   
 
-  <script>
-if (/jorgonor\.com/.test(location)) {
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    ga('create', 'UA-36061398-4', 'auto');
-    ga('send', 'pageview');
-}
+  gtag('config', 'G-4HH511444Z');
 </script>
-
   <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
@@ -124,12 +121,14 @@ la hora de desarrollar aplicaciones web.</p>
   <li>Seguimos los pasos para instalar .NET Core a través de los repositorios de Microsoft. <a href="https://www.microsoft.com/net/core#linuxubuntu">https://www.microsoft.com/net/core#linuxubuntu</a> Para ejecutar estos pasos basta con abrir una consola y ejecutar:</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Añadimos los repositorios a nuestro sistema</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Añadimos los repositorios a nuestro sistema
+</span>
 sudo sh -c <span class="s1">'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" &gt; /etc/apt/sources.list.d/dotnetdev.list'</span>
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
 sudo apt-get update
 
-<span class="c"># Instalamos .NET Core 1.1 y 1.0</span>
+<span class="c"># Instalamos .NET Core 1.1 y 1.0
+</span>
 sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121</code></pre></figure>
 
 <ul>
@@ -143,19 +142,24 @@ sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir DotNetCoreWeb <span class="o">&amp;&amp;</span> <span class="nb">cd </span>DotNetCoreWeb
 dotnet new -t web
 dotnet restore
-<span class="c"># Para instalar las dependencias del lado del cliente</span>
-<span class="c"># Necesitamos tener Node.js instalado</span>
+<span class="c"># Para instalar las dependencias del lado del cliente
+</span>
+<span class="c"># Necesitamos tener Node.js instalado
+</span>
 npm -g install bower gulp
 bower install
 npm install
 
-<span class="c"># Inicializamos la base de datos</span>
+<span class="c"># Inicializamos la base de datos
+</span>
 dotnet ef database update
 
-<span class="c"># Iniciamos el entorno para activar el modo desarrollo</span>
+<span class="c"># Iniciamos el entorno para activar el modo desarrollo
+</span>
 <span class="nb">export </span><span class="nv">ASPNETCORE_ENVIRONMENT</span><span class="o">=</span>development
 
-<span class="c"># Ejecutamos el proyecto</span>
+<span class="c"># Ejecutamos el proyecto
+</span>
 dotnet run</code></pre></figure>
 
 <p>Tras ejecutar estos comandos, podremos abrir un navegador a la URL <a href="http://localhost:5000" rel="nofollow" target="_blank">http://localhost:5000</a>
@@ -407,25 +411,35 @@ usando <a href="https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxpro
 y copiar el resultado de nuestra compilación a un directorio utilizable por el usuario <em>www-data</em>, como haríamos
 con un proyecto LAMP.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Compilamos en modo Release</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Compilamos en modo Release
+</span>
 dotnet publish -c Release
-<span class="c"># Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción</span>
+<span class="c"># Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción
+</span>
 cp -r bin/Release/netcoreapp1.1/publish/<span class="k">*</span> /var/aspnetcore/DotNetCoreWeb</code></pre></figure>
 
 <p>Finalmente, pasaremos a seguir los pasos descritos en la guía de Microsoft para crear un servicio manejado a través de <em>systemd</em>. Algo que esta guía no nos dice, es que en el descriptor del servicio,
 hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por eso, añadimos el descriptor del servicio utilizado en el proyecto de ejemplo.</p>
 
 <figure class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="nn">[Unit]</span>
-<span class="py">Description</span><span class="p">=</span><span class="s">.NET running on Ubuntu 16.04</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">.NET running on Ubuntu 16.04
+</span>
 
 <span class="nn">[Service]</span>
-<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll</span>
-<span class="py">Restart</span><span class="p">=</span><span class="s">always</span>
-<span class="py">RestartSec</span><span class="p">=</span><span class="s">10</span>
-<span class="py">SyslogIdentifier</span><span class="p">=</span><span class="s">dotnet-example</span>
-<span class="py">User</span><span class="p">=</span><span class="s">www-data</span>
-<span class="py">Environment</span><span class="p">=</span><span class="s">ASPNETCORE_ENVIRONMENT=Production</span>
-<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/var/aspnetcore/DotNetCoreWeb</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll
+</span>
+<span class="py">Restart</span><span class="p">=</span><span class="s">always
+</span>
+<span class="py">RestartSec</span><span class="p">=</span><span class="s">10
+</span>
+<span class="py">SyslogIdentifier</span><span class="p">=</span><span class="s">dotnet-example
+</span>
+<span class="py">User</span><span class="p">=</span><span class="s">www-data
+</span>
+<span class="py">Environment</span><span class="p">=</span><span class="s">ASPNETCORE_ENVIRONMENT=Production
+</span>
+<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/var/aspnetcore/DotNetCoreWeb
+</span>
 
 <span class="nn">[Install]</span>
 <span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span></code></pre></figure>
@@ -517,7 +531,7 @@ hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por 
         </div>
         <div id="footer-copy" class="row white-text">
             <div class="col s12">
-                © 2016-2020 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+                © 2016-2024 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
                Vila-real, Castellón España
             </div>
         </div>

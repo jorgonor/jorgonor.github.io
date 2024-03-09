@@ -42,18 +42,15 @@
   <meta name="content-language" content="es">
   
 
-  <script>
-if (/jorgonor\.com/.test(location)) {
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    ga('create', 'UA-36061398-4', 'auto');
-    ga('send', 'pageview');
-}
+  gtag('config', 'G-4HH511444Z');
 </script>
-
   <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
@@ -108,11 +105,7 @@ if (/jorgonor\.com/.test(location)) {
             <a class="post-link" href="/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html">Promesas con async/await y carga concurrente de recursos</a>
         </h4>
         <p>
-            En este mismo blog he hablado de la potencia de las promesas para manejar la comunicación cliente servidor de manera asíncrona en Javascript o, resumiendo, cualquier operación de entrada/salida.
-Como con cualquier poder viene la responsabilidad de gestionarlo correctamente, veremos en este post cómo configurar Webpack + Babel para poder utilizar async/await en nuestro proyecto Javascript para tener compatibilidad máxima
-y así utilizar esta sintaxis que nos ayudará a usar las promesas de una manera mucho más entendible.
-
-
+            En este mismo blog he hablado de la potencia de las promesas para manejar la comunicación cliente servidor de manera asíncrona en Javascript o, resumiendo, cualquier operación de entrada/salida. Como con cualquier poder viene la responsabilidad de gestionarlo correctamente, veremos en este post cómo configurar Webpack + Babel para poder utilizar async/await en nuestro proyecto Javascript para tener compatibilidad máxima y así utilizar esta sintaxis que nos ayudará a usar las promesas de una manera mucho más entendible. Configurando el proyecto Instalemos pues todo lo necesario para empezar el proyecto. Nuestro caso de uso va a ser un proyecto en...
         </p>
     </div>
 </div>
@@ -125,12 +118,7 @@ y así utilizar esta sintaxis que nos ayudará a usar las promesas de una manera
             <a class="post-link" href="/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html">Programación asíncrona con promesas</a>
         </h4>
         <p>
-            Las promesas son una solución para implementar código asíncrono que aparece con el objetivo de reemplazar
-a los callbacks. Al ser una abstracción más avanzada, las promesas permiten operaciones
-como esperar a que diversas operaciones asíncronas terminen de ejecutarse de manera concurrente, mejoran la legibilidad del código
-y facilitan el manejo de errores. En definitiva, no son simplemente una moda sino que también aportan ventajas competitivas frente a los callbacks.
-
-
+            Las promesas son una solución para implementar código asíncrono que aparece con el objetivo de reemplazar a los callbacks. Al ser una abstracción más avanzada, las promesas permiten operaciones como esperar a que diversas operaciones asíncronas terminen de ejecutarse de manera concurrente, mejoran la legibilidad del código y facilitan el manejo de errores. En definitiva, no son simplemente una moda sino que también aportan ventajas competitivas frente a los callbacks. Entendiendo las promesas Una promesa, como concepto, es un objeto que nos va a devolver un resultado cuando una operación haya finalizado. Este resultado puede ser o bien el valor...
         </p>
     </div>
 </div>
@@ -145,15 +133,7 @@ y facilitan el manejo de errores. En definitiva, no son simplemente una moda sin
             <a class="post-link" href="/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html">Nativescript. El sucesor natural de Ionic.</a>
         </h4>
         <p>
-            El desarrollo de aplicaciones móviles es hoy en día uno de los sectores de la informática más pujantes y, por ello,
-está mucho más expuesto a cambios disruptivos en su entorno. Dentro de este entorno tan competitivo, hace aparición
-Nativescript. Nativescript es una nueva tecnología open-source de 
-Telerik para poder desarrollar aplicaciones nativas para Android e iOS
-utilizando como lenguaje de programación Javascript, o también el nuevo primo-hermano de Microsoft, Typescript.
-Esta característica nativa es la que hace que el framework referencia para desarrollar apps en Javascript,
-Ionic, pueda verse reemplazado por Nativescript con el tiempo.
-
-
+            El desarrollo de aplicaciones móviles es hoy en día uno de los sectores de la informática más pujantes y, por ello, está mucho más expuesto a cambios disruptivos en su entorno. Dentro de este entorno tan competitivo, hace aparición Nativescript. Nativescript es una nueva tecnología open-source de Telerik para poder desarrollar aplicaciones nativas para Android e iOS utilizando como lenguaje de programación Javascript, o también el nuevo primo-hermano de Microsoft, Typescript. Esta característica nativa es la que hace que el framework referencia para desarrollar apps en Javascript, Ionic, pueda verse reemplazado por Nativescript con el tiempo. Qué ofrece y como...
         </p>
     </div>
 </div>
@@ -204,7 +184,7 @@ Ionic, pueda verse reemplazado por Nativescript con el tiempo.
         </div>
         <div id="footer-copy" class="row white-text">
             <div class="col s12">
-                © 2016-2020 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+                © 2016-2024 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
                Vila-real, Castellón España
             </div>
         </div>

@@ -5,8 +5,8 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Oct 2018 15:09:10 +0200</pubDate>
-    <lastBuildDate>Sun, 07 Oct 2018 15:09:10 +0200</lastBuildDate>
+    <pubDate>Sat, 09 Mar 2024 15:33:59 +0000</pubDate>
+    <lastBuildDate>Sat, 09 Mar 2024 15:33:59 +0000</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
     
@@ -95,7 +95,7 @@ sin tener que preocuparnos de si nuestro código es soportado directamente o no.
 por lo que en muchos casos nos será más natural utilizarlo que usar los métodos de la clase &lt;em&gt;Promise&lt;/em&gt;.
 Espero que con este pequeño tutorial os sea más fácil usarlo en vuestro código y conocer su potencia.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 30 Jun 2018 12:00:00 +0200</pubDate>
+        <pubDate>Sat, 30 Jun 2018 10:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html</guid>
         
@@ -127,12 +127,14 @@ la hora de desarrollar aplicaciones web.&lt;/p&gt;
   &lt;li&gt;Seguimos los pasos para instalar .NET Core a través de los repositorios de Microsoft. &lt;a href=&quot;https://www.microsoft.com/net/core#linuxubuntu&quot;&gt;https://www.microsoft.com/net/core#linuxubuntu&lt;/a&gt; Para ejecutar estos pasos basta con abrir una consola y ejecutar:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Añadimos los repositorios a nuestro sistema&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Añadimos los repositorios a nuestro sistema
+&lt;/span&gt;
 sudo sh -c &lt;span class=&quot;s1&quot;&gt;'echo &quot;deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main&quot; &amp;gt; /etc/apt/sources.list.d/dotnetdev.list'&lt;/span&gt;
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
 sudo apt-get update
 
-&lt;span class=&quot;c&quot;&gt;# Instalamos .NET Core 1.1 y 1.0&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Instalamos .NET Core 1.1 y 1.0
+&lt;/span&gt;
 sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
@@ -146,19 +148,24 @@ sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir DotNetCoreWeb &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;DotNetCoreWeb
 dotnet new -t web
 dotnet restore
-&lt;span class=&quot;c&quot;&gt;# Para instalar las dependencias del lado del cliente&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Necesitamos tener Node.js instalado&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Para instalar las dependencias del lado del cliente
+&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Necesitamos tener Node.js instalado
+&lt;/span&gt;
 npm -g install bower gulp
 bower install
 npm install
 
-&lt;span class=&quot;c&quot;&gt;# Inicializamos la base de datos&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Inicializamos la base de datos
+&lt;/span&gt;
 dotnet ef database update
 
-&lt;span class=&quot;c&quot;&gt;# Iniciamos el entorno para activar el modo desarrollo&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Iniciamos el entorno para activar el modo desarrollo
+&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ASPNETCORE_ENVIRONMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;development
 
-&lt;span class=&quot;c&quot;&gt;# Ejecutamos el proyecto&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Ejecutamos el proyecto
+&lt;/span&gt;
 dotnet run&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Tras ejecutar estos comandos, podremos abrir un navegador a la URL &lt;a href=&quot;http://localhost:5000&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;http://localhost:5000&lt;/a&gt;
@@ -410,25 +417,35 @@ usando &lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/publishing/
 y copiar el resultado de nuestra compilación a un directorio utilizable por el usuario &lt;em&gt;www-data&lt;/em&gt;, como haríamos
 con un proyecto LAMP.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Compilamos en modo Release&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Compilamos en modo Release
+&lt;/span&gt;
 dotnet publish -c Release
-&lt;span class=&quot;c&quot;&gt;# Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción
+&lt;/span&gt;
 cp -r bin/Release/netcoreapp1.1/publish/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /var/aspnetcore/DotNetCoreWeb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Finalmente, pasaremos a seguir los pasos descritos en la guía de Microsoft para crear un servicio manejado a través de &lt;em&gt;systemd&lt;/em&gt;. Algo que esta guía no nos dice, es que en el descriptor del servicio,
 hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por eso, añadimos el descriptor del servicio utilizado en el proyecto de ejemplo.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;nn&quot;&gt;[Unit]&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.NET running on Ubuntu 16.04&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.NET running on Ubuntu 16.04
+&lt;/span&gt;
 
 &lt;span class=&quot;nn&quot;&gt;[Service]&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;SyslogIdentifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;dotnet-example&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;www-data&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ASPNETCORE_ENVIRONMENT=Production&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/aspnetcore/DotNetCoreWeb&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;always
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;SyslogIdentifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;dotnet-example
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;www-data
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ASPNETCORE_ENVIRONMENT=Production
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/aspnetcore/DotNetCoreWeb
+&lt;/span&gt;
 
 &lt;span class=&quot;nn&quot;&gt;[Install]&lt;/span&gt;
 &lt;span class=&quot;py&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;multi-user.target&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -441,7 +458,7 @@ hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por 
   &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction&quot;&gt;Publicar un proyecto ASP.NET Core en Linux&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Sun, 27 Nov 2016 18:00:00 +0100</pubDate>
+        <pubDate>Sun, 27 Nov 2016 17:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html</guid>
         
@@ -755,7 +772,7 @@ entran dentro del estándar EcmaScript 7 por lo que en el futuro la funcionalida
     &lt;li&gt;&lt;a href=&quot;http://kangax.github.io/compat-table/es6/&quot;&gt;Tabla compatibilidad ES6&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Fri, 10 Jun 2016 22:00:00 +0200</pubDate>
+        <pubDate>Fri, 10 Jun 2016 20:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html</guid>
         
@@ -839,7 +856,7 @@ mientras que Ionic podría llegar el mismo a incorporarlas dentro de su framewor
 esta mejora en experiencia UI. En el futuro próximo, veremos si &lt;strong&gt;Nativescript&lt;/strong&gt;
 se convierte en referencia, &lt;strong&gt;Ionic Framework&lt;/strong&gt; se mantiene u otras soluciones ganan protagonismo.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 01 May 2016 11:30:00 +0200</pubDate>
+        <pubDate>Sun, 01 May 2016 09:30:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html</guid>
         
@@ -931,7 +948,7 @@ e incorpora pestañas. Dentro de él se pueden ejecutar Cygwin, Git Bash o inclu
 &lt;p&gt;Ahora no nos queda más que esperar a nuevas noticias para poder aumentar nuestra productividad en Windows para aquellos que nos manejamos
 bien sobre el viejo pero increiblemente productivo Bash.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 04 Apr 2016 21:30:00 +0200</pubDate>
+        <pubDate>Mon, 04 Apr 2016 19:30:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html</guid>
         
@@ -1016,7 +1033,7 @@ pueden ejercitar nuestro yo pragmático e ir abriendo nuestra mente hacia una me
 permitan conseguir productos mejores y más mantenibles. Y con este objetivo, con el fin de ahorrar costes y conseguir
 productos mejores es porqué hay que ser pragmáticos.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 23 Mar 2016 22:00:00 +0100</pubDate>
+        <pubDate>Wed, 23 Mar 2016 21:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/2016/03/23/desarrollando-software-porque-ser-pragmatico.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/2016/03/23/desarrollando-software-porque-ser-pragmatico.html</guid>
         
@@ -1111,7 +1128,7 @@ rigor para aplicar este tipo de herramientas a aplicaciones que no siguen ningun
 a desarrollar sin tener estas tecnologías en cuenta porque aún no existían. A pesar de ello, siempre es bueno aplicarlas hasta un cierto nivel así que
 anímate a probar &lt;strong&gt;Quality Analyzer&lt;/strong&gt; y averigua qué problemas de calidad tiene tu código.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 24 Nov 2015 23:00:00 +0100</pubDate>
+        <pubDate>Tue, 24 Nov 2015 22:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/php/2015/11/24/analizadores-codigo-php.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/php/2015/11/24/analizadores-codigo-php.html</guid>
         
@@ -1200,7 +1217,7 @@ de informes, si utilizas Metabase gran parte del tiempo que utilizaban en estas 
 que aporten más valor a la compañía. Por tanto, si no estás utilizando ninguna solución de Business Intelligence, Metabase es una buena
 manera de comenzar.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 27 Oct 2015 19:00:00 +0100</pubDate>
+        <pubDate>Tue, 27 Oct 2015 18:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/informes/2015/10/27/metabase.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/informes/2015/10/27/metabase.html</guid>
         
@@ -1296,7 +1313,7 @@ no tiene ningún sentido acceder a esa variable de ese modo, y simplemente no de
 
 &lt;p&gt;El código anterior en ambas versiones funciona y escribiría 1, cosa no deseable en mi opinión.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 26 Oct 2015 22:30:00 +0100</pubDate>
+        <pubDate>Mon, 26 Oct 2015 21:30:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/php/2015/10/26/foreach-en-php7.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/php/2015/10/26/foreach-en-php7.html</guid>
         
@@ -1482,7 +1499,7 @@ algo básico en otros lenguajes de alto nivel enfocados al uso general como Java
 De todos modos, para estar a la última, es importante ir viendo las mejoras que aporta esta nueva versión ya que más pronto o
 más tarde nos va a tocar hacer proyectos con él, y por las mejoras que introduce PHP7 viene para quedarse.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 26 Oct 2015 22:00:00 +0100</pubDate>
+        <pubDate>Mon, 26 Oct 2015 21:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/php/2015/10/26/php7-ya-esta-aqui.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/php/2015/10/26/php7-ya-esta-aqui.html</guid>
         
@@ -1523,10 +1540,14 @@ desarrollar esa misma solución en igualdad de condiciones para tal cantidad de 
 es necesario realizar unos ajustes para que mucho trabajo hecho por el framework se reutilice entre peticiones. Una de las optimizaciones
 más increibles de &lt;em&gt;Symfony2&lt;/em&gt; tiene que ver con su ORM por defecto, &lt;em&gt;Doctrine2&lt;/em&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;s&quot;&gt;doctrine&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;orm&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;metadata_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;result_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;s&quot;&gt;doctrine:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;orm:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;metadata_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;result_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;
         &lt;span class=&quot;s&quot;&gt;query_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Como podemos ver en el ejemplo anterior, se puede configurar diferentes tipos de caché para Doctrine2. La caché de metadatos
@@ -1551,7 +1572,7 @@ rendimiento.&lt;/p&gt;
 Este post lo he escrito sobretodo debido a que, aunque menos que antes, sigue existiendo el mantra de que los frameworks son demasiado lentos, sin
 tener en cuenta cómo aceleran el proceso de desarrollo y facilitan el uso de patrones de diseño.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 09 Oct 2015 12:00:00 +0200</pubDate>
+        <pubDate>Fri, 09 Oct 2015 10:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html</guid>
         
@@ -1651,7 +1672,7 @@ tener en cuenta cómo aceleran el proceso de desarrollo y facilitan el uso de pa
     Espero que sea de ayuda, ya que no he sido capaz de encontrar ningún recurso al respecto en google.
 &lt;/p&gt;
 </description>
-        <pubDate>Tue, 09 Jul 2013 22:50:00 +0200</pubDate>
+        <pubDate>Tue, 09 Jul 2013 20:50:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/web/2013/07/evitar-error-reporting-produccion-code-igniter.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/web/2013/07/evitar-error-reporting-produccion-code-igniter.html</guid>
         
@@ -1733,7 +1754,7 @@ tener en cuenta cómo aceleran el proceso de desarrollo y facilitan el uso de pa
 &lt;p&gt;Bueno, espero que el post os sea de ayuda para lidiar con CakePHP y su ORM.&lt;/p&gt;
 &lt;p&gt;Saludos y salud!&lt;/p&gt;
 </description>
-        <pubDate>Thu, 28 Feb 2013 20:17:00 +0100</pubDate>
+        <pubDate>Thu, 28 Feb 2013 19:17:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/2013/02/eliminar-campos-created-modified-o.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/2013/02/eliminar-campos-created-modified-o.html</guid>
         
@@ -2147,7 +2168,7 @@ tener en cuenta cómo aceleran el proceso de desarrollo y facilitan el uso de pa
     Y eso compilando sin usar opción alguna de optimización. Asombroso.
 &lt;/p&gt;
 </description>
-        <pubDate>Tue, 25 Dec 2012 20:26:00 +0100</pubDate>
+        <pubDate>Tue, 25 Dec 2012 19:26:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html</guid>
         
@@ -2194,7 +2215,7 @@ apt-get install mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Ta otra!&lt;/p&gt;
 </description>
-        <pubDate>Tue, 18 Dec 2012 23:44:00 +0100</pubDate>
+        <pubDate>Tue, 18 Dec 2012 22:44:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/2012/12/migrar-mysql-a-mariadb.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/2012/12/migrar-mysql-a-mariadb.html</guid>
         
@@ -2318,7 +2339,7 @@ Este fragmento de código devuelve un array vacío, dado que nunca tenemos un va
     y examinaremos más mecanismos que ofrece el lenguaje para desarrollar utilizando la programación funcional.
 &lt;/p&gt;
 </description>
-        <pubDate>Fri, 07 Dec 2012 20:24:00 +0100</pubDate>
+        <pubDate>Fri, 07 Dec 2012 19:24:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/php/2012/12/07/php-funcional.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/php/2012/12/07/php-funcional.html</guid>
         
@@ -2385,7 +2406,7 @@ Este fragmento de código devuelve un array vacío, dado que nunca tenemos un va
 
 &lt;p&gt;Les deseo una buena tarde de domingo y espero que les sea útil seguir a todas estas personalidades.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 25 Nov 2012 16:37:00 +0100</pubDate>
+        <pubDate>Sun, 25 Nov 2012 15:37:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/2012/11/cuentas-twitter-php-programador-desarrollador.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/2012/11/cuentas-twitter-php-programador-desarrollador.html</guid>
         
@@ -2476,7 +2497,7 @@ vim /etc/apache2/sites-available/default&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;¡Hasta la próxima!&lt;/p&gt;
 </description>
-        <pubDate>Sat, 03 Nov 2012 12:56:00 +0100</pubDate>
+        <pubDate>Sat, 03 Nov 2012 11:56:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/web/2012/11/programacion-web-python-apache-server.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/web/2012/11/programacion-web-python-apache-server.html</guid>
         
@@ -2487,115 +2508,6 @@ vim /etc/apache2/sites-available/default&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
         <category>página web</category>
         
         <category>WSGI</category>
-        
-        
-        <category>es</category>
-        
-        <category>blog</category>
-        
-        <category>web</category>
-        
-      </item>
-    
-      <item>
-        <title>Como hacer una página web gratis</title>
-        <description>&lt;h2&gt;¿Cómo hago mi página web gratis?&lt;/h2&gt;
-&lt;p&gt;Es una pregunta que nos solemos hacer a la hora de empezar en el mundo web
-    Pues bien, no hay que alarmarse porque ahí fuera hay una gran variedad de hostings web gratuitos que nos permiten hostear nuestra Web o bien nuestro blog dependiendo de cual sea nuestro objetivo.
-&lt;/p&gt;
-&lt;h3&gt;Opciones de hosting&lt;/h3&gt;
-&lt;p&gt;Vamos a enumerar algunas de las opciones de hosting gratuito que tenemos para tener nuestra página web.&lt;/p&gt;
-&lt;h4&gt;000webhost.com&lt;/h4&gt;
-&lt;p&gt;
-    &lt;a href=&quot;http://www.000webhost.com/&quot; target=&quot;_blank&quot; &gt;000webhost.com&lt;/a&gt; es, probablemente, el hosting gratuito más famoso de todos.
-    Tiene algunas pegas como los anuncios por defecto que el hosting introduce en tu portal, pero no está nada mal para comenzar y trastear mínimamente con ello.
-&lt;/p&gt;
-&lt;h4&gt;Wordpress&lt;/h4&gt;
-&lt;p&gt;Para aquellos que lo que necesitan es un blog gratis, Wordpress es un buen lugar donde empezar.
-¿Quién no conoce un amigo que utiliza Wordpress para su blog personal?
-Wordpress permite una buena configuración de tu blog, un gran margen de maniobra y además en su propia página web
-&lt;a href=&quot;http://www.wordpress.com&quot; target=&quot;_blank&quot;&gt;wordpress.com&lt;/a&gt;
-ofrecen un hosting gratis donde establecer tu blog.
-&lt;/p&gt;
-&lt;h4&gt;Blogger&lt;/h4&gt;
-&lt;p&gt;
-    Como otra opción para los blogueros nos encontramos con &lt;a href=&quot;http://www.blogger.com&quot;&gt;Blogger&lt;/a&gt;.
-    Blogger es la opción de google en el mundo de los blogs gratuitos.
-    Tiene un sistema bastante bueno, y la gran ventaja que ofrece es que te da estadísticas de las visitas integradas con el sistema Google Analytics las cuales
-    nos proporcionan gran parte de información. Y bueno, si consigues un número considerable de visitas,
-    ¿por qué no incluir Google Adsense en tu blog y rentabilizar ese tráfico?
-&lt;/p&gt;
-
-&lt;h3&gt;Ya tengo mi hosting. Ahora, ¿por donde empiezo?&lt;/h3&gt;
-&lt;p&gt;
-    Bueno, está claro que si no tienes experiencia puede resultar algo duro el inicio.
-    Antes de crear tu página debes tener unos conocimientos mínimos del lenguaje de marcado HTML.
-    Encontrarás miles de recursos en google por donde empezar, pero la verdad es que la única fuente de conocimiento válida terminará siendo tu práctica personal :).
-&lt;/p&gt;
-&lt;p&gt;
-    HTML es el comienzo, pero si utilizamos solamente HTML pronto te encontrarás con una enorme limitación,
-    ya que tus páginas web serán estáticas. Para conseguir páginas dinámicas necesitas unos conceptos básicos
-    de programación. Dependiendo de cual sea tu nivel en estos momentos, puedes saltarte la siguiente sección.
-&lt;/p&gt;    
-    
-&lt;h3&gt;PHP, Javascript u otros lenguajes&lt;/h3&gt;
-
-&lt;p&gt;
-    Antes de meternos en el tema de los lenguajes, debemos empezar por las dos maneras de añadir variabilidad
-    a una página Web. Podemos devolver un HTML diferente desde nuestro servidor,
-    por lo que utilizaremos un lenguaje de programación en nuestro servidor (sería el caso de PHP) o bien podemos
-    añadir el dinamismo en el cliente, aunque sin datos del servidor tampoco se puede hacer gran cosa.
-    Este sería el caso de Javascript.
-&lt;/p&gt;
-
-&lt;p&gt;
-    Por tradición, cuando se habla de páginas web dinámicas, todo el mundo se acuerda de PHP.
-    &lt;a href=&quot;http://php.net&quot; target=&quot;_blank&quot;&gt;PHP&lt;/a&gt; es la &lt;i&gt;lingua franca&lt;/i&gt; en el desarrollo Web.
-    Es un lenguaje que destaca por la facilidad de aprendizaje.
-&lt;/p&gt;
-
-&lt;p&gt;Javascript, en cambio, es la única opción que existe en el cliente para desarrollar páginas dinámicas.&lt;/p&gt;
-&lt;p&gt;
-    Entonces, ¿qué lenguaje aprendo? Pues aquí es donde viene el golpe más duro. Da igual.
-    Debes empezar por aprender a resolver problemas fáciles en tu lenguaje de programación.
-    A aprender a utilizar las estructuras de este como son los condicionales, bucles y funciones.
-    Aconsejo opinión, el mejor lenguaje de programación para aprender a programar es &lt;a href=&quot;http://www.python.org/&quot; target=&quot;_blank&quot;&gt;Python&lt;/a&gt;.
-    Python es un lenguaje sintácticamente limpio y que tiene una baja curva de aprendizaje.
-    Además, también se pueden desarrollar páginas web con él.
-&lt;/p&gt;
-
-&lt;p&gt;
-    Pero, ¿por qué si Python tiene más ventajas que PHP todos los hostings gratuitos me ofrecen PHP?
-    Por su extendido uso, PHP sigue siendo la opción por defecto de estos hostings.
-    Además, suele dar un poco más de trabajo configurar un servidor para utilizar Python en él, por lo que suele ser uno de los motivos por el que los hostings
-    gratuitos lo incluyen en los planes de pago.
-&lt;/p&gt;
-
-&lt;h3&gt;¿Qué hago ahora?&lt;/h3&gt;
-
-&lt;p&gt;
-    Mi consejo es que empieces por algunos conceptos básicos sobre HTML y páginas dinámicas.
-    Dependiendo de tus conocimientos actuales, puedes decantarte por utilizar PHP que requiere una menor configuración
-    utilizando en tu máquina un &lt;a href=&quot;http://www.wampserver.com/en/&quot; target=&quot;_blank&quot;&gt;WAMP&lt;/a&gt; en una máquina Windows o bien utilizando el servidor apache con mod_php5 en una máquina Linux.
-&lt;/p&gt;
-
-&lt;p&gt;Si tienes más conocimientos, puedes aventurarte en instalar mod_python o mod_wsgi en Apache e utilizar Python en el servidor.&lt;/p&gt;
-
-&lt;p&gt;En posteriores posts, trataremos de configurar un servidor utilizando Python como lenguaje del lado servidor y mostraremos algunos conceptos básicos sobre como realizar una pequeña página Web.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 06 Oct 2012 18:25:00 +0200</pubDate>
-        <link>https://jorgonor.com/es/blog/web/2012/10/como-hacer-una-pagina-web-gratis.html</link>
-        <guid isPermaLink="true">https://jorgonor.com/es/blog/web/2012/10/como-hacer-una-pagina-web-gratis.html</guid>
-        
-        <category>HTML</category>
-        
-        <category>Python</category>
-        
-        <category>página web</category>
-        
-        <category>Javascript</category>
-        
-        <category>PHP</category>
         
         
         <category>es</category>
@@ -3152,7 +3064,7 @@ Espero algún comentario que rebata este benchmark, sobretodo si viene de usuari
 
 Esto es todo por hoy, espero seguir dando actividad al blog y hablando de PHP, Javascript y Web en general.
 </description>
-        <pubDate>Sat, 29 Sep 2012 20:53:00 +0200</pubDate>
+        <pubDate>Sat, 29 Sep 2012 18:53:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html</guid>
         

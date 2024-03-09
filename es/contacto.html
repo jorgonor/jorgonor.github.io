@@ -42,18 +42,15 @@
   <meta name="content-language" content="es">
   
 
-  <script>
-if (/jorgonor\.com/.test(location)) {
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    ga('create', 'UA-36061398-4', 'auto');
-    ga('send', 'pageview');
-}
+  gtag('config', 'G-4HH511444Z');
 </script>
-
   <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
@@ -103,14 +100,20 @@ if (/jorgonor\.com/.test(location)) {
                 Contacta conmigo para cualquier tipo de consulta o proyecto para el que estés interesado.
 
 <div class="row">
-    <form id="frm_contact" class="col s12" action="https://formspree.io/mknqeabj" method="POST">
+    <form id="frm_contact" class="col s12" data-action="/scripts/contact.php?l=es" method="POST">
         <div class="row">
             <div class="input-field col s12">
-                <input id="_replyto" name="_replyto" type="email" class="validate" required>
-                <label for="_replyto">e-mail *</label>
+                <input id="email" name="email" type="email" class="validate" required>
+                <label for="email">e-mail *</label>
             </div>
         </div>
 
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="subject" name="subject" type="text" class="validate" required>
+                <label for="subject">Asunto *</label>
+            </div>
+        </div>
         <div class="row">
             <div class="input-field col s12">
                 <textarea id="message" name="message" type="text" class="materialize-textarea" required ></textarea>
@@ -118,8 +121,26 @@ if (/jorgonor\.com/.test(location)) {
             </div>
         </div>
         <div class="row">
+            <div class="input-field col s12">
+                <div class="g-recaptcha" data-sitekey="6LfWog4TAAAAAGgVEfu8l2ylFBRkOToJq6wwhPov"></div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col s12">
                 <button type="submit" class="waves-effect waves-light btn indigo">Enviar<i class="material-icons right">send</i></button>
+                <div id="preloader" class="preloader-wrapper small">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
@@ -128,6 +149,29 @@ if (/jorgonor\.com/.test(location)) {
 <div class="row">
   
 </div>
+<script>
+    $('#frm_contact').submit(function(evt) {
+    evt.preventDefault();
+    $('#frm_contact button[type="submit"]').prop('disabled', true);
+    $('#preloader').addClass('active');
+    $.post($(this).data('action'), $(this).serializeArray(), function(response) {
+        $('#frm_contact button[type="submit"]').prop('disabled', false);
+        $('#preloader').removeClass('active');
+        if (window.Materialize && Materialize.toast) {
+            var message;
+            if (response.error === 0) {
+                message = "Mensaje enviado correctamente";
+            } else {
+                message = "Verifica que no eres un robot";
+            }
+
+            Materialize.toast(message, 4000);
+        }
+    });
+});
+</script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
 
             </div>
         </div>
@@ -173,7 +217,7 @@ if (/jorgonor\.com/.test(location)) {
         </div>
         <div id="footer-copy" class="row white-text">
             <div class="col s12">
-                © 2016-2020 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+                © 2016-2024 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
                Vila-real, Castellón España
             </div>
         </div>

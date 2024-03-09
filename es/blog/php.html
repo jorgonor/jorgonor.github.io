@@ -42,18 +42,15 @@
   <meta name="content-language" content="es">
   
 
-  <script>
-if (/jorgonor\.com/.test(location)) {
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    ga('create', 'UA-36061398-4', 'auto');
-    ga('send', 'pageview');
-}
+  gtag('config', 'G-4HH511444Z');
 </script>
-
   <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
@@ -108,11 +105,7 @@ if (/jorgonor\.com/.test(location)) {
             <a class="post-link" href="/es/blog/php/2015/11/24/analizadores-codigo-php.html">Analizadores estáticos del código para PHP</a>
         </h4>
         <p>
-            El ecosistema PHP ha mejorado mucho en los últimos años. Aún así, en el campo de los analizadores estáticos de código, PHP sigue sin destacar demasiado, probablemente
-debido a su naturaleza dinámica. A pesar de ello, algunas de estas herramientas están empezando a aparecer. En este post vamos a recoger algunas de 
-las herramientas más clásicas y los primeros analizadores estáticos de código para PHP.
-
-
+            El ecosistema PHP ha mejorado mucho en los últimos años. Aún así, en el campo de los analizadores estáticos de código, PHP sigue sin destacar demasiado, probablemente debido a su naturaleza dinámica. A pesar de ello, algunas de estas herramientas están empezando a aparecer. En este post vamos a recoger algunas de las herramientas más clásicas y los primeros analizadores estáticos de código para PHP. PHP Code Sniffer PHP Code Sniffer es lo que conocemos como un linter, analiza que cumplamos con unas reglas básicas en el código que podemos compartir con el equipo de desarrollo, asegurándonos que todos cumplen...
         </p>
     </div>
 </div>
@@ -127,11 +120,7 @@ las herramientas más clásicas y los primeros analizadores estáticos de códig
             <a class="post-link" href="/es/blog/php/2015/10/26/foreach-en-php7.html">Foreach en PHP7</a>
         </h4>
         <p>
-            La nueva versión de PHP7 ya está aquí, y esta nueva versión introduce cambios no compatibles a la sentencia foreach.
-Así como detallamos gran parte de las nuevas funcionalidades y detalles de compatibilidad en el anterior post PHP7 ya está aquí,
-en este post vamos a centrarnos de manera detallada en los cambios sobre la sentencia foreach.
-
-
+            La nueva versión de PHP7 ya está aquí, y esta nueva versión introduce cambios no compatibles a la sentencia foreach. Así como detallamos gran parte de las nuevas funcionalidades y detalles de compatibilidad en el anterior post PHP7 ya está aquí, en este post vamos a centrarnos de manera detallada en los cambios sobre la sentencia foreach. El puntero al array no se modifica dentro de la sentencia Dentro de una sentencia foreach el puntero al array no será modificado. Por tanto, si has utilizado funciones como current dentro de esta sentencia, tendrás que tener en cuenta esto a la...
         </p>
     </div>
 </div>
@@ -144,13 +133,7 @@ en este post vamos a centrarnos de manera detallada en los cambios sobre la sent
             <a class="post-link" href="/es/blog/php/2015/10/26/php7-ya-esta-aqui.html">PHP7. La nueva versión de PHP ya está aquí.</a>
         </h4>
         <p>
-            Sí señores, PHP7 ya está aquí. Solamente tienes que entrar en php.net para poder descargarlo y hacer tus pruebas con él.
-Y, ¿qué nos aporta esta nueva versión del lenguaje? Lo que más destaca es su mejora sustancial de rendimiento. Zend ha hecho
-la siguiente infografía en la cual se puede ver como anuncian una mejora del rendimiento de 2 veces más rápido!.
-Esto puede significar la mitad de infraestructura de servidores para tus proyectos, la mitad de tiempo de proceso.
-En definitiva una mejora de gran magnitud para el ecosistema PHP.
-
-
+            Sí señores, PHP7 ya está aquí. Solamente tienes que entrar en php.net para poder descargarlo y hacer tus pruebas con él. Y, ¿qué nos aporta esta nueva versión del lenguaje? Lo que más destaca es su mejora sustancial de rendimiento. Zend ha hecho la siguiente infografía en la cual se puede ver como anuncian una mejora del rendimiento de 2 veces más rápido!. Esto puede significar la mitad de infraestructura de servidores para tus proyectos, la mitad de tiempo de proceso. En definitiva una mejora de gran magnitud para el ecosistema PHP. Rendimiento Zend también publicó esta otra infografía en...
         </p>
     </div>
 </div>
@@ -165,11 +148,7 @@ En definitiva una mejora de gran magnitud para el ecosistema PHP.
             <a class="post-link" href="/es/blog/php/2015/10/09/symfony2-no-es-lento.html">Symfony2 no es lento</a>
         </h4>
         <p>
-            Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos
-de esos benchmarks no sacan todo el jugo a las distintas tecnologías que se comparan, simplemente por una cuestión de tiempo y
-conocimiento sobre ellas. Y Symfony2 suele salir bastante perjudicado en los benchmarks, a pesar de que Symfony2 no es lento.
-
-
+            Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos de esos benchmarks no sacan todo el jugo a las distintas tecnologías que se comparan, simplemente por una cuestión de tiempo y conocimiento sobre ellas. Y Symfony2 suele salir bastante perjudicado en los benchmarks, a pesar de que Symfony2 no es lento. Los benchmarks parecen ser siempre el argumento definitivo en las temidas flame wars, cuando un fanboy de una tecnología se saca de la manga el rendimiento, muchas veces sentimos que es un...
         </p>
     </div>
 </div>
@@ -202,9 +181,7 @@ En este post vamos a tratar de explicar más o menos de que trata la programaci�
             <a class="post-link" href="/es/blog/php/2012/09/29/php-frameworks-benchmark.html">Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii)</a>
         </h4>
         <p>
-            Hola a todos,
-
-
+            Hola a todos, Hoy llueve y hace algo de frío. El otoño ha venido y, bueno, qué mejor que un poco de programación para pasar la tarde. Entremos al punto a tratar en este post. He realizado un pequeño código con tres frameworks PHP de los más utilizados. CakePHP es el framework que utilizo en mi día a día y que en cierto modo da buenos resultados, pero que para proyectos de cierto tamaño puede llegar a quedarse corto. Symfony2 es el framework de moda en el mundo PHP, el mejor en cuanto a calidad del código y aplicación de...
         </p>
     </div>
 </div>
@@ -255,7 +232,7 @@ En este post vamos a tratar de explicar más o menos de que trata la programaci�
         </div>
         <div id="footer-copy" class="row white-text">
             <div class="col s12">
-                © 2016-2020 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
+                © 2016-2024 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
                Vila-real, Castellón España
             </div>
         </div>

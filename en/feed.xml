@@ -5,8 +5,8 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Oct 2018 15:09:10 +0200</pubDate>
-    <lastBuildDate>Sun, 07 Oct 2018 15:09:10 +0200</lastBuildDate>
+    <pubDate>Sat, 09 Mar 2024 15:33:59 +0000</pubDate>
+    <lastBuildDate>Sat, 09 Mar 2024 15:33:59 +0000</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
     
@@ -35,7 +35,7 @@ in the Output tab. Have a look at the screenshot below.&lt;/p&gt;
 idea would be even to generate a neat report from these messages. However, for quick and dirty debugging,
 this trick works.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 29 May 2017 22:00:00 +0200</pubDate>
+        <pubDate>Mon, 29 May 2017 20:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html</guid>
         
@@ -110,7 +110,7 @@ values or making helper methods to object attributes. For example, calculate the
 The best advice is to keep always in mind that &lt;strong&gt;properties are an abstraction to fields&lt;/strong&gt;. Keep that in mind
 when writing your properties and WTFs will decrease in your codebase.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 04 Feb 2017 17:30:00 +0100</pubDate>
+        <pubDate>Sat, 04 Feb 2017 16:30:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html</guid>
         
@@ -160,7 +160,7 @@ Data Source=MSSQL; Initial Catalog=AdventureWorks; Integrated Security=SSPI; Mul
 
 &lt;p&gt;Hope this helps!&lt;/p&gt;
 </description>
-        <pubDate>Sat, 06 Aug 2016 18:30:00 +0200</pubDate>
+        <pubDate>Sat, 06 Aug 2016 16:30:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html</guid>
         
@@ -299,7 +299,7 @@ from that.&lt;/p&gt;
 
 &lt;p&gt;I hope this helps and if you implement any alternative don’t hesitate to share in comments!&lt;/p&gt;
 </description>
-        <pubDate>Mon, 04 Jul 2016 23:00:00 +0200</pubDate>
+        <pubDate>Mon, 04 Jul 2016 21:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html</guid>
         
@@ -389,7 +389,7 @@ are not so valued by developers as they should be.
 We’ll see in the near future if &lt;strong&gt;Nativescript&lt;/strong&gt; becomes the reference
 in hybrid app development, or &lt;strong&gt;Ionic Framework&lt;/strong&gt; stands still in its current top position.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 06 May 2016 23:00:00 +0200</pubDate>
+        <pubDate>Fri, 06 May 2016 21:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/javascript/2016/05/06/nativescript-native-alternative-to-ionic.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/javascript/2016/05/06/nativescript-native-alternative-to-ionic.html</guid>
         
@@ -434,7 +434,7 @@ So I had wasted a morning because of something so simple…&lt;/p&gt;
 
 &lt;p&gt;I hope this post now prevents you from losing yours. Please try it out, because &lt;strong&gt;in my case it worked!&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 05 Feb 2016 20:00:00 +0100</pubDate>
+        <pubDate>Fri, 05 Feb 2016 19:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2016/02/05/ilmerge-target-assembly-lists-itself-as-an-external-reference.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2016/02/05/ilmerge-target-assembly-lists-itself-as-an-external-reference.html</guid>
         
@@ -606,7 +606,7 @@ that might have considerably improved the language. But I suppose PHP mantainers
 So, to finish with this post, developers must keep updated, so it is important to know which are the new features provided by this new version
 because sooner or later this version will become the standard. And the sooner the better. PHP7 has performance and behaviour improvements that can’t be skipped. PHP7 is here to make the Web better.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 27 Oct 2015 19:00:00 +0100</pubDate>
+        <pubDate>Tue, 27 Oct 2015 18:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/php/2015/10/27/php7-the-new-php-version-is-here.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/php/2015/10/27/php7-the-new-php-version-is-here.html</guid>
         
@@ -687,7 +687,7 @@ Even though, it’s not a lot when installed on a server and with the amount of 
 free! Apart from that, if some developers are working on reporting solutions, they will be free to work on other important tasks.
 So, if you aren’t using any business intelligence solution, Metabase is a good solution for you.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 24 Oct 2015 18:30:00 +0200</pubDate>
+        <pubDate>Sat, 24 Oct 2015 16:30:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/reporting/2015/10/24/metabase.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/reporting/2015/10/24/metabase.html</guid>
         
@@ -722,10 +722,14 @@ with a good performance some extra tweaks must be done. But this is just having 
 to do with the code you’ve developed. As an example, I will show the optimization that has given me better results, an optimization for
 the ORM that comes with &lt;strong&gt;Symfony2&lt;/strong&gt;, &lt;em&gt;Doctrine2&lt;/em&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;s&quot;&gt;doctrine&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;orm&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;metadata_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;result_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;s&quot;&gt;doctrine:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;orm:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;metadata_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;result_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
+&lt;/span&gt;
         &lt;span class=&quot;s&quot;&gt;query_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;As you can see in the previous example, different sorts of caches can be configured for Doctrine2. The metadata cache
@@ -739,7 +743,7 @@ About cache engines, Symfony2 offers other cache engines, not only APC like Redi
 &lt;p&gt;And this is just one of the optimizations that can be done. The Internet is full of resources with tutorials and instructions to improve
 your Symfony2 application performance critically like &lt;a href=&quot;http://www.slideshare.net/ricardclau/scaling-with-symfony-php-uk&quot;&gt;this one&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 09 Oct 2015 12:30:00 +0200</pubDate>
+        <pubDate>Fri, 09 Oct 2015 10:30:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/php/2015/10/09/symfony2-is-not-slow.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/php/2015/10/09/symfony2-is-not-slow.html</guid>
         
@@ -783,7 +787,7 @@ apt-get install mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
     And to finish the post, a warning, &lt;strong&gt;do not test this in live environment unless you have tested it properly!&lt;/strong&gt;
 &lt;/p&gt;
 </description>
-        <pubDate>Sun, 06 Sep 2015 17:00:00 +0200</pubDate>
+        <pubDate>Sun, 06 Sep 2015 15:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/2015/09/06/how-to-migrate-mysql-to-mariadb.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/2015/09/06/how-to-migrate-mysql-to-mariadb.html</guid>
         
@@ -913,7 +917,7 @@ apt-get install mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
     I hope you've got the gist of this technique. Don't mind using it in real world applications!!
 &lt;/p&gt;
 </description>
-        <pubDate>Sun, 06 Sep 2015 17:00:00 +0200</pubDate>
+        <pubDate>Sun, 06 Sep 2015 15:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html</guid>
         

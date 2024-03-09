@@ -5,8 +5,8 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Oct 2018 15:09:10 +0200</pubDate>
-    <lastBuildDate>Sun, 07 Oct 2018 15:09:10 +0200</lastBuildDate>
+    <pubDate>Sat, 09 Mar 2024 15:33:59 +0000</pubDate>
+    <lastBuildDate>Sat, 09 Mar 2024 15:33:59 +0000</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
       <item>
@@ -94,7 +94,7 @@ sin tener que preocuparnos de si nuestro código es soportado directamente o no.
 por lo que en muchos casos nos será más natural utilizarlo que usar los métodos de la clase &lt;em&gt;Promise&lt;/em&gt;.
 Espero que con este pequeño tutorial os sea más fácil usarlo en vuestro código y conocer su potencia.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 30 Jun 2018 12:00:00 +0200</pubDate>
+        <pubDate>Sat, 30 Jun 2018 10:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2018/06/30/es2017-promesas-con-async-await-promise-all.html</guid>
         
@@ -136,7 +136,7 @@ in the Output tab. Have a look at the screenshot below.&lt;/p&gt;
 idea would be even to generate a neat report from these messages. However, for quick and dirty debugging,
 this trick works.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 29 May 2017 22:00:00 +0200</pubDate>
+        <pubDate>Mon, 29 May 2017 20:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html</guid>
         
@@ -211,7 +211,7 @@ values or making helper methods to object attributes. For example, calculate the
 The best advice is to keep always in mind that &lt;strong&gt;properties are an abstraction to fields&lt;/strong&gt;. Keep that in mind
 when writing your properties and WTFs will decrease in your codebase.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 04 Feb 2017 17:30:00 +0100</pubDate>
+        <pubDate>Sat, 04 Feb 2017 16:30:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2017/02/04/why-properties-are-evil.html</guid>
         
@@ -243,12 +243,14 @@ la hora de desarrollar aplicaciones web.&lt;/p&gt;
   &lt;li&gt;Seguimos los pasos para instalar .NET Core a través de los repositorios de Microsoft. &lt;a href=&quot;https://www.microsoft.com/net/core#linuxubuntu&quot;&gt;https://www.microsoft.com/net/core#linuxubuntu&lt;/a&gt; Para ejecutar estos pasos basta con abrir una consola y ejecutar:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Añadimos los repositorios a nuestro sistema&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Añadimos los repositorios a nuestro sistema
+&lt;/span&gt;
 sudo sh -c &lt;span class=&quot;s1&quot;&gt;'echo &quot;deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main&quot; &amp;gt; /etc/apt/sources.list.d/dotnetdev.list'&lt;/span&gt;
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
 sudo apt-get update
 
-&lt;span class=&quot;c&quot;&gt;# Instalamos .NET Core 1.1 y 1.0&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Instalamos .NET Core 1.1 y 1.0
+&lt;/span&gt;
 sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
@@ -262,19 +264,24 @@ sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir DotNetCoreWeb &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;DotNetCoreWeb
 dotnet new -t web
 dotnet restore
-&lt;span class=&quot;c&quot;&gt;# Para instalar las dependencias del lado del cliente&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Necesitamos tener Node.js instalado&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Para instalar las dependencias del lado del cliente
+&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Necesitamos tener Node.js instalado
+&lt;/span&gt;
 npm -g install bower gulp
 bower install
 npm install
 
-&lt;span class=&quot;c&quot;&gt;# Inicializamos la base de datos&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Inicializamos la base de datos
+&lt;/span&gt;
 dotnet ef database update
 
-&lt;span class=&quot;c&quot;&gt;# Iniciamos el entorno para activar el modo desarrollo&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Iniciamos el entorno para activar el modo desarrollo
+&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ASPNETCORE_ENVIRONMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;development
 
-&lt;span class=&quot;c&quot;&gt;# Ejecutamos el proyecto&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Ejecutamos el proyecto
+&lt;/span&gt;
 dotnet run&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Tras ejecutar estos comandos, podremos abrir un navegador a la URL &lt;a href=&quot;http://localhost:5000&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;http://localhost:5000&lt;/a&gt;
@@ -526,25 +533,35 @@ usando &lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/publishing/
 y copiar el resultado de nuestra compilación a un directorio utilizable por el usuario &lt;em&gt;www-data&lt;/em&gt;, como haríamos
 con un proyecto LAMP.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Compilamos en modo Release&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Compilamos en modo Release
+&lt;/span&gt;
 dotnet publish -c Release
-&lt;span class=&quot;c&quot;&gt;# Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción
+&lt;/span&gt;
 cp -r bin/Release/netcoreapp1.1/publish/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /var/aspnetcore/DotNetCoreWeb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Finalmente, pasaremos a seguir los pasos descritos en la guía de Microsoft para crear un servicio manejado a través de &lt;em&gt;systemd&lt;/em&gt;. Algo que esta guía no nos dice, es que en el descriptor del servicio,
 hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por eso, añadimos el descriptor del servicio utilizado en el proyecto de ejemplo.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;nn&quot;&gt;[Unit]&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.NET running on Ubuntu 16.04&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.NET running on Ubuntu 16.04
+&lt;/span&gt;
 
 &lt;span class=&quot;nn&quot;&gt;[Service]&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;SyslogIdentifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;dotnet-example&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;www-data&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ASPNETCORE_ENVIRONMENT=Production&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/aspnetcore/DotNetCoreWeb&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;always
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;SyslogIdentifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;dotnet-example
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;www-data
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ASPNETCORE_ENVIRONMENT=Production
+&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/aspnetcore/DotNetCoreWeb
+&lt;/span&gt;
 
 &lt;span class=&quot;nn&quot;&gt;[Install]&lt;/span&gt;
 &lt;span class=&quot;py&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;multi-user.target&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -557,7 +574,7 @@ hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por 
   &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction&quot;&gt;Publicar un proyecto ASP.NET Core en Linux&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Sun, 27 Nov 2016 18:00:00 +0100</pubDate>
+        <pubDate>Sun, 27 Nov 2016 17:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html</guid>
         
@@ -609,7 +626,7 @@ Data Source=MSSQL; Initial Catalog=AdventureWorks; Integrated Security=SSPI; Mul
 
 &lt;p&gt;Hope this helps!&lt;/p&gt;
 </description>
-        <pubDate>Sat, 06 Aug 2016 18:30:00 +0200</pubDate>
+        <pubDate>Sat, 06 Aug 2016 16:30:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html</guid>
         
@@ -748,7 +765,7 @@ from that.&lt;/p&gt;
 
 &lt;p&gt;I hope this helps and if you implement any alternative don’t hesitate to share in comments!&lt;/p&gt;
 </description>
-        <pubDate>Mon, 04 Jul 2016 23:00:00 +0200</pubDate>
+        <pubDate>Mon, 04 Jul 2016 21:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html</guid>
         
@@ -1062,7 +1079,7 @@ entran dentro del estándar EcmaScript 7 por lo que en el futuro la funcionalida
     &lt;li&gt;&lt;a href=&quot;http://kangax.github.io/compat-table/es6/&quot;&gt;Tabla compatibilidad ES6&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Fri, 10 Jun 2016 22:00:00 +0200</pubDate>
+        <pubDate>Fri, 10 Jun 2016 20:00:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2016/06/10/programacion-asincrona-promesas.html</guid>
         
@@ -1150,7 +1167,7 @@ are not so valued by developers as they should be.
 We’ll see in the near future if &lt;strong&gt;Nativescript&lt;/strong&gt; becomes the reference
 in hybrid app development, or &lt;strong&gt;Ionic Framework&lt;/strong&gt; stands still in its current top position.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 06 May 2016 23:00:00 +0200</pubDate>
+        <pubDate>Fri, 06 May 2016 21:00:00 +0000</pubDate>
         <link>https://jorgonor.com/en/blog/javascript/2016/05/06/nativescript-native-alternative-to-ionic.html</link>
         <guid isPermaLink="true">https://jorgonor.com/en/blog/javascript/2016/05/06/nativescript-native-alternative-to-ionic.html</guid>
         
@@ -1236,7 +1253,7 @@ mientras que Ionic podría llegar el mismo a incorporarlas dentro de su framewor
 esta mejora en experiencia UI. En el futuro próximo, veremos si &lt;strong&gt;Nativescript&lt;/strong&gt;
 se convierte en referencia, &lt;strong&gt;Ionic Framework&lt;/strong&gt; se mantiene u otras soluciones ganan protagonismo.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 01 May 2016 11:30:00 +0200</pubDate>
+        <pubDate>Sun, 01 May 2016 09:30:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html</guid>
         
@@ -1328,7 +1345,7 @@ e incorpora pestañas. Dentro de él se pueden ejecutar Cygwin, Git Bash o inclu
 &lt;p&gt;Ahora no nos queda más que esperar a nuevas noticias para poder aumentar nuestra productividad en Windows para aquellos que nos manejamos
 bien sobre el viejo pero increiblemente productivo Bash.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 04 Apr 2016 21:30:00 +0200</pubDate>
+        <pubDate>Mon, 04 Apr 2016 19:30:00 +0000</pubDate>
         <link>https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html</link>
         <guid isPermaLink="true">https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html</guid>
         
