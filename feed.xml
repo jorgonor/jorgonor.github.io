@@ -5,9 +5,9 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Mar 2024 15:33:59 +0000</pubDate>
-    <lastBuildDate>Sat, 09 Mar 2024 15:33:59 +0000</lastBuildDate>
-    <generator>Jekyll v3.3.1</generator>
+    <pubDate>Sun, 10 Mar 2024 23:06:53 +0000</pubDate>
+    <lastBuildDate>Sun, 10 Mar 2024 23:06:53 +0000</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
     
       <item>
         <title>Promesas con async/await y carga concurrente de recursos</title>
@@ -243,15 +243,13 @@ la hora de desarrollar aplicaciones web.&lt;/p&gt;
   &lt;li&gt;Seguimos los pasos para instalar .NET Core a través de los repositorios de Microsoft. &lt;a href=&quot;https://www.microsoft.com/net/core#linuxubuntu&quot;&gt;https://www.microsoft.com/net/core#linuxubuntu&lt;/a&gt; Para ejecutar estos pasos basta con abrir una consola y ejecutar:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Añadimos los repositorios a nuestro sistema
-&lt;/span&gt;
-sudo sh -c &lt;span class=&quot;s1&quot;&gt;'echo &quot;deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main&quot; &amp;gt; /etc/apt/sources.list.d/dotnetdev.list'&lt;/span&gt;
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
-sudo apt-get update
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Añadimos los repositorios a nuestro sistema&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;echo &quot;deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main&quot; &amp;gt; /etc/apt/sources.list.d/dotnetdev.list&apos;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-key adv &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkp://keyserver.ubuntu.com:80 &lt;span class=&quot;nt&quot;&gt;--recv-keys&lt;/span&gt; 417A0893
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
 
-&lt;span class=&quot;c&quot;&gt;# Instalamos .NET Core 1.1 y 1.0
-&lt;/span&gt;
-sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;c&quot;&gt;# Instalamos .NET Core 1.1 y 1.0&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Si queremos usar un IDE para desarrollar, podemos usar &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt;, el IDE multiplataforma de Microsoft.&lt;/li&gt;
@@ -261,27 +259,22 @@ sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview
 
 &lt;p&gt;Una vez instalado todo lo necesario, pasamos a crear nuestro proyecto web con las siguientes instrucciones.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir DotNetCoreWeb &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;DotNetCoreWeb
-dotnet new -t web
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;DotNetCoreWeb &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;DotNetCoreWeb
+dotnet new &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; web
 dotnet restore
-&lt;span class=&quot;c&quot;&gt;# Para instalar las dependencias del lado del cliente
-&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Necesitamos tener Node.js instalado
-&lt;/span&gt;
-npm -g install bower gulp
-bower install
-npm install
+&lt;span class=&quot;c&quot;&gt;# Para instalar las dependencias del lado del cliente&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Necesitamos tener Node.js instalado&lt;/span&gt;
+npm &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bower gulp
+bower &lt;span class=&quot;nb&quot;&gt;install
+&lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
 
-&lt;span class=&quot;c&quot;&gt;# Inicializamos la base de datos
-&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Inicializamos la base de datos&lt;/span&gt;
 dotnet ef database update
 
-&lt;span class=&quot;c&quot;&gt;# Iniciamos el entorno para activar el modo desarrollo
-&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Iniciamos el entorno para activar el modo desarrollo&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ASPNETCORE_ENVIRONMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;development
 
-&lt;span class=&quot;c&quot;&gt;# Ejecutamos el proyecto
-&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Ejecutamos el proyecto&lt;/span&gt;
 dotnet run&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Tras ejecutar estos comandos, podremos abrir un navegador a la URL &lt;a href=&quot;http://localhost:5000&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;http://localhost:5000&lt;/a&gt;
@@ -297,20 +290,20 @@ ayudar en como utilizar todas las herramientas ofrecidas por la plataforma ASP.N
 vamos a poner el código necesario para hacer un ejemplo funcional básico.
 También puedes bajarte el proyecto completo desde &lt;a href=&quot;https://github.com/jorgonor/DotNetCoreWeb&quot;&gt;este repositorio de Github&lt;/a&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Data/ApplicationContext.cs
-&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Data/ApplicationContext.cs&lt;/span&gt;
+
 &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ApplicationDbContext&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// ...
-&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Añadir esta línea
-&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Todos&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
 
-    &lt;span class=&quot;c1&quot;&gt;// ...
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Añadir esta línea&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Todos&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;}&lt;/span&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Models/Todo.cs
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Models/Todo.cs&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.ComponentModel.DataAnnotations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.ComponentModel.DataAnnotations.Schema&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
@@ -330,8 +323,8 @@ También puedes bajarte el proyecto completo desde &lt;a href=&quot;https://gith
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Controllers/TodoController.cs
-&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Controllers/TodoController.cs&lt;/span&gt;
+
 &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System.Threading.Tasks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Microsoft.AspNetCore.Mvc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -378,7 +371,7 @@ También puedes bajarte el proyecto completo desde &lt;a href=&quot;https://gith
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Views/Todo/Index.cshtml --&amp;gt;&lt;/span&gt;
 
-@model IEnumerable&lt;span class=&quot;nt&quot;&gt;&amp;lt;WebApplication&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Models&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+@model IEnumerable&lt;span class=&quot;nt&quot;&gt;&amp;lt;WebApplication.Models.Todo&amp;gt;&lt;/span&gt;
 
 @{
     string emptySymbol = &quot;-&quot;;
@@ -486,29 +479,29 @@ el fichero &lt;em&gt;project.json&lt;/em&gt; con una nueva dependencia y ejecuta
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;project.json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;dependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;dependencies&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
        &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-       &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;Pomelo.EntityFrameworkCore.MySQL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0.1&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+       &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;Pomelo.EntityFrameworkCore.MySQL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0.1&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;También tendremos que hacerle saber al servicio &lt;em&gt;ApplicationDbContext&lt;/em&gt; que ahora debe usar MySQL como motor y actualizar la cadena de conexión en el fichero &lt;em&gt;appsettings.json&lt;/em&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Startup.cs
-&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Startup.cs&lt;/span&gt;
+
 &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ConfigureServices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IServiceCollection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Add framework services.
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddDbContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ApplicationDbContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Add framework services.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddDbContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ApplicationDbContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UseMySql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetConnectionString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;DefaultConnection&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)));&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Other services configuration ...
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Other services configuration ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;appsettings.json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;ConnectionStrings&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;DefaultConnection&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;server=localhost;database=dotnetcore;uid=root;pwd=password&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;ConnectionStrings&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;DefaultConnection&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;server=localhost;database=dotnetcore;uid=root;pwd=password&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -527,41 +520,31 @@ dotnet ef database update&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 pero sí vamos a explicar como ejecutar una instancia de nuestra aplicación preparada para producción detrás de un &lt;em&gt;reverse proxy&lt;/em&gt; como Nginx,
 usando &lt;a href=&quot;https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction&quot;&gt;esta guía de Microsoft como referencia&lt;/a&gt;. Para instalar Nginx basta con ejecutar:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt-get install nginx&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;nginx&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Con nginx instalado, tendremos que publicar nuestro proyecto para que sea lo más eficiente posible en producción
 y copiar el resultado de nuestra compilación a un directorio utilizable por el usuario &lt;em&gt;www-data&lt;/em&gt;, como haríamos
 con un proyecto LAMP.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Compilamos en modo Release
-&lt;/span&gt;
-dotnet publish -c Release
-&lt;span class=&quot;c&quot;&gt;# Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción
-&lt;/span&gt;
-cp -r bin/Release/netcoreapp1.1/publish/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /var/aspnetcore/DotNetCoreWeb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Compilamos en modo Release&lt;/span&gt;
+dotnet publish &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; Release
+&lt;span class=&quot;c&quot;&gt;# Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; bin/Release/netcoreapp1.1/publish/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /var/aspnetcore/DotNetCoreWeb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Finalmente, pasaremos a seguir los pasos descritos en la guía de Microsoft para crear un servicio manejado a través de &lt;em&gt;systemd&lt;/em&gt;. Algo que esta guía no nos dice, es que en el descriptor del servicio,
 hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por eso, añadimos el descriptor del servicio utilizado en el proyecto de ejemplo.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;nn&quot;&gt;[Unit]&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.NET running on Ubuntu 16.04
-&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.NET running on Ubuntu 16.04&lt;/span&gt;
 
 &lt;span class=&quot;nn&quot;&gt;[Service]&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll
-&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;always
-&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10
-&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;SyslogIdentifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;dotnet-example
-&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;www-data
-&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ASPNETCORE_ENVIRONMENT=Production
-&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/aspnetcore/DotNetCoreWeb
-&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;SyslogIdentifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;dotnet-example&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;www-data&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ASPNETCORE_ENVIRONMENT=Production&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/aspnetcore/DotNetCoreWeb&lt;/span&gt;
 
 &lt;span class=&quot;nn&quot;&gt;[Install]&lt;/span&gt;
 &lt;span class=&quot;py&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;multi-user.target&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -679,13 +662,13 @@ to the client, letting the client know that the resource can be cached and index
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Find the image that matches with the incoming id.
-&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ETagFilePathResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Find the image that matches with the incoming id.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ETagFilePathResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;imagePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;If-None-Match&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;err&quot;&gt;﻿&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ETagFilePathResult&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ETagFilePathResult&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -799,7 +782,7 @@ la promesa se crea a partir de un &lt;em&gt;callback&lt;/em&gt; en el que ejecut
 a las funciones pasadas como argumento &lt;em&gt;resolve&lt;/em&gt; y &lt;em&gt;reject&lt;/em&gt;. Cuando llamemos a &lt;em&gt;resolve&lt;/em&gt;, se considera que la promesa ha resuelto correctamente y que la
 operación ha sido un éxito. Si llamamos a &lt;em&gt;reject&lt;/em&gt; es que ha ocurrido un error y deberíamos propagar ese error como argumento de la función &lt;em&gt;reject&lt;/em&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
 3
 4
@@ -822,31 +805,32 @@ operación ha sido un éxito. Si llamamos a &lt;em&gt;reject&lt;/em&gt; es que h
 21
 22
 23
-24&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;readFilePromise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+24
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;readFilePromise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nf&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
                 &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nf&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
     
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;readFilePromise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;file.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;readFilePromise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;file.txt&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
     &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FILE CONTENTS&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;FILE CONTENTS&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
     &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FILE READ ERROR&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;FILE READ ERROR&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h3 id=&quot;de-callbacks-a-promesas&quot;&gt;De callbacks a promesas&lt;/h3&gt;
 
@@ -858,7 +842,7 @@ la lectura/escritura de ficheros o acceso a base de datos.&lt;/p&gt;
 a ejecutar otra operación, se suele caer en &lt;a href=&quot;https://news.ycombinator.com/item?id=5185450&quot;&gt;la pirámide de la muerte&lt;/a&gt;, que complica la legibilidad del código.
 El siguiente ejemplo muestra claramente un ejemplo de pirámide de la muerte.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
 3
 4
@@ -880,35 +864,36 @@ El siguiente ejemplo muestra claramente un ejemplo de pirámide de la muerte.&lt
 20
 21
 22
-23&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;doSomeAsyncStuff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+23
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;doSomeAsyncStuff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unexpected error reading file &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;unexpected error reading file &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
             &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unexpected error retrieving &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;unexpected error retrieving &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
                 &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-            &lt;span class=&quot;nx&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chunks'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;error inserting chunk data!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stringify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}),&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;chunks&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;error inserting chunk data!&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;stringify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}),&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
                 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Las promesas resuelven este problema siguiendo una cadena de callbacks que se ejecuta al mismo nivel,
 mejorando la legibilidad del código.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
 3
 4
@@ -928,33 +913,34 @@ mejorando la legibilidad del código.&lt;/p&gt;
 18
 19
 20
-21&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;doSomeAsyncStuff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+21
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;doSomeAsyncStuff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;readFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
             &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dbRecord&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
 
-            &lt;span class=&quot;nx&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'dumps'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dbRecord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;dumps&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dbRecord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
                 &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;error inserting contents&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dbRecord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;error inserting contents&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dbRecord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
                 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unexpected error requesting &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;unexpected error requesting &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
         
     &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;unexpected error reading file &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;unexpected error reading file &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;A parte de esto, en los casos totalmente opuestos en los que nos importa es esperar a que una serie
 de acciones concurrentes finalice, las promesas ofrecen mayor facilidad de uso.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
 3
 4
@@ -982,7 +968,8 @@ de acciones concurrentes finalice, las promesas ofrecen mayor facilidad de uso.&
 26
 27
 28
-29&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetchMultipleUrls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+29
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fetchMultipleUrls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
@@ -990,14 +977,14 @@ de acciones concurrentes finalice, las promesas ofrecen mayor facilidad de uso.&
 
     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
                     &lt;span class=&quot;na&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
                     &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;
                 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
                     &lt;span class=&quot;na&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
                     &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;
                 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
@@ -1005,19 +992,19 @@ de acciones concurrentes finalice, las promesas ofrecen mayor facilidad de uso.&
 
             &lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nf&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Este ejemplo se descarga una serie de URLs en paralelo. La solución utilizada necesita mucho código para propagar los resultados y errores
 de cada url y además nuestra solución no es estándar, por lo que el programador que debiera utilizar este método tendría
 que conocer como le vamos a notificar qué urls han funcionado y cuales no. Veamos el mismo ejemplo con promesas.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
 3
 4
@@ -1028,19 +1015,20 @@ que conocer como le vamos a notificar qué urls han funcionado y cuales no. Veam
 9
 10
 11
-12&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fetchMultipleUrls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+12
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fetchMultipleUrls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
 
     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;promises&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Con promesas, utilizamos un mecanismo estándar, que es devolver una promesa como unión de todas las promesas.
 Con ello, seremos notificados de si todas las peticiones han funcionado o bien si alguna de ellos ha fallado.&lt;/p&gt;

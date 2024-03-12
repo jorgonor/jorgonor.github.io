@@ -13,9 +13,12 @@
   <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
   
 
-  <!-- Begin Jekyll SEO tag v2.1.0 -->
-<title>Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii) - Jorgonor</title>
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii) | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
 <meta property="og:title" content="Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii)" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="es" />
 <meta name="description" content="Benchmark de frameworks PHP. CakePHP, Symfony2 y Yii. Rendimiento de operación sencilla de acceso a datos." />
 <meta property="og:description" content="Benchmark de frameworks PHP. CakePHP, Symfony2 y Yii. Rendimiento de operación sencilla de acceso a datos." />
 <link rel="canonical" href="https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html" />
@@ -24,16 +27,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2012-09-29T18:53:00+00:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii)" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
 <meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
 <script type="application/ld+json">
-{"@context": "http://schema.org",
-"@type": "BlogPosting",
-"headline": "Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii)",
-"datePublished": "2012-09-29T18:53:00+00:00",
-"description": "Benchmark de frameworks PHP. CakePHP, Symfony2 y Yii. Rendimiento de operación sencilla de acceso a datos.",
-"url": "https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2016-03-28T13:00:00+00:00","datePublished":"2012-09-29T18:53:00+00:00","description":"Benchmark de frameworks PHP. CakePHP, Symfony2 y Yii. Rendimiento de operación sencilla de acceso a datos.","headline":"Benchmark de frameworks PHP (CakePHP, Symfony2 y Yii)","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html"},"url":"https://jorgonor.com/es/blog/php/2012/09/29/php-frameworks-benchmark.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -132,26 +131,26 @@ Primero mostraremos el código de ejemplo desarrollado en cada framework. Al ser
 
 <h4>Modelo <i>Product</i></h4>
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="k">class</span> <span class="nc">Product</span> <span class="k">extends</span> <span class="nx">AppModel</span> <span class="p">{}</span></code></pre></figure>
+<span class="kd">class</span> <span class="nc">Product</span> <span class="kd">extends</span> <span class="nc">AppModel</span> <span class="p">{}</span></code></pre></figure>
 <h4>Controlador <i>SoaController</i></h4>
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
 
-<span class="nx">App</span><span class="o">::</span><span class="na">uses</span><span class="p">(</span><span class="s1">'AppController'</span><span class="p">,</span> <span class="s1">'Controller'</span><span class="p">);</span>
-<span class="nx">App</span><span class="o">::</span><span class="na">uses</span><span class="p">(</span><span class="s1">'CakeResponse'</span><span class="p">,</span> <span class="s1">'Network'</span><span class="p">);</span>
+<span class="nc">App</span><span class="o">::</span><span class="nf">uses</span><span class="p">(</span><span class="s1">'AppController'</span><span class="p">,</span> <span class="s1">'Controller'</span><span class="p">);</span>
+<span class="nc">App</span><span class="o">::</span><span class="nf">uses</span><span class="p">(</span><span class="s1">'CakeResponse'</span><span class="p">,</span> <span class="s1">'Network'</span><span class="p">);</span>
 
-<span class="k">class</span> <span class="nc">SoaController</span> <span class="k">extends</span> <span class="nx">AppController</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">SoaController</span> <span class="kd">extends</span> <span class="nc">AppController</span> <span class="p">{</span>
     <span class="k">public</span> <span class="nv">$uses</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'Product'</span><span class="p">);</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nv">$products</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">Product</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="s1">'all'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">index</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$products</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nc">Product</span><span class="o">-&gt;</span><span class="nf">find</span><span class="p">(</span><span class="s1">'all'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
             <span class="s1">'conditions'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
                 <span class="s1">'price  &gt;= 25.0'</span>
             <span class="p">),</span>
             <span class="s1">'order'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="s1">'DESC'</span><span class="p">)</span>
         <span class="p">));</span>
 
-        <span class="k">return</span> <span class="k">new</span> <span class="nx">CakeResponse</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'body'</span> <span class="o">=&gt;</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$products</span><span class="p">)));</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nc">CakeResponse</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'body'</span> <span class="o">=&gt;</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$products</span><span class="p">)));</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
@@ -170,90 +169,90 @@ No sé si esto puede haber influido en los resultados, a la vista de un no exper
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
 
-<span class="k">namespace</span> <span class="nx">Acme\DemoBundle\Entity</span><span class="p">;</span>
+<span class="kn">namespace</span> <span class="nn">Acme\DemoBundle\Entity</span><span class="p">;</span>
 
-<span class="k">use</span> <span class="nx">Doctrine\ORM\Mapping</span> <span class="k">as</span> <span class="nx">ORM</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Doctrine\ORM\Mapping</span> <span class="k">as</span> <span class="no">ORM</span><span class="p">;</span>
 
-<span class="sd">/** Acme\DemoBundle\Entity\Product */</span>
-<span class="k">class</span> <span class="nc">Product</span> <span class="p">{</span>
-<span class="sd">/**
+<span class="cd">/** Acme\DemoBundle\Entity\Product */</span>
+<span class="kd">class</span> <span class="nc">Product</span> <span class="p">{</span>
+<span class="cd">/**
      * @var integer $id
      */</span>
     <span class="k">private</span> <span class="nv">$id</span><span class="p">;</span>
 
-    <span class="sd">/**
+    <span class="cd">/**
      * @var float $price
      */</span>
     <span class="k">private</span> <span class="nv">$price</span><span class="p">;</span>
 
-    <span class="sd">/**
+    <span class="cd">/**
      * @var string $description
      */</span>
     <span class="k">private</span> <span class="nv">$description</span><span class="p">;</span>
 
 
-    <span class="sd">/**
+    <span class="cd">/**
      * Get id
      *
      * @return integer 
      */</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">getId</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">getId</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="sd">/**
+    <span class="cd">/**
      * Set price
      *
      * @param float $price
      * @return Product
      */</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">setPrice</span><span class="p">(</span><span class="nv">$price</span><span class="p">)</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">setPrice</span><span class="p">(</span><span class="nv">$price</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">price</span> <span class="o">=</span> <span class="nv">$price</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">price</span> <span class="o">=</span> <span class="nv">$price</span><span class="p">;</span>
     
         <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="sd">/**
+    <span class="cd">/**
      * Get price
      *
      * @return float 
      */</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">getPrice</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">getPrice</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">price</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">price</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="sd">/**
+    <span class="cd">/**
      * Set description
      *
      * @param string $description
      * @return Product
      */</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">setDescription</span><span class="p">(</span><span class="nv">$description</span><span class="p">)</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">setDescription</span><span class="p">(</span><span class="nv">$description</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">description</span> <span class="o">=</span> <span class="nv">$description</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">description</span> <span class="o">=</span> <span class="nv">$description</span><span class="p">;</span>
     
         <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="sd">/**
+    <span class="cd">/**
      * Get description
      *
      * @return string 
      */</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">getDescription</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">getDescription</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">description</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">description</span><span class="p">;</span>
     <span class="p">}</span>
     
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">toArray</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">toArray</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
-            <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">(),</span>
-            <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getDescription</span><span class="p">(),</span>
-            <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getPrice</span><span class="p">()</span>
+            <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">getId</span><span class="p">(),</span>
+            <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">getDescription</span><span class="p">(),</span>
+            <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">getPrice</span><span class="p">()</span>
         <span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
@@ -266,50 +265,50 @@ añadiendo un método <b>toArray</b> para hacer más fácil posteriormente la co
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
 
-<span class="k">namespace</span> <span class="nx">Acme\DemoBundle\Controller</span><span class="p">;</span>
+<span class="kn">namespace</span> <span class="nn">Acme\DemoBundle\Controller</span><span class="p">;</span>
 
-<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
 
-<span class="k">use</span> <span class="nx">Symfony\Bundle\FrameworkBundle\Controller\Controller</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\RedirectResponse</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Acme\DemoBundle\Form\ContactType</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Symfony\Bundle\FrameworkBundle\Controller\Controller</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpFoundation\RedirectResponse</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Acme\DemoBundle\Form\ContactType</span><span class="p">;</span>
 
-<span class="c1">// these import the "@Route" and "@Template" annotations
-</span><span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Sensio\Bundle\FrameworkExtraBundle\Configuration\Template</span><span class="p">;</span>
+<span class="c1">// these import the "@Route" and "@Template" annotations</span>
+<span class="kn">use</span> <span class="nc">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Sensio\Bundle\FrameworkExtraBundle\Configuration\Template</span><span class="p">;</span>
 
-<span class="k">class</span> <span class="nc">DemoController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="kd">class</span> <span class="nc">DemoController</span> <span class="kd">extends</span> <span class="nc">Controller</span>
 <span class="p">{</span>
-    <span class="c1">//...
-</span>    
-    <span class="sd">/**
+    <span class="c1">//...</span>
+    
+    <span class="cd">/**
      * @Route("/soa")
      */</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">soaAction</span><span class="p">()</span> <span class="p">{</span>
-     <span class="nv">$repository</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getDoctrine</span><span class="p">()</span>
-     <span class="o">-&gt;</span><span class="na">getRepository</span><span class="p">(</span><span class="s1">'AcmeDemoBundle:Product'</span><span class="p">);</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">soaAction</span><span class="p">()</span> <span class="p">{</span>
+     <span class="nv">$repository</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">getDoctrine</span><span class="p">()</span>
+     <span class="o">-&gt;</span><span class="nf">getRepository</span><span class="p">(</span><span class="s1">'AcmeDemoBundle:Product'</span><span class="p">);</span>
 
-     <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$repository</span><span class="o">-&gt;</span><span class="na">createQueryBuilder</span><span class="p">(</span><span class="s1">'p'</span><span class="p">)</span>
-     <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'p.price &gt; :price'</span><span class="p">)</span>
-     <span class="o">-&gt;</span><span class="na">setParameter</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span> <span class="s1">'25.00'</span><span class="p">)</span>
-     <span class="o">-&gt;</span><span class="na">orderBy</span><span class="p">(</span><span class="s1">'p.price'</span><span class="p">,</span> <span class="s1">'DESC'</span><span class="p">)</span>
-     <span class="o">-&gt;</span><span class="na">getQuery</span><span class="p">();</span>
+     <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$repository</span><span class="o">-&gt;</span><span class="nf">createQueryBuilder</span><span class="p">(</span><span class="s1">'p'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="nf">where</span><span class="p">(</span><span class="s1">'p.price &gt; :price'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="nf">setParameter</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span> <span class="s1">'25.00'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="nf">orderBy</span><span class="p">(</span><span class="s1">'p.price'</span><span class="p">,</span> <span class="s1">'DESC'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="nf">getQuery</span><span class="p">();</span>
 
-     <span class="nv">$products</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">getResult</span><span class="p">();</span>
+     <span class="nv">$products</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="nf">getResult</span><span class="p">();</span>
      
      <span class="nv">$narr</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
      
      <span class="k">foreach</span><span class="p">(</span><span class="nv">$products</span> <span class="k">as</span> <span class="nv">$product</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nv">$narr</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$product</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+      <span class="nv">$narr</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$product</span><span class="o">-&gt;</span><span class="nf">toArray</span><span class="p">();</span>
      <span class="p">}</span>
      
-     <span class="nv">$response</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">();</span>
-     <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">setContent</span><span class="p">(</span><span class="nb">json_encode</span><span class="p">(</span><span class="nv">$narr</span><span class="p">));</span> 
+     <span class="nv">$response</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Response</span><span class="p">();</span>
+     <span class="nv">$response</span><span class="o">-&gt;</span><span class="nf">setContent</span><span class="p">(</span><span class="nb">json_encode</span><span class="p">(</span><span class="nv">$narr</span><span class="p">));</span> 
      <span class="k">return</span> <span class="nv">$response</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="c1">//...
-</span><span class="p">}</span></code></pre></figure>
+    <span class="c1">//...</span>
+<span class="p">}</span></code></pre></figure>
 <p>
 Como se puede ver, he tenido que hacer un foreach que puede haber supuesto un extra de carga, pero realmente no veía otro modo de solucionar el problema de la conversión
 propiedades del objeto a JSON de manera más eficiente.
@@ -324,7 +323,7 @@ A mi gusto, Yii es un framework realmente interesante y que ofrece una modularid
 <h4>Modelo <i>Product</i></h4>
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="sd">/**
+<span class="cd">/**
  * This is the model class for table "products".
  *
  * The followings are the available columns in table 'products':
@@ -332,58 +331,58 @@ A mi gusto, Yii es un framework realmente interesante y que ofrece una modularid
  * @property string $price
  * @property string $description
  */</span>
-<span class="k">class</span> <span class="nc">Product</span> <span class="k">extends</span> <span class="nx">CActiveRecord</span>
+<span class="kd">class</span> <span class="nc">Product</span> <span class="kd">extends</span> <span class="nc">CActiveRecord</span>
 <span class="p">{</span>
- <span class="sd">/**
+ <span class="cd">/**
   * Returns the static model of the specified AR class.
   * @param string $className active record class name.
   * @return Product the static model class
   */</span>
- <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">model</span><span class="p">(</span><span class="nv">$className</span><span class="o">=</span><span class="nx">__CLASS__</span><span class="p">)</span>
+ <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="n">model</span><span class="p">(</span><span class="nv">$className</span><span class="o">=</span><span class="k">__CLASS__</span><span class="p">)</span>
  <span class="p">{</span>
-  <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">model</span><span class="p">(</span><span class="nv">$className</span><span class="p">);</span>
+  <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="nf">model</span><span class="p">(</span><span class="nv">$className</span><span class="p">);</span>
  <span class="p">}</span>
 
- <span class="sd">/**
+ <span class="cd">/**
   * @return string the associated database table name
   */</span>
- <span class="k">public</span> <span class="k">function</span> <span class="nf">tableName</span><span class="p">()</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="n">tableName</span><span class="p">()</span>
  <span class="p">{</span>
   <span class="k">return</span> <span class="s1">'products'</span><span class="p">;</span>
  <span class="p">}</span>
 
- <span class="sd">/**
+ <span class="cd">/**
   * @return array validation rules for model attributes.
   */</span>
- <span class="k">public</span> <span class="k">function</span> <span class="nf">rules</span><span class="p">()</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="n">rules</span><span class="p">()</span>
  <span class="p">{</span>
-  <span class="c1">// NOTE: you should only define rules for those attributes that
-</span>  <span class="c1">// will receive user inputs.
-</span>  <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+  <span class="c1">// NOTE: you should only define rules for those attributes that</span>
+  <span class="c1">// will receive user inputs.</span>
+  <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
    <span class="k">array</span><span class="p">(</span><span class="s1">'price, description'</span><span class="p">,</span> <span class="s1">'required'</span><span class="p">),</span>
    <span class="k">array</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span> <span class="s1">'length'</span><span class="p">,</span> <span class="s1">'max'</span><span class="o">=&gt;</span><span class="mi">10</span><span class="p">),</span>
    <span class="k">array</span><span class="p">(</span><span class="s1">'description'</span><span class="p">,</span> <span class="s1">'length'</span><span class="p">,</span> <span class="s1">'max'</span><span class="o">=&gt;</span><span class="mi">255</span><span class="p">),</span>
-   <span class="c1">// The following rule is used by search().
-</span>   <span class="c1">// Please remove those attributes that should not be searched.
-</span>   <span class="k">array</span><span class="p">(</span><span class="s1">'id, price, description'</span><span class="p">,</span> <span class="s1">'safe'</span><span class="p">,</span> <span class="s1">'on'</span><span class="o">=&gt;</span><span class="s1">'search'</span><span class="p">),</span>
+   <span class="c1">// The following rule is used by search().</span>
+   <span class="c1">// Please remove those attributes that should not be searched.</span>
+   <span class="k">array</span><span class="p">(</span><span class="s1">'id, price, description'</span><span class="p">,</span> <span class="s1">'safe'</span><span class="p">,</span> <span class="s1">'on'</span><span class="o">=&gt;</span><span class="s1">'search'</span><span class="p">),</span>
   <span class="p">);</span>
  <span class="p">}</span>
 
- <span class="sd">/**
+ <span class="cd">/**
   * @return array relational rules.
   */</span>
- <span class="k">public</span> <span class="k">function</span> <span class="nf">relations</span><span class="p">()</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="n">relations</span><span class="p">()</span>
  <span class="p">{</span>
-  <span class="c1">// NOTE: you may need to adjust the relation name and the related
-</span>  <span class="c1">// class name for the relations automatically generated below.
-</span>  <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+  <span class="c1">// NOTE: you may need to adjust the relation name and the related</span>
+  <span class="c1">// class name for the relations automatically generated below.</span>
+  <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
   <span class="p">);</span>
  <span class="p">}</span>
 
- <span class="sd">/**
+ <span class="cd">/**
   * @return array customized attribute labels (name=&gt;label)
   */</span>
- <span class="k">public</span> <span class="k">function</span> <span class="nf">attributeLabels</span><span class="p">()</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="n">attributeLabels</span><span class="p">()</span>
  <span class="p">{</span>
   <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
    <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="s1">'ID'</span><span class="p">,</span>
@@ -392,22 +391,22 @@ A mi gusto, Yii es un framework realmente interesante y que ofrece una modularid
   <span class="p">);</span>
  <span class="p">}</span>
 
- <span class="sd">/**
+ <span class="cd">/**
   * Retrieves a list of models based on the current search/filter conditions.
   * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
   */</span>
- <span class="k">public</span> <span class="k">function</span> <span class="nf">search</span><span class="p">()</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="n">search</span><span class="p">()</span>
  <span class="p">{</span>
-  <span class="c1">// Warning: Please modify the following code to remove attributes that
-</span>  <span class="c1">// should not be searched.
-</span>
-  <span class="nv">$criteria</span><span class="o">=</span><span class="k">new</span> <span class="nx">CDbCriteria</span><span class="p">;</span>
+  <span class="c1">// Warning: Please modify the following code to remove attributes that</span>
+  <span class="c1">// should not be searched.</span>
 
-  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="na">compare</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span>
-  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="na">compare</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">price</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
-  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="na">compare</span><span class="p">(</span><span class="s1">'description'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">description</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+  <span class="nv">$criteria</span><span class="o">=</span><span class="k">new</span> <span class="nc">CDbCriteria</span><span class="p">;</span>
 
-  <span class="k">return</span> <span class="k">new</span> <span class="nx">CActiveDataProvider</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="nf">compare</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">);</span>
+  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="nf">compare</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">price</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+  <span class="nv">$criteria</span><span class="o">-&gt;</span><span class="nf">compare</span><span class="p">(</span><span class="s1">'description'</span><span class="p">,</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">description</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="k">new</span> <span class="nc">CActiveDataProvider</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
    <span class="s1">'criteria'</span><span class="o">=&gt;</span><span class="nv">$criteria</span><span class="p">,</span>
   <span class="p">));</span>
  <span class="p">}</span>
@@ -422,23 +421,23 @@ ya que el shell acaba incrementando la productividad del desarrollador.
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
 
-<span class="sd">/**
+<span class="cd">/**
  * SiteController is the default controller to handle user requests.
  */</span>
-<span class="k">class</span> <span class="nc">SiteController</span> <span class="k">extends</span> <span class="nx">CController</span>
+<span class="kd">class</span> <span class="nc">SiteController</span> <span class="kd">extends</span> <span class="nc">CController</span>
 <span class="p">{</span>
- <span class="sd">/**
+ <span class="cd">/**
   * Index action is the default action in a controller.
   */</span>
- <span class="k">public</span> <span class="k">function</span> <span class="nf">actionIndex</span><span class="p">()</span>
+ <span class="k">public</span> <span class="k">function</span> <span class="n">actionIndex</span><span class="p">()</span>
  <span class="p">{</span>
   
-  <span class="nv">$results</span> <span class="o">=</span> <span class="nx">Product</span><span class="o">::</span><span class="na">model</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">findAll</span><span class="p">(</span><span class="s1">'price&gt;=:price'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">':price'</span> <span class="o">=&gt;</span> <span class="mf">25.0</span><span class="p">));</span>
+  <span class="nv">$results</span> <span class="o">=</span> <span class="nc">Product</span><span class="o">::</span><span class="nf">model</span><span class="p">()</span><span class="o">-&gt;</span><span class="nf">findAll</span><span class="p">(</span><span class="s1">'price&gt;=:price'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">':price'</span> <span class="o">=&gt;</span> <span class="mf">25.0</span><span class="p">));</span>
   
   <span class="nv">$narr</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
   
   <span class="k">foreach</span><span class="p">(</span><span class="nv">$results</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nv">$narr</span><span class="p">[]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">,</span> <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">price</span><span class="p">,</span> <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">description</span><span class="p">);</span>
+   <span class="nv">$narr</span><span class="p">[]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">,</span> <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="n">price</span><span class="p">,</span> <span class="s1">'description'</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="n">description</span><span class="p">);</span>
   <span class="p">}</span>
   
   <span class="k">echo</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$narr</span><span class="p">);</span>
@@ -488,7 +487,7 @@ Como herramienta para el benchmark he utilizado <a href="http://www.joedog.org/s
 Estos son los resultados, de aplicar el siguiente comando con <b>siege</b> con diferentes configuraciones de Apache:
 </p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">siege -c 5 -b -t30s <span class="nv">$URL</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">siege <span class="nt">-c</span> 5 <span class="nt">-b</span> <span class="nt">-t30s</span> <span class="nv">$URL</span></code></pre></figure>
 <p>
     Veamos la primera tabla de resultados:
 </p>
@@ -690,10 +689,7 @@ Esto es todo por hoy, espero seguir dando actividad al blog y hablando de PHP, J
               </div>
             </div>
             <div class="col s12 m12 l3">
-                
-                
-                
-            </div>
+                </div>
         </div>
     </div>
 

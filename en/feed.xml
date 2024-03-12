@@ -5,9 +5,9 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Mar 2024 16:02:50 +0000</pubDate>
-    <lastBuildDate>Sat, 09 Mar 2024 16:02:50 +0000</lastBuildDate>
-    <generator>Jekyll v3.3.1</generator>
+    <pubDate>Sun, 10 Mar 2024 23:06:53 +0000</pubDate>
+    <lastBuildDate>Sun, 10 Mar 2024 23:06:53 +0000</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
     
     
       <item>
@@ -213,13 +213,13 @@ to the client, letting the client know that the resource can be cached and index
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Find the image that matches with the incoming id.
-&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ETagFilePathResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Find the image that matches with the incoming id.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ETagFilePathResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;imagePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;If-None-Match&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;err&quot;&gt;﻿&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ETagFilePathResult&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ETagFilePathResult&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contentType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -505,8 +505,8 @@ new feature.&lt;/p&gt;
 &lt;span class=&quot;cm&quot;&gt;/* $_POST values */&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
-&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'value'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;$x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'value'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;isset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;value&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;value&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Don’t you agree? Haven’t you ever used this flow structure? To avoid a &lt;em&gt;Notice&lt;/em&gt; when you don’t check if the key exists in an array,
 you are forced to write this piece of code. Some developers used the @ operator, that suppresses warnings generated by the statement
@@ -517,7 +517,7 @@ surrounded by it. That is not a solution, that was just hiding an error.&lt;/p&g
 &lt;span class=&quot;cm&quot;&gt;/* $_POST values */&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
-&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'value'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;value&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;In PHP7, we will be able to use the coalesce operator that will allow a neater way to solve this problem.&lt;/p&gt;
 
@@ -526,7 +526,7 @@ surrounded by it. That is not a solution, that was just hiding an error.&lt;/p&g
 &lt;span class=&quot;cm&quot;&gt;/* $_POST values */&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
-&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'value'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;value&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h4 id=&quot;group-use-declarations&quot;&gt;Group use declarations&lt;/h4&gt;
 
@@ -535,24 +535,24 @@ Before PHP7, you had to write a use statement for each class. With PHP7, group u
 and namespaces are being used.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Before
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;some\namespace\ClassA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;some\namespace\ClassB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;some\namespace\ClassC&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AliasClassC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Before&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;some\namespace\ClassA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;some\namespace\ClassB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;some\namespace\ClassC&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AliasClassC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-&lt;span class=&quot;c1&quot;&gt;// Now
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;some\namespace\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ClassA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClassB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClassC&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AliasClassC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;c1&quot;&gt;// Now&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;some\namespace\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ClassA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ClassB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ClassC&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AliasClassC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h4 id=&quot;integer-division&quot;&gt;Integer division&lt;/h4&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://php.net/manual/en/function.intdiv.php&quot;&gt;intdiv&lt;/a&gt; function will provide a way to execute the integer division without any trick.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Before
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Before&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
-&lt;span class=&quot;c1&quot;&gt;// Now
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;intdiv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;c1&quot;&gt;// Now&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;intdiv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h3 id=&quot;expressions-in-constants&quot;&gt;Expressions in constants&lt;/h3&gt;
 
@@ -560,7 +560,7 @@ and namespaces are being used.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
 
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DAY_SECONDS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -590,7 +590,7 @@ piece of code in your applications, it’s a good moment to stop using it.&lt;/p
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
 
-&lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;\stdClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;\stdClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h4 id=&quot;more-bc-issues&quot;&gt;More BC issues&lt;/h4&gt;
 
@@ -648,7 +648,7 @@ As I use Linux, I’m going to explain how I have installed it using the “Othe
 
 &lt;p&gt;Simply run&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;java -jar metabase.jar&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; metabase.jar&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;After this step, you can open a browser and open the default Metabase URL &lt;a href=&quot;http://localhost:3000&quot;&gt;http://localhost:3000&lt;/a&gt;. To get started, your personal
 information will be asked to set up your user. Apart from that, you can set up the first database or set it up afterwards. For more information on how to set it up
@@ -722,15 +722,11 @@ with a good performance some extra tweaks must be done. But this is just having 
 to do with the code you’ve developed. As an example, I will show the optimization that has given me better results, an optimization for
 the ORM that comes with &lt;strong&gt;Symfony2&lt;/strong&gt;, &lt;em&gt;Doctrine2&lt;/em&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;s&quot;&gt;doctrine:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;orm:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;metadata_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;result_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;
-&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;query_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;na&quot;&gt;doctrine&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;orm&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;metadata_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;result_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;query_cache_driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;As you can see in the previous example, different sorts of caches can be configured for Doctrine2. The metadata cache
 (&lt;em&gt;metadata_cache_driver&lt;/em&gt;) allows that every mapping file between your entities and your database tables can be reused, without the need
@@ -773,13 +769,13 @@ your Symfony2 application performance critically like &lt;a href=&quot;http://ww
 
 &lt;p&gt;I have tested this under Ubuntu 14.04. Open a shell, and type/paste the following instructions to do your migration:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo bash
-apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;bash
+apt-key adv &lt;span class=&quot;nt&quot;&gt;--recv-keys&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; keyserver.ubuntu.com 0xcbcb082a1bb943db
 apt-get update
-apt-get install mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;
-    And everything is up and ready. You won't have to change even your database connection configuration, the applications that were using
+    And everything is up and ready. You won&apos;t have to change even your database connection configuration, the applications that were using
     the MySQL driver will keep working perfectly.
 &lt;/p&gt;
 
@@ -832,7 +828,7 @@ apt-get install mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
 
-&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index_and_value_are_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index_and_value_are_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;foreach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -844,7 +840,7 @@ apt-get install mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;nb&quot;&gt;var_export&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;index_and_value_are_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]));&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nb&quot;&gt;var_export&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;index_and_value_are_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]));&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;
     This code fragment exports an empty array, provided the array values and indices are not even in any element.
@@ -853,40 +849,40 @@ apt-get install mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;p&gt;
     In many applications, pieces of code like these can be found, traversing a collection and applying a filter over it is a common task.
     It is not a bad way to solve the problem, it is simple, standard and easy, but if we solve it like this, we have to write tons of
-    syntax that we actually don't need, repeating the same pattern over and over again and, in real world applications, the problem solved by
-    the foreach body isn't usually just like in the example, it can also be a cumbersome piece of code.
+    syntax that we actually don&apos;t need, repeating the same pattern over and over again and, in real world applications, the problem solved by
+    the foreach body isn&apos;t usually just like in the example, it can also be a cumbersome piece of code.
 &lt;/p&gt;
 
 &lt;p&gt;
-    Let's see how this function would be implemented using the functional paradigm.
+    Let&apos;s see how this function would be implemented using the functional paradigm.
 &lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index_and_value_are_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index_and_value_are_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;array_filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;
-    Isn't this solution much better? It's obviously a subjective matter but in my opinion the code is more expressive using functional
+    Isn&apos;t this solution much better? It&apos;s obviously a subjective matter but in my opinion the code is more expressive using functional
     programming.
 &lt;/p&gt;
 
 &lt;p&gt;
-    Even though this piece of code is incorrect. &lt;a href=&quot;http://php.net/manual/en/function.array-filter.php&quot;&gt;array_filter&lt;/a&gt; native function doesn't
+    Even though this piece of code is incorrect. &lt;a href=&quot;http://php.net/manual/en/function.array-filter.php&quot;&gt;array_filter&lt;/a&gt; native function doesn&apos;t
     send the index to the called filter function. This can make this function useless for your needs, more if the array keys have a meaning in your
-    application. But, we are programmers, aren't we? Let's do our own implementation.
+    application. But, we are programmers, aren&apos;t we? Let&apos;s do our own implementation.
 &lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
 
-&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;array_filter_with_indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callable&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array_filter_with_indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;callable&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;foreach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -899,22 +895,22 @@ apt-get install mariadb-server&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;
-    Yes, it's a pretty straightforward implementation. Now we can reuse this filter function applying an anonymous function over it to decide which
+    Yes, it&apos;s a pretty straightforward implementation. Now we can reuse this filter function applying an anonymous function over it to decide which
     elements fulfill the provided conditions. This implementation also preserves the original indices, not like the native &lt;i&gt;array_filter&lt;/i&gt;.
 &lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'1'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'value1'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'abc'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'value3'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;1&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;value1&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;abc&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;value3&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;
     Another thing of note in this code is that it uses &lt;a href=&quot;http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration&quot;&gt;Type Hinting&lt;/a&gt;,
     a mechanism to check if the function arguments belong to the type the function expects.
-    As you can see, it's possible to type hint an argument as &lt;i&gt;callable&lt;/i&gt;. This kind of &lt;i&gt;type hinting&lt;/i&gt; has been added in version 5.4, so check this before you
+    As you can see, it&apos;s possible to type hint an argument as &lt;i&gt;callable&lt;/i&gt;. This kind of &lt;i&gt;type hinting&lt;/i&gt; has been added in version 5.4, so check this before you
     decide to use it in your application.
 &lt;/p&gt;
 
 &lt;p&gt;
-    I hope you've got the gist of this technique. Don't mind using it in real world applications!!
+    I hope you&apos;ve got the gist of this technique. Don&apos;t mind using it in real world applications!!
 &lt;/p&gt;
 </description>
         <pubDate>Sun, 06 Sep 2015 15:00:00 +0000</pubDate>

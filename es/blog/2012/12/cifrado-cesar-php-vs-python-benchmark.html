@@ -13,9 +13,12 @@
   <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
   
 
-  <!-- Begin Jekyll SEO tag v2.1.0 -->
-<title>Cifrado César (PHP vs Python) - Jorgonor</title>
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Cifrado César (PHP vs Python) | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
 <meta property="og:title" content="Cifrado César (PHP vs Python)" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="es" />
 <meta name="description" content="Vuelvo con un pequeño problema al que le he estado dando vueltas, el del cifrado césar. No sé vosotros pero almenos a mi en seguridad informática fue el algoritmo con el que nos enseñaron qué era el cifrado." />
 <meta property="og:description" content="Vuelvo con un pequeño problema al que le he estado dando vueltas, el del cifrado césar. No sé vosotros pero almenos a mi en seguridad informática fue el algoritmo con el que nos enseñaron qué era el cifrado." />
 <link rel="canonical" href="https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html" />
@@ -24,16 +27,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2012-12-25T19:26:00+00:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Cifrado César (PHP vs Python)" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
 <meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
 <script type="application/ld+json">
-{"@context": "http://schema.org",
-"@type": "BlogPosting",
-"headline": "Cifrado César (PHP vs Python)",
-"datePublished": "2012-12-25T19:26:00+00:00",
-"description": "Vuelvo con un pequeño problema al que le he estado dando vueltas, el del cifrado césar. No sé vosotros pero almenos a mi en seguridad informática fue el algoritmo con el que nos enseñaron qué era el cifrado.",
-"url": "https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2016-03-28T13:00:00+00:00","datePublished":"2012-12-25T19:26:00+00:00","description":"Vuelvo con un pequeño problema al que le he estado dando vueltas, el del cifrado césar. No sé vosotros pero almenos a mi en seguridad informática fue el algoritmo con el que nos enseñaron qué era el cifrado.","headline":"Cifrado César (PHP vs Python)","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html"},"url":"https://jorgonor.com/es/blog/2012/12/cifrado-cesar-php-vs-python-benchmark.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -134,22 +133,22 @@
 <h4>Versión PHP</h4>
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="k">function</span> <span class="nf">error_die</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">function</span> <span class="n">error_die</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
     <span class="nv">$STDERR</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">'php://stderr'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">);</span>
     <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="nv">$message</span><span class="p">);</span>
-    <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="nx">PHP_EOL</span><span class="p">);</span>
+    <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="kc">PHP_EOL</span><span class="p">);</span>
     <span class="nb">fclose</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">);</span>
     <span class="k">die</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">error_die</span><span class="p">(</span><span class="s1">'Usage: ./caesar.php N'</span><span class="p">);</span>
+    <span class="nf">error_die</span><span class="p">(</span><span class="s1">'Usage: ./caesar.php N'</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="nv">$N</span> <span class="o">=</span> <span class="nv">$argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">is_numeric</span><span class="p">(</span><span class="nv">$N</span><span class="p">))</span> <span class="p">{</span>
-    <span class="nx">error_die</span><span class="p">(</span><span class="s2">"</span><span class="nv">$N</span><span class="s2"> should be numeric"</span><span class="p">);</span>
+    <span class="nf">error_die</span><span class="p">(</span><span class="s2">"</span><span class="nv">$N</span><span class="s2"> should be numeric"</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="nb">define</span><span class="p">(</span><span class="s1">'CHUNK_SIZE'</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>
@@ -161,7 +160,7 @@
 <span class="nv">$ord_up_bounds</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">'A'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'Z'</span><span class="p">));</span>
 <span class="nv">$fp</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">'php://stdin'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">);</span>
 
-<span class="k">while</span> <span class="p">(</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span> <span class="nx">CHUNK_SIZE</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+<span class="k">while</span> <span class="p">(</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span> <span class="no">CHUNK_SIZE</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
     <span class="nv">$buffer</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
     <span class="k">foreach</span><span class="p">(</span><span class="nb">str_split</span><span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$c</span><span class="p">)</span> <span class="p">{</span>
         <span class="nv">$ord_c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="nv">$c</span><span class="p">);</span>
@@ -205,56 +204,56 @@
 
 <h4>Versión Python</h4>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sys</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="n">sys</span>
 
 <span class="k">def</span> <span class="nf">error_die</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stderr</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stderr</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="nf">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-    <span class="n">error_die</span><span class="p">(</span><span class="s">'Usage: ./caesar.php N'</span><span class="p">)</span>
+<span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="nf">error_die</span><span class="p">(</span><span class="sh">'</span><span class="s">Usage: ./caesar.php N</span><span class="sh">'</span><span class="p">)</span>
 
-<span class="n">N</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
-<span class="k">if</span> <span class="ow">not</span> <span class="n">N</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'-'</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">N</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">())</span> <span class="p">:</span>
-    <span class="n">error_die</span><span class="p">(</span><span class="s">"{} should be numeric"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">N</span><span class="p">.</span><span class="nf">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="sh">'</span><span class="s">-</span><span class="sh">'</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">N</span><span class="p">[</span><span class="mi">1</span><span class="p">:].</span><span class="nf">isdigit</span><span class="p">())</span> <span class="p">:</span>
+    <span class="nf">error_die</span><span class="p">(</span><span class="sh">"</span><span class="s">{} should be numeric</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
 
 <span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span>
-<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 
-<span class="n">low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'z'</span><span class="p">]</span>
-<span class="n">up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'Z'</span><span class="p">]</span>
-<span class="n">diff</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'Z'</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="n">ord_low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s">'a'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'z'</span><span class="p">)]</span>
-<span class="n">ord_up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'Z'</span><span class="p">)]</span>
+<span class="n">low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">)</span> <span class="o">-</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">ord_low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">),</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">)]</span>
+<span class="n">ord_up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">),</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">)]</span>
 
 <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-    <span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">break</span>
     <span class="nb">buffer</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nf">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">ord_low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">c</span> <span class="o">-=</span> <span class="n">diff</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">ord_low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                 <span class="n">c</span> <span class="o">+=</span> <span class="n">diff</span>
-            <span class="n">c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nf">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nf">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">ord_up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">c</span> <span class="o">-=</span> <span class="n">diff</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">ord_up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                 <span class="n">c</span> <span class="o">+=</span> <span class="n">diff</span>
 
-            <span class="n">c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nf">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
-        <span class="nb">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span></code></pre></figure>
+        <span class="nb">buffer</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">""</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span></code></pre></figure>
 
 <p>
     Como podeis ver, las diferencias son mínimas.
@@ -300,23 +299,23 @@
 <h4>Versión PHP</h4>
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="k">function</span> <span class="nf">error_die</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">function</span> <span class="n">error_die</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
     <span class="nv">$STDERR</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">'php://stderr'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">);</span>
     <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="nv">$message</span><span class="p">);</span>
-    <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="nx">PHP_EOL</span><span class="p">);</span>
+    <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">,</span> <span class="kc">PHP_EOL</span><span class="p">);</span>
     <span class="nb">fclose</span><span class="p">(</span><span class="nv">$STDERR</span><span class="p">);</span>
     <span class="k">die</span><span class="p">();</span>
 <span class="p">}</span>
 
 
 <span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">error_die</span><span class="p">(</span><span class="s1">'Usage: ./caesar.php N'</span><span class="p">);</span>
+    <span class="nf">error_die</span><span class="p">(</span><span class="s1">'Usage: ./caesar.php N'</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="nv">$N</span> <span class="o">=</span> <span class="nv">$argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">is_numeric</span><span class="p">(</span><span class="nv">$N</span><span class="p">))</span> <span class="p">{</span>
-    <span class="nx">error_die</span><span class="p">(</span><span class="s2">"</span><span class="nv">$N</span><span class="s2"> should be numeric"</span><span class="p">);</span>
+    <span class="nf">error_die</span><span class="p">(</span><span class="s2">"</span><span class="nv">$N</span><span class="s2"> should be numeric"</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="nb">define</span><span class="p">(</span><span class="s1">'CHUNK_SIZE'</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>
@@ -331,7 +330,7 @@
 
 <span class="nv">$cache</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
 <span class="nv">$fp</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">'php://stdin'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">);</span>
-<span class="k">while</span> <span class="p">(</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span> <span class="nx">CHUNK_SIZE</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+<span class="k">while</span> <span class="p">(</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span> <span class="no">CHUNK_SIZE</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
     <span class="nv">$buffer</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
     <span class="k">foreach</span><span class="p">(</span><span class="nb">str_split</span><span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$c</span><span class="p">)</span> <span class="p">{</span>
         <span class="nv">$r</span> <span class="o">=</span> <span class="o">@</span><span class="nv">$cache</span><span class="p">[</span><span class="nv">$c</span><span class="p">];</span>
@@ -378,61 +377,61 @@
 
 <h4>Versión Python</h4>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sys</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="n">sys</span>
 
 <span class="k">def</span> <span class="nf">error_die</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stderr</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stderr</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="nf">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-    <span class="n">error_die</span><span class="p">(</span><span class="s">'Usage: ./caesar.php N'</span><span class="p">)</span>
+<span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="nf">error_die</span><span class="p">(</span><span class="sh">'</span><span class="s">Usage: ./caesar.php N</span><span class="sh">'</span><span class="p">)</span>
 
-<span class="n">N</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
-<span class="k">if</span> <span class="ow">not</span> <span class="n">N</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'-'</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">N</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">())</span> <span class="p">:</span>
-    <span class="n">error_die</span><span class="p">(</span><span class="s">"{} should be numeric"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">N</span><span class="p">.</span><span class="nf">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="sh">'</span><span class="s">-</span><span class="sh">'</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">N</span><span class="p">[</span><span class="mi">1</span><span class="p">:].</span><span class="nf">isdigit</span><span class="p">())</span> <span class="p">:</span>
+    <span class="nf">error_die</span><span class="p">(</span><span class="sh">"</span><span class="s">{} should be numeric</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
 
 <span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span>
-<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 
 <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'z'</span><span class="p">]</span>
-<span class="n">up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'Z'</span><span class="p">]</span>
-<span class="n">diff</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'Z'</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-<span class="n">ord_low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s">'a'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'z'</span><span class="p">)]</span>
-<span class="n">ord_up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'Z'</span><span class="p">)]</span>
+<span class="n">low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">)</span> <span class="o">-</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">ord_low_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">),</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">)]</span>
+<span class="n">ord_up_bounds</span> <span class="o">=</span> <span class="p">[</span><span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">),</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">)]</span>
 
 <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-    <span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">break</span>
     <span class="nb">buffer</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">cache</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">r</span> <span class="o">=</span> <span class="n">c</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="nf">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
                 <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">ord_low_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                     <span class="n">x</span> <span class="o">-=</span> <span class="n">diff</span>
                 <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">ord_low_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                     <span class="n">x</span> <span class="o">+=</span> <span class="n">diff</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="nf">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="nf">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span>
                 <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">ord_up_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                     <span class="n">x</span> <span class="o">-=</span> <span class="n">diff</span>
                 <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">ord_up_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                     <span class="n">x</span> <span class="o">+=</span> <span class="n">diff</span>
 
-                <span class="n">r</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="nf">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="n">cache</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
 
-        <span class="nb">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span></code></pre></figure>
+        <span class="nb">buffer</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">""</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span></code></pre></figure>
 <p>Y esta sería la tabla con los tiempos. </p>
 
 <table>
@@ -529,10 +528,7 @@
               </div>
             </div>
             <div class="col s12 m12 l3">
-                
-                
-                
-            </div>
+                </div>
         </div>
     </div>
 

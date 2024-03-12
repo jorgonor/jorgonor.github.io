@@ -13,9 +13,12 @@
   <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
   
 
-  <!-- Begin Jekyll SEO tag v2.1.0 -->
-<title>Symfony2 no es lento - Jorgonor</title>
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Symfony2 no es lento | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
 <meta property="og:title" content="Symfony2 no es lento" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="es" />
 <meta name="description" content="Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos de esos benchmarks no sacan todo el jugo a las distintas tecnologías, siendo Symfony2 de los que suele salir perjudicado." />
 <meta property="og:description" content="Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos de esos benchmarks no sacan todo el jugo a las distintas tecnologías, siendo Symfony2 de los que suele salir perjudicado." />
 <link rel="canonical" href="https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html" />
@@ -24,16 +27,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2015-10-09T10:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Symfony2 no es lento" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
 <meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
 <script type="application/ld+json">
-{"@context": "http://schema.org",
-"@type": "BlogPosting",
-"headline": "Symfony2 no es lento",
-"datePublished": "2015-10-09T10:00:00+00:00",
-"description": "Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos de esos benchmarks no sacan todo el jugo a las distintas tecnologías, siendo Symfony2 de los que suele salir perjudicado.",
-"url": "https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2016-03-28T13:00:00+00:00","datePublished":"2015-10-09T10:00:00+00:00","description":"Todos los que estamos en el mundo del Desarrollo Web siempre hemos visto un benchmark u otro. Lo que muchas veces se obvia es que muchos de esos benchmarks no sacan todo el jugo a las distintas tecnologías, siendo Symfony2 de los que suele salir perjudicado.","headline":"Symfony2 no es lento","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html"},"url":"https://jorgonor.com/es/blog/php/2015/10/09/symfony2-no-es-lento.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -122,15 +121,11 @@ desarrollar esa misma solución en igualdad de condiciones para tal cantidad de 
 es necesario realizar unos ajustes para que mucho trabajo hecho por el framework se reutilice entre peticiones. Una de las optimizaciones
 más increibles de <em>Symfony2</em> tiene que ver con su ORM por defecto, <em>Doctrine2</em>.</p>
 
-<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">doctrine:</span><span class="err">
-</span>
-    <span class="s">orm:</span><span class="err">
-</span>
-        <span class="s">metadata_cache_driver</span><span class="pi">:</span> <span class="s">apc</span><span class="err">
-</span>
-        <span class="s">result_cache_driver</span><span class="pi">:</span> <span class="s">apc</span><span class="err">
-</span>
-        <span class="s">query_cache_driver</span><span class="pi">:</span> <span class="s">apc</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">doctrine</span><span class="pi">:</span>
+    <span class="na">orm</span><span class="pi">:</span>
+        <span class="na">metadata_cache_driver</span><span class="pi">:</span> <span class="s">apc</span>
+        <span class="na">result_cache_driver</span><span class="pi">:</span> <span class="s">apc</span>
+        <span class="na">query_cache_driver</span><span class="pi">:</span> <span class="s">apc</span></code></pre></figure>
 
 <p>Como podemos ver en el ejemplo anterior, se puede configurar diferentes tipos de caché para Doctrine2. La caché de metadatos
 (<em>metadata_cache_driver</em>) permite que todos los mapeos definidos en los ficheros de configuración de Doctrine2 sean reutilizados.
@@ -188,10 +183,7 @@ tener en cuenta cómo aceleran el proceso de desarrollo y facilitan el uso de pa
               </div>
             </div>
             <div class="col s12 m12 l3">
-                
-                
-                
-            </div>
+                </div>
         </div>
     </div>
 

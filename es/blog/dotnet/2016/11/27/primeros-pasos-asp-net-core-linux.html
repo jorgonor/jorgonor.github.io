@@ -13,9 +13,12 @@
   <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
   
 
-  <!-- Begin Jekyll SEO tag v2.1.0 -->
-<title>Primeros pasos con ASP.NET Core sobre Linux - Jorgonor</title>
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Primeros pasos con ASP.NET Core sobre Linux | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
 <meta property="og:title" content="Primeros pasos con ASP.NET Core sobre Linux" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="es" />
 <meta name="description" content="Las promesas son una solución para implementar código asíncrono que aparece como una abstracción más avanzada con la que reemplazar los callbacks." />
 <meta property="og:description" content="Las promesas son una solución para implementar código asíncrono que aparece como una abstracción más avanzada con la que reemplazar los callbacks." />
 <link rel="canonical" href="https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html" />
@@ -25,17 +28,13 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2016-11-27T17:00:00+00:00" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://jorgonor.com/img/posts/aspnetcore-logo.png" />
+<meta property="twitter:title" content="Primeros pasos con ASP.NET Core sobre Linux" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
 <meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
 <script type="application/ld+json">
-{"@context": "http://schema.org",
-"@type": "BlogPosting",
-"headline": "Primeros pasos con ASP.NET Core sobre Linux",
-"image": "https://jorgonor.com/img/posts/aspnetcore-logo.png",
-"datePublished": "2016-11-27T17:00:00+00:00",
-"description": "Las promesas son una solución para implementar código asíncrono que aparece como una abstracción más avanzada con la que reemplazar los callbacks.",
-"url": "https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2016-11-27T17:00:00+00:00","datePublished":"2016-11-27T17:00:00+00:00","description":"Las promesas son una solución para implementar código asíncrono que aparece como una abstracción más avanzada con la que reemplazar los callbacks.","headline":"Primeros pasos con ASP.NET Core sobre Linux","image":"https://jorgonor.com/img/posts/aspnetcore-logo.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html"},"url":"https://jorgonor.com/es/blog/dotnet/2016/11/27/primeros-pasos-asp-net-core-linux.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -121,15 +120,13 @@ la hora de desarrollar aplicaciones web.</p>
   <li>Seguimos los pasos para instalar .NET Core a través de los repositorios de Microsoft. <a href="https://www.microsoft.com/net/core#linuxubuntu">https://www.microsoft.com/net/core#linuxubuntu</a> Para ejecutar estos pasos basta con abrir una consola y ejecutar:</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Añadimos los repositorios a nuestro sistema
-</span>
-sudo sh -c <span class="s1">'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" &gt; /etc/apt/sources.list.d/dotnetdev.list'</span>
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
-sudo apt-get update
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Añadimos los repositorios a nuestro sistema</span>
+<span class="nb">sudo </span>sh <span class="nt">-c</span> <span class="s1">'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" &gt; /etc/apt/sources.list.d/dotnetdev.list'</span>
+<span class="nb">sudo </span>apt-key adv <span class="nt">--keyserver</span> hkp://keyserver.ubuntu.com:80 <span class="nt">--recv-keys</span> 417A0893
+<span class="nb">sudo </span>apt-get update
 
-<span class="c"># Instalamos .NET Core 1.1 y 1.0
-</span>
-sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121</code></pre></figure>
+<span class="c"># Instalamos .NET Core 1.1 y 1.0</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview2-003121</code></pre></figure>
 
 <ul>
   <li>Si queremos usar un IDE para desarrollar, podemos usar <a href="https://code.visualstudio.com/">Visual Studio Code</a>, el IDE multiplataforma de Microsoft.</li>
@@ -139,27 +136,22 @@ sudo apt-get install dotnet-dev-1.0.0-preview2.1-003177 dotnet-dev-1.0.0-preview
 
 <p>Una vez instalado todo lo necesario, pasamos a crear nuestro proyecto web con las siguientes instrucciones.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir DotNetCoreWeb <span class="o">&amp;&amp;</span> <span class="nb">cd </span>DotNetCoreWeb
-dotnet new -t web
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">mkdir </span>DotNetCoreWeb <span class="o">&amp;&amp;</span> <span class="nb">cd </span>DotNetCoreWeb
+dotnet new <span class="nt">-t</span> web
 dotnet restore
-<span class="c"># Para instalar las dependencias del lado del cliente
-</span>
-<span class="c"># Necesitamos tener Node.js instalado
-</span>
-npm -g install bower gulp
-bower install
-npm install
+<span class="c"># Para instalar las dependencias del lado del cliente</span>
+<span class="c"># Necesitamos tener Node.js instalado</span>
+npm <span class="nt">-g</span> <span class="nb">install </span>bower gulp
+bower <span class="nb">install
+</span>npm <span class="nb">install</span>
 
-<span class="c"># Inicializamos la base de datos
-</span>
+<span class="c"># Inicializamos la base de datos</span>
 dotnet ef database update
 
-<span class="c"># Iniciamos el entorno para activar el modo desarrollo
-</span>
+<span class="c"># Iniciamos el entorno para activar el modo desarrollo</span>
 <span class="nb">export </span><span class="nv">ASPNETCORE_ENVIRONMENT</span><span class="o">=</span>development
 
-<span class="c"># Ejecutamos el proyecto
-</span>
+<span class="c"># Ejecutamos el proyecto</span>
 dotnet run</code></pre></figure>
 
 <p>Tras ejecutar estos comandos, podremos abrir un navegador a la URL <a href="http://localhost:5000" rel="nofollow" target="_blank">http://localhost:5000</a>
@@ -175,20 +167,20 @@ ayudar en como utilizar todas las herramientas ofrecidas por la plataforma ASP.N
 vamos a poner el código necesario para hacer un ejemplo funcional básico.
 También puedes bajarte el proyecto completo desde <a href="https://github.com/jorgonor/DotNetCoreWeb">este repositorio de Github</a>.</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Data/ApplicationContext.cs
-</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Data/ApplicationContext.cs</span>
+
 <span class="k">public</span> <span class="k">class</span> <span class="nc">ApplicationDbContext</span>
 <span class="p">{</span>
-    <span class="c1">// ...
-</span>
-    <span class="c1">// Añadir esta línea
-</span>    <span class="k">public</span> <span class="n">DbSet</span><span class="p">&lt;</span><span class="n">Todo</span><span class="p">&gt;</span> <span class="n">Todos</span> <span class="p">{</span><span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;}</span>
+    <span class="c1">// ...</span>
 
-    <span class="c1">// ...
-</span><span class="p">}</span></code></pre></figure>
+    <span class="c1">// Añadir esta línea</span>
+    <span class="k">public</span> <span class="n">DbSet</span><span class="p">&lt;</span><span class="n">Todo</span><span class="p">&gt;</span> <span class="n">Todos</span> <span class="p">{</span><span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;}</span>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Models/Todo.cs
-</span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Models/Todo.cs</span>
+<span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.ComponentModel.DataAnnotations</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.ComponentModel.DataAnnotations.Schema</span><span class="p">;</span>
 
@@ -208,8 +200,8 @@ También puedes bajarte el proyecto completo desde <a href="https://github.com/j
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Controllers/TodoController.cs
-</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Controllers/TodoController.cs</span>
+
 <span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">Microsoft.AspNetCore.Mvc</span><span class="p">;</span>
@@ -256,7 +248,7 @@ También puedes bajarte el proyecto completo desde <a href="https://github.com/j
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- Views/Todo/Index.cshtml --&gt;</span>
 
-@model IEnumerable<span class="nt">&lt;WebApplication</span><span class="err">.</span><span class="na">Models</span><span class="err">.</span><span class="na">Todo</span><span class="nt">&gt;</span>
+@model IEnumerable<span class="nt">&lt;WebApplication.Models.Todo&gt;</span>
 
 @{
     string emptySymbol = "-";
@@ -364,29 +356,29 @@ el fichero <em>project.json</em> con una nueva dependencia y ejecutar <strong>do
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">//</span><span class="w"> </span><span class="err">project.json</span><span class="w">
 </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
        </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
-       </span><span class="nt">"Pomelo.EntityFrameworkCore.MySQL"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.1"</span><span class="w">
+       </span><span class="nl">"Pomelo.EntityFrameworkCore.MySQL"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.1"</span><span class="w">
     </span><span class="p">}</span><span class="w">
     </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
 </span><span class="p">}</span></code></pre></figure>
 
 <p>También tendremos que hacerle saber al servicio <em>ApplicationDbContext</em> que ahora debe usar MySQL como motor y actualizar la cadena de conexión en el fichero <em>appsettings.json</em>.</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Startup.cs
-</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Startup.cs</span>
+
 <span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="c1">// Add framework services.
-</span>    <span class="n">services</span><span class="p">.</span><span class="n">AddDbContext</span><span class="p">&lt;</span><span class="n">ApplicationDbContext</span><span class="p">&gt;(</span><span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="c1">// Add framework services.</span>
+    <span class="n">services</span><span class="p">.</span><span class="n">AddDbContext</span><span class="p">&lt;</span><span class="n">ApplicationDbContext</span><span class="p">&gt;(</span><span class="n">options</span> <span class="p">=&gt;</span>
         <span class="n">options</span><span class="p">.</span><span class="nf">UseMySql</span><span class="p">(</span><span class="n">Configuration</span><span class="p">.</span><span class="nf">GetConnectionString</span><span class="p">(</span><span class="s">"DefaultConnection"</span><span class="p">)));</span>
-    <span class="c1">// Other services configuration ...
-</span><span class="p">}</span></code></pre></figure>
+    <span class="c1">// Other services configuration ...</span>
+<span class="p">}</span></code></pre></figure>
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">//</span><span class="w"> </span><span class="err">appsettings.json</span><span class="w">
 </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"ConnectionStrings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"DefaultConnection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"server=localhost;database=dotnetcore;uid=root;pwd=password"</span><span class="w">
+    </span><span class="nl">"ConnectionStrings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"DefaultConnection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"server=localhost;database=dotnetcore;uid=root;pwd=password"</span><span class="w">
     </span><span class="p">}</span><span class="w">
     </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
 </span><span class="p">}</span></code></pre></figure>
@@ -405,41 +397,31 @@ dotnet ef database update</code></pre></figure>
 pero sí vamos a explicar como ejecutar una instancia de nuestra aplicación preparada para producción detrás de un <em>reverse proxy</em> como Nginx,
 usando <a href="https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction">esta guía de Microsoft como referencia</a>. Para instalar Nginx basta con ejecutar:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install nginx</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt-get <span class="nb">install </span>nginx</code></pre></figure>
 
 <p>Con nginx instalado, tendremos que publicar nuestro proyecto para que sea lo más eficiente posible en producción
 y copiar el resultado de nuestra compilación a un directorio utilizable por el usuario <em>www-data</em>, como haríamos
 con un proyecto LAMP.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Compilamos en modo Release
-</span>
-dotnet publish -c Release
-<span class="c"># Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción
-</span>
-cp -r bin/Release/netcoreapp1.1/publish/<span class="k">*</span> /var/aspnetcore/DotNetCoreWeb</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Compilamos en modo Release</span>
+dotnet publish <span class="nt">-c</span> Release
+<span class="c"># Copiamos nuestra aplicación compilada al directorio raíz de la instancia en producción</span>
+<span class="nb">cp</span> <span class="nt">-r</span> bin/Release/netcoreapp1.1/publish/<span class="k">*</span> /var/aspnetcore/DotNetCoreWeb</code></pre></figure>
 
 <p>Finalmente, pasaremos a seguir los pasos descritos en la guía de Microsoft para crear un servicio manejado a través de <em>systemd</em>. Algo que esta guía no nos dice, es que en el descriptor del servicio,
 hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por eso, añadimos el descriptor del servicio utilizado en el proyecto de ejemplo.</p>
 
 <figure class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="nn">[Unit]</span>
-<span class="py">Description</span><span class="p">=</span><span class="s">.NET running on Ubuntu 16.04
-</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">.NET running on Ubuntu 16.04</span>
 
 <span class="nn">[Service]</span>
-<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll
-</span>
-<span class="py">Restart</span><span class="p">=</span><span class="s">always
-</span>
-<span class="py">RestartSec</span><span class="p">=</span><span class="s">10
-</span>
-<span class="py">SyslogIdentifier</span><span class="p">=</span><span class="s">dotnet-example
-</span>
-<span class="py">User</span><span class="p">=</span><span class="s">www-data
-</span>
-<span class="py">Environment</span><span class="p">=</span><span class="s">ASPNETCORE_ENVIRONMENT=Production
-</span>
-<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/var/aspnetcore/DotNetCoreWeb
-</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/bin/dotnet /var/aspnetcore/DotNetCoreWeb/DotNetCoreWeb.dll</span>
+<span class="py">Restart</span><span class="p">=</span><span class="s">always</span>
+<span class="py">RestartSec</span><span class="p">=</span><span class="s">10</span>
+<span class="py">SyslogIdentifier</span><span class="p">=</span><span class="s">dotnet-example</span>
+<span class="py">User</span><span class="p">=</span><span class="s">www-data</span>
+<span class="py">Environment</span><span class="p">=</span><span class="s">ASPNETCORE_ENVIRONMENT=Production</span>
+<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/var/aspnetcore/DotNetCoreWeb</span>
 
 <span class="nn">[Install]</span>
 <span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span></code></pre></figure>
@@ -484,10 +466,7 @@ hace falta definir el directorio de trabajo que va a tener nuestro proceso. Por 
               </div>
             </div>
             <div class="col s12 m12 l3">
-                
-                
-                
-            </div>
+                </div>
         </div>
     </div>
 

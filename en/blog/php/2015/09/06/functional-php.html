@@ -13,9 +13,12 @@
   <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
   
 
-  <!-- Begin Jekyll SEO tag v2.1.0 -->
-<title>Functional PHP - Jorgonor</title>
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Functional PHP | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
 <meta property="og:title" content="Functional PHP" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="en" />
 <meta name="description" content="Functional programming. What is that thing some software gurus talk about? I am going to try to explain it with a basic example in PHP to show you how you can use this paradigm for your daily work, demistifying its difficulty in the process." />
 <meta property="og:description" content="Functional programming. What is that thing some software gurus talk about? I am going to try to explain it with a basic example in PHP to show you how you can use this paradigm for your daily work, demistifying its difficulty in the process." />
 <link rel="canonical" href="https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html" />
@@ -24,16 +27,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2015-09-06T15:00:00+00:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Functional PHP" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
 <meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
 <script type="application/ld+json">
-{"@context": "http://schema.org",
-"@type": "BlogPosting",
-"headline": "Functional PHP",
-"datePublished": "2015-09-06T15:00:00+00:00",
-"description": "Functional programming. What is that thing some software gurus talk about? I am going to try to explain it with a basic example in PHP to show you how you can use this paradigm for your daily work, demistifying its difficulty in the process.",
-"url": "https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2016-03-28T13:00:00+00:00","datePublished":"2015-09-06T15:00:00+00:00","description":"Functional programming. What is that thing some software gurus talk about? I am going to try to explain it with a basic example in PHP to show you how you can use this paradigm for your daily work, demistifying its difficulty in the process.","headline":"Functional PHP","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html"},"url":"https://jorgonor.com/en/blog/php/2015/09/06/functional-php.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -134,7 +133,7 @@
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
 
-<span class="k">function</span> <span class="nf">index_and_value_are_even</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span>
+<span class="k">function</span> <span class="n">index_and_value_are_even</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="nv">$result</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="k">foreach</span><span class="p">(</span><span class="nv">$arr</span> <span class="k">as</span> <span class="nv">$index</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
@@ -146,7 +145,7 @@
     <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nb">var_export</span><span class="p">(</span><span class="nx">index_and_value_are_even</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]));</span></code></pre></figure>
+<span class="nb">var_export</span><span class="p">(</span><span class="nf">index_and_value_are_even</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]));</span></code></pre></figure>
 
 <p>
     This code fragment exports an empty array, provided the array values and indices are not even in any element.
@@ -164,14 +163,14 @@
 </p>
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="k">function</span> <span class="nf">is_even</span><span class="p">(</span><span class="nv">$n</span><span class="p">)</span>
+<span class="k">function</span> <span class="n">is_even</span><span class="p">(</span><span class="nv">$n</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="nv">$n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">function</span> <span class="nf">index_and_value_are_even</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">function</span> <span class="n">index_and_value_are_even</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">array_filter</span><span class="p">(</span><span class="nv">$arr</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$index</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">is_even</span><span class="p">(</span><span class="nv">$index</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">is_even</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nf">is_even</span><span class="p">(</span><span class="nv">$index</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nf">is_even</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
     <span class="p">});</span>
 <span class="p">}</span></code></pre></figure>
 
@@ -188,7 +187,7 @@
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
 
-<span class="k">function</span> <span class="nf">array_filter_with_indices</span><span class="p">(</span><span class="k">array</span> <span class="nv">$arr</span><span class="p">,</span> <span class="nx">callable</span> <span class="nv">$fn</span><span class="p">)</span>
+<span class="k">function</span> <span class="n">array_filter_with_indices</span><span class="p">(</span><span class="kt">array</span> <span class="nv">$arr</span><span class="p">,</span> <span class="kt">callable</span> <span class="nv">$fn</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="nv">$result</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="k">foreach</span><span class="p">(</span><span class="nv">$arr</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
@@ -206,7 +205,7 @@
 </p>
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="p">[</span><span class="s1">'1'</span> <span class="o">=&gt;</span> <span class="s1">'value1'</span><span class="p">,</span> <span class="s1">'abc'</span> <span class="o">=&gt;</span> <span class="s1">'value3'</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></code></pre></figure>
+<span class="p">[</span><span class="s1">'1'</span> <span class="o">=&gt;</span> <span class="s1">'value1'</span><span class="p">,</span> <span class="s1">'abc'</span> <span class="o">=&gt;</span> <span class="s1">'value3'</span><span class="p">,</span> <span class="mf">...</span><span class="p">]</span></code></pre></figure>
 
 <p>
     Another thing of note in this code is that it uses <a href="http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration">Type Hinting</a>,
@@ -249,10 +248,7 @@
               </div>
             </div>
             <div class="col s12 m12 l3">
-                
-                
-                
-            </div>
+                </div>
         </div>
     </div>
 

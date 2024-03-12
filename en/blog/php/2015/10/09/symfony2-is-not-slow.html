@@ -13,9 +13,12 @@
   <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
   
 
-  <!-- Begin Jekyll SEO tag v2.1.0 -->
-<title>Symfony2 is not slow - Jorgonor</title>
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Symfony2 is not slow | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
 <meta property="og:title" content="Symfony2 is not slow" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="en" />
 <meta name="description" content="If you are working on Web Development you must have read eventually a benchmark. What several times is not that obvious is that the benchmark is not comparing the different technologies fairly." />
 <meta property="og:description" content="If you are working on Web Development you must have read eventually a benchmark. What several times is not that obvious is that the benchmark is not comparing the different technologies fairly." />
 <link rel="canonical" href="https://jorgonor.com/en/blog/php/2015/10/09/symfony2-is-not-slow.html" />
@@ -24,16 +27,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2015-10-09T10:30:00+00:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Symfony2 is not slow" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
 <meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
 <script type="application/ld+json">
-{"@context": "http://schema.org",
-"@type": "BlogPosting",
-"headline": "Symfony2 is not slow",
-"datePublished": "2015-10-09T10:30:00+00:00",
-"description": "If you are working on Web Development you must have read eventually a benchmark. What several times is not that obvious is that the benchmark is not comparing the different technologies fairly.",
-"url": "https://jorgonor.com/en/blog/php/2015/10/09/symfony2-is-not-slow.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2016-03-28T13:00:00+00:00","datePublished":"2015-10-09T10:30:00+00:00","description":"If you are working on Web Development you must have read eventually a benchmark. What several times is not that obvious is that the benchmark is not comparing the different technologies fairly.","headline":"Symfony2 is not slow","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/en/blog/php/2015/10/09/symfony2-is-not-slow.html"},"url":"https://jorgonor.com/en/blog/php/2015/10/09/symfony2-is-not-slow.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -120,15 +119,11 @@ with a good performance some extra tweaks must be done. But this is just having 
 to do with the code you’ve developed. As an example, I will show the optimization that has given me better results, an optimization for
 the ORM that comes with <strong>Symfony2</strong>, <em>Doctrine2</em>.</p>
 
-<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">doctrine:</span><span class="err">
-</span>
-    <span class="s">orm:</span><span class="err">
-</span>
-        <span class="s">metadata_cache_driver</span><span class="pi">:</span> <span class="s">apc</span><span class="err">
-</span>
-        <span class="s">result_cache_driver</span><span class="pi">:</span> <span class="s">apc</span><span class="err">
-</span>
-        <span class="s">query_cache_driver</span><span class="pi">:</span> <span class="s">apc</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">doctrine</span><span class="pi">:</span>
+    <span class="na">orm</span><span class="pi">:</span>
+        <span class="na">metadata_cache_driver</span><span class="pi">:</span> <span class="s">apc</span>
+        <span class="na">result_cache_driver</span><span class="pi">:</span> <span class="s">apc</span>
+        <span class="na">query_cache_driver</span><span class="pi">:</span> <span class="s">apc</span></code></pre></figure>
 
 <p>As you can see in the previous example, different sorts of caches can be configured for Doctrine2. The metadata cache
 (<em>metadata_cache_driver</em>) allows that every mapping file between your entities and your database tables can be reused, without the need
@@ -175,10 +170,7 @@ your Symfony2 application performance critically like <a href="http://www.slides
               </div>
             </div>
             <div class="col s12 m12 l3">
-                
-                
-                
-            </div>
+                </div>
         </div>
     </div>
 

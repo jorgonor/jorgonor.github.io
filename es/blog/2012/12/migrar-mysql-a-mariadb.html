@@ -13,9 +13,12 @@
   <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
   
 
-  <!-- Begin Jekyll SEO tag v2.1.0 -->
-<title>Migrar de Mysql a MariaDB - Jorgonor</title>
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Migrar de Mysql a MariaDB | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
 <meta property="og:title" content="Migrar de Mysql a MariaDB" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="es" />
 <meta name="description" content="Como muchos de vosotros ya sabréis, MySQL es ahora propiedad de Oracle. Tras algunas de las prácticas de esta empresa, mucha gente ha desconfiado de ella por lo que se creó un fork llamado MariaDB como alternativa open-source." />
 <meta property="og:description" content="Como muchos de vosotros ya sabréis, MySQL es ahora propiedad de Oracle. Tras algunas de las prácticas de esta empresa, mucha gente ha desconfiado de ella por lo que se creó un fork llamado MariaDB como alternativa open-source." />
 <link rel="canonical" href="https://jorgonor.com/es/blog/2012/12/migrar-mysql-a-mariadb.html" />
@@ -24,16 +27,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2012-12-18T22:44:00+00:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Migrar de Mysql a MariaDB" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
 <meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
 <script type="application/ld+json">
-{"@context": "http://schema.org",
-"@type": "BlogPosting",
-"headline": "Migrar de Mysql a MariaDB",
-"datePublished": "2012-12-18T22:44:00+00:00",
-"description": "Como muchos de vosotros ya sabréis, MySQL es ahora propiedad de Oracle. Tras algunas de las prácticas de esta empresa, mucha gente ha desconfiado de ella por lo que se creó un fork llamado MariaDB como alternativa open-source.",
-"url": "https://jorgonor.com/es/blog/2012/12/migrar-mysql-a-mariadb.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2012-12-18T22:44:00+00:00","datePublished":"2012-12-18T22:44:00+00:00","description":"Como muchos de vosotros ya sabréis, MySQL es ahora propiedad de Oracle. Tras algunas de las prácticas de esta empresa, mucha gente ha desconfiado de ella por lo que se creó un fork llamado MariaDB como alternativa open-source.","headline":"Migrar de Mysql a MariaDB","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/es/blog/2012/12/migrar-mysql-a-mariadb.html"},"url":"https://jorgonor.com/es/blog/2012/12/migrar-mysql-a-mariadb.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -121,10 +120,10 @@
 
 <p>Una vez configurado el repositorio, en Ubuntu se puede instalar con este simple comando:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo bash
-apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>bash
+apt-key adv <span class="nt">--recv-keys</span> <span class="nt">--keyserver</span> keyserver.ubuntu.com 0xcbcb082a1bb943db
 apt-get update
-apt-get install mariadb-server</code></pre></figure>
+apt-get <span class="nb">install </span>mariadb-server</code></pre></figure>
 
 <p>
     Y a funcionar. Tus aplicaciones utilizando el driver mysql funcionan, y sin ningún problema.
@@ -166,10 +165,7 @@ apt-get install mariadb-server</code></pre></figure>
               </div>
             </div>
             <div class="col s12 m12 l3">
-                
-                
-                
-            </div>
+                </div>
         </div>
     </div>
 
