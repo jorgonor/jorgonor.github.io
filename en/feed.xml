@@ -5,8 +5,8 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 10 Mar 2024 23:06:53 +0000</pubDate>
-    <lastBuildDate>Sun, 10 Mar 2024 23:06:53 +0000</lastBuildDate>
+    <pubDate>Sat, 23 Mar 2024 17:25:50 +0000</pubDate>
+    <lastBuildDate>Sat, 23 Mar 2024 17:25:50 +0000</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
     
     
@@ -55,7 +55,7 @@ this trick works.&lt;/p&gt;
       </item>
     
       <item>
-        <title>Why properties are evil</title>
+        <title>Why properties are evil in C#</title>
         <description>&lt;p&gt;As many of you might already know, properties are a neat way to define getters and setters. Many languages, such as C#, Delphi, Javascript or PHP support them
 and they are first-class citizens in the .NET ecosystem. Although properties are a handy resource, some property implementations can turn out to be evil.
 Very evil. Let’s dive into them.&lt;/p&gt;

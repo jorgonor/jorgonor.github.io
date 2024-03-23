@@ -16,7 +16,7 @@ var App = (function() {
         setCookie: function(k, v) {
            var expire = new Date();
            expire = new Date(expire.getTime() + 7776000000);
-           document.cookie = k + "=" + v + ";expires=" + expire + ";path=/";
+           document.cookie = k + "=" + v + ";expires=" + expire + ";path=/;SameSite=strict";
         },
         getCookie: function(k) {
             var parts, part;

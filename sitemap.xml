@@ -139,6 +139,9 @@
 <loc>https://jorgonor.com/en/</loc>
 </url>
 <url>
+<loc>https://jorgonor.com/</loc>
+</url>
+<url>
 <loc>https://jorgonor.com/es/</loc>
 </url>
 <url>
@@ -164,17 +167,5 @@
 </url>
 <url>
 <loc>https://jorgonor.com/en/web-developer.html</loc>
-</url>
-<url>
-<loc>https://jorgonor.com/errors/400.html</loc>
-<lastmod>2015-09-03T20:44:47+00:00</lastmod>
-</url>
-<url>
-<loc>https://jorgonor.com/errors/403.html</loc>
-<lastmod>2015-09-03T20:47:24+00:00</lastmod>
-</url>
-<url>
-<loc>https://jorgonor.com/errors/500.html</loc>
-<lastmod>2015-09-03T20:45:08+00:00</lastmod>
 </url>
 </urlset>

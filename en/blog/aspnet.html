@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
 
   
   <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
   
   
   <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
@@ -43,7 +48,8 @@
   <meta name="content-language" content="en">
   
 
-  <!-- Google tag (gtag.js) -->
+  
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -52,175 +58,177 @@
 
   gtag('config', 'G-4HH511444Z');
 </script>
-  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+
 </head>
 
-  <body>
-    <div id="cookies_notice" >
-    <div class="card blue-grey darken-3">
-        <div class="card-content white-text">
-            <div class="row">
-                <div class="col s8 m10">
-                    <span class="card-title">Cookies</span>
-                    <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
-                </div>
-                <div class="col s4 m2">
-                    <a id="cookies_notice_close" class="indigo white-text" href="#">Accept</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<nav class="indigo" role="navigation">
-    <div class="nav-wrapper container">
-        <ul>
-            <li>
-                
-                <a class="page-link" href="/en">Home</a>
-            </li>
-            <li>
-                
-                <a class="page-link" href="/en/blog.html">Blog</a>
-            </li>
-            <li>
-                
-                <a class="page-link" href="/en/contact.html">Contact</a>
-            </li>
-        </ul>
-        <a class="button-collapse" data-activates="nav-mobile" href="#"></a>
-    </div>
-</nav>
-<header class="container">
-    <h1>ASP.NET- Blog</h1>
-</header>
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-                
-
-<div class="row">
-    <div class="col s12">
-        <h4>
-            <a class="post-link" href="/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html">How to log SQL queries using Entity Framework 6 like in EF Core</a>
-        </h4>
-        <p>
-            Watching the SQL queries Entity Framework executes is quite useful when a slow query needs optimization. If you’re already using ASP.NET Core, you might have already noticed that the debugging stream already outputs these SQL queries for you. But, if you’re working with ASP.NET MVC or ASP.NET Web API projects, by default you won’t see the SQL queries executed by EF. Even though, there’s a very simple trick to be able to see the actual SQL. Simply add the following code in your DbContext constructor. Once this piece of code has been added, you will be able to see the...
-        </p>
-    </div>
-</div>
-
-
-
-<div class="row">
-    <div class="col s12">
-        <h4>
-            <a class="post-link" href="/en/blog/aspnet/2017/02/04/why-properties-are-evil.html">Why properties are evil</a>
-        </h4>
-        <p>
-            As many of you might already know, properties are a neat way to define getters and setters. Many languages, such as C#, Delphi, Javascript or PHP support them and they are first-class citizens in the .NET ecosystem. Although properties are a handy resource, some property implementations can turn out to be evil. Very evil. Let’s dive into them. Side-effects in property code Causing side-effects is the worst practice when using properties, and it’s more spread than it seems at first. What can we consider side-effects? Modifying a nested object state, making a database query that modifies database state or change...
-        </p>
-    </div>
-</div>
-
-
-
-<div class="row">
-    <div class="col s12">
-        <h4>
-            <a class="post-link" href="/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html">Entity Framework 6 and "There is already an open DataReader"</a>
-        </h4>
-        <p>
-            Entity Framework is an amazing ORM. It has differences with other ORMs like Hibernate or Doctrine, but at the same time feels more comfortable. Two key differences with other ORMs are LINQ as its query language (LINQ it’s a compiled language, if you like to rename stuff you know how many errors this feature can prevent) and being able to use foreign key values without having to join with the related entity. But, it has a poor proxy pattern. Navigation properties, the Entity Framework name for relationships between entities, can be accessed with lazy loading like in other ORMs, but...
-        </p>
-    </div>
-</div>
-
-
-
-<div class="row">
-    <div class="col s12">
-        <h4>
-            <a class="post-link" href="/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html">ETagFilePathResult, an ActionResult to save bandwidth in ASP.NET MVC.</a>
-        </h4>
-        <p>
-            ASP.NET MVC provides several ways to serve files from controllers, but all of them require to serve the entire file content through the network, something that will make our website slow and more expensive while it’s ridiculous to transfer the same content over the network every time the resource is requested. Client-side HTTP caching can easily prevent downloading all those extra bytes. In this post we offer a solution to it without doing any complicated stuff, using the ActionResult abstract class to integrate a solution based on ETags in ASP.NET MVC to implement the client-side caching. Why do I need...
-        </p>
-    </div>
-</div>
-
-
-
-<div class="row">
-    <div class="col s12">
-        <h4>
-            <a class="post-link" href="/en/blog/aspnet/2016/02/05/ilmerge-target-assembly-lists-itself-as-an-external-reference.html">Ilmerge. The target assembly lists itself as an external reference</a>
-        </h4>
-        <p>
-            I’ve made my mind to do this post just because I saw there wasn’t a solution to what happened to me with this problem, even though the solution to it was pretty naive to me. The thing is, in an ASP.NET project, I have a publish profile with precompilation enabled and with the advanced precompile option “Merge all outputs to a single assembly” enabled too. I decided to set to this output assembly my project name, something that seemed to me the right thing to do. But then, suddenly a misterious error showed up. An error occurred when merging assemblies:...
-        </p>
-    </div>
-</div>
-
-
-
-            </div>
-        </div>
-    </div>
-
-    <footer class="section page-footer indigo">
-    <div class="container">
-        <div class="row white-text">
-            <div class="col s12 m6 l6">
-                <h3>Jorgonor</h3>
-                <p>Software Developer and Web passionate.</p>
-            </div>
-
-            <div class="col s12 m3 l3">
-                    <h5>Technologies</h5>
-                
-                <ul>
-                    <li><a href="/en/php-developer.html" class="white-text">PHP</a></li>
-                    <li><a href="/en/web-developer.html" class="white-text">Web</a></li>
-                </ul>
-                
-            </div>
-            <div class="col s12 m3 l3">
-                <h5>Social</h5>
-
-                
-                <a aria-label="Follow @jorgonor on GitHub"
-                   data-count-aria-label="# followers on GitHub"
-                   data-count-api="/users/jorgonor#followers"
-                   data-count-href="/jorgonor/followers"
-                   data-style="mega" href="https://github.com/jorgonor" class="github-button">Follow @jorgonor</a>
-                
-                
-                <a href="https://twitter.com/jorgonor" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @jorgonor</a>
-                
-
-                <a href="http://stackoverflow.com/users/6254934/jorgonor">
-                    <img src="https://stackoverflow.com/users/flair/6254934.png" width="208" height="58"
-                        alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
-                        title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
-                </a>
-            </div>
-        </div>
-        <div id="footer-copy" class="row white-text">
-            <div class="col s12">
-                © 2016-2024 <a class="blue-text text-accent-1" href="https://jorgonor.com">jorgonor.com</a>
-               Spain
-            </div>
-        </div>
-    </div>
-</footer>
+  <body class="page">
 
     
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
-<script type="text/javascript" src="/js/bin/materialize.min.js"></script>
-<script type="text/javascript" src="/app/app.js"></script>
+
+<div id="sidebar">
+  <header>
+    <div class="site-title">
+      <a href="/en">
+        
+          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0h24v24H0z" fill="none"/>
+  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+</svg></span>
+        
+        Jorgonor
+      </a>
+    </div>
+    <p class="lead">Software Developer</p>
+  </header>
+
+  <nav id="sidebar-nav-links">
+  
+  <a class="page-link" href="/en/blog.html">Blog</a>
+  
+  <a class="page-link" href="/en/contact.html">Contact</a>
+  
+</nav>
+
+  <nav id="sidebar-icon-links">
+  <a class="icon" href="https://www.linkedin.com/in/jorgonor88" target="_blank" aria-label="Linkedin" alt="Linkedin">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0v24h24v-24h-24zm8 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.397-2.586 7-2.777 7 2.476v6.759z"/></svg>
+  </a>
+  <a id="github-link"
+      class="icon" title="Follow @jorgonor on GitHub" aria-label="Follow @jorgonor on GitHub"
+      href="https://github.com/jorgonor">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 28" height="24" width="28"><path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-0.609 0.109-0.828-0.266-0.828-0.578 0-0.391 0.016-1.687 0.016-3.297 0-1.125-0.375-1.844-0.812-2.219 2.672-0.297 5.484-1.313 5.484-5.922 0-1.313-0.469-2.375-1.234-3.219 0.125-0.313 0.531-1.531-0.125-3.187-1-0.313-3.297 1.234-3.297 1.234-0.953-0.266-1.984-0.406-3-0.406s-2.047 0.141-3 0.406c0 0-2.297-1.547-3.297-1.234-0.656 1.656-0.25 2.875-0.125 3.187-0.766 0.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-0.344 0.313-0.656 0.844-0.766 1.609-0.688 0.313-2.438 0.844-3.484-1-0.656-1.141-1.844-1.234-1.844-1.234-1.172-0.016-0.078 0.734-0.078 0.734 0.781 0.359 1.328 1.75 1.328 1.75 0.703 2.141 4.047 1.422 4.047 1.422 0 1 0.016 1.937 0.016 2.234 0 0.313-0.219 0.688-0.828 0.578-4.766-1.594-8.203-6.094-8.203-11.391 0-6.625 5.375-12 12-12zM4.547 19.234c0.031-0.063-0.016-0.141-0.109-0.187-0.094-0.031-0.172-0.016-0.203 0.031-0.031 0.063 0.016 0.141 0.109 0.187 0.078 0.047 0.172 0.031 0.203-0.031zM5.031 19.766c0.063-0.047 0.047-0.156-0.031-0.25-0.078-0.078-0.187-0.109-0.25-0.047-0.063 0.047-0.047 0.156 0.031 0.25 0.078 0.078 0.187 0.109 0.25 0.047zM5.5 20.469c0.078-0.063 0.078-0.187 0-0.297-0.063-0.109-0.187-0.156-0.266-0.094-0.078 0.047-0.078 0.172 0 0.281s0.203 0.156 0.266 0.109zM6.156 21.125c0.063-0.063 0.031-0.203-0.063-0.297-0.109-0.109-0.25-0.125-0.313-0.047-0.078 0.063-0.047 0.203 0.063 0.297 0.109 0.109 0.25 0.125 0.313 0.047zM7.047 21.516c0.031-0.094-0.063-0.203-0.203-0.25-0.125-0.031-0.266 0.016-0.297 0.109s0.063 0.203 0.203 0.234c0.125 0.047 0.266 0 0.297-0.094zM8.031 21.594c0-0.109-0.125-0.187-0.266-0.172-0.141 0-0.25 0.078-0.25 0.172 0 0.109 0.109 0.187 0.266 0.172 0.141 0 0.25-0.078 0.25-0.172zM8.937 21.438c-0.016-0.094-0.141-0.156-0.281-0.141-0.141 0.031-0.234 0.125-0.219 0.234 0.016 0.094 0.141 0.156 0.281 0.125s0.234-0.125 0.219-0.219z"></path>
+</svg>
+
+  </a>
+  
+  <a id="x-link" class="icon" href="https://twitter.com/jorgonor" >
+    <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 462.799" width="24" height="24">
+<path fill-rule="nonzero" d="M403.229 0h78.506L310.219 196.04 512 462.799H354.002L230.261 301.007 88.669 462.799h-78.56l183.455-209.683L0 0h161.999l111.856 147.88L403.229 0zm-27.556 415.805h43.505L138.363 44.527h-46.68l283.99 371.278z"/>
+</svg>
+  </a>
+  
+  
+  
+  <a id="subscribe-link"
+     class="icon" title="Subscribe" aria-label="Subscribe"
+     href="https://jorgonor.com/en/feed.xml">
+    <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <circle cx="6.18" cy="17.82" r="2.18"/>
+    <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/>
+</svg>
+  </a>
+  <a id="stackoverflow-link" href="https://stackoverflow.com/users/6254934/jorgonor">
+    <img src="https://stackoverflow.com/users/flair/6254934.png?theme=dark" width="208" height="58" alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+  </a>
+  
+</nav>
+  
+<p class="lead-2">Expertise</p>
+
+<ul class="pages-list">
+    <li class="exp-link"><a href="/en/php-developer.html" class="white-text">PHP</a></li>
+</ul>
+
+
+  <div id="footer-copy">
+    © 2016-2024 <a href="https://jorgonor.com">jorgonor.com</a>
+    Spain
+</div>
+</div>
+
+    <main class="container">
+      <div id="cookies_notice" >
+    <div class="col s8 m10">
+        <span class="card-title">Cookies</span>
+        <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
+    </div>
+    <div class="col s4 m2">
+        <a id="cookies_notice_close" href="#">Accept</a>
+    </div>
+</div>
+
+      <div class="content">
+      <h1>ASP.NET- Blog</h1>
+
+
+
+<ul class="posts-list">
+
+
+    <li>
+      <h4>
+        <a class="post-link" href="/en/blog/aspnet/2017/05/29/entity-framework-6-dbcontext.html">
+            How to log SQL queries using Entity Framework 6 like in EF Core
+            <small>29 May 2017</small>
+        </a>
+      </h4>
+      <p>
+        Watching the SQL queries Entity Framework executes is quite useful when a slow query needs optimization. If you’re already using ASP.NET Core, you might have already noticed that the debugging stream already outputs these SQL queries for you. But, if you’re working with ASP.NET MVC or ASP.NET Web API projects, by default you won’t see the SQL queries executed by EF. Even though, there’s a very simple trick to be able to see the actual SQL. Simply add the following code in your DbContext constructor. Once this piece of code has been added, you will be able to see the...
+      </p>
+    </li>
+
+
+
+    <li>
+      <h4>
+        <a class="post-link" href="/en/blog/aspnet/2017/02/04/why-properties-are-evil.html">
+            Why properties are evil in C#
+            <small>04 Feb 2017</small>
+        </a>
+      </h4>
+      <p>
+        As many of you might already know, properties are a neat way to define getters and setters. Many languages, such as C#, Delphi, Javascript or PHP support them and they are first-class citizens in the .NET ecosystem. Although properties are a handy resource, some property implementations can turn out to be evil. Very evil. Let’s dive into them. Side-effects in property code Causing side-effects is the worst practice when using properties, and it’s more spread than it seems at first. What can we consider side-effects? Modifying a nested object state, making a database query that modifies database state or change...
+      </p>
+    </li>
+
+
+
+    <li>
+      <h4>
+        <a class="post-link" href="/en/blog/aspnet/2016/08/06/entity-framework-6-there-is-already-an-open-data-reader.html">
+            Entity Framework 6 and "There is already an open DataReader"
+            <small>06 Aug 2016</small>
+        </a>
+      </h4>
+      <p>
+        Entity Framework is an amazing ORM. It has differences with other ORMs like Hibernate or Doctrine, but at the same time feels more comfortable. Two key differences with other ORMs are LINQ as its query language (LINQ it’s a compiled language, if you like to rename stuff you know how many errors this feature can prevent) and being able to use foreign key values without having to join with the related entity. But, it has a poor proxy pattern. Navigation properties, the Entity Framework name for relationships between entities, can be accessed with lazy loading like in other ORMs, but...
+      </p>
+    </li>
+
+
+
+    <li>
+      <h4>
+        <a class="post-link" href="/en/blog/aspnet/2016/07/04/etagfilepathresult-actionresult-save-bandwidth-aspnet-mvc.html">
+            ETagFilePathResult, an ActionResult to save bandwidth in ASP.NET MVC.
+            <small>04 Jul 2016</small>
+        </a>
+      </h4>
+      <p>
+        ASP.NET MVC provides several ways to serve files from controllers, but all of them require to serve the entire file content through the network, something that will make our website slow and more expensive while it’s ridiculous to transfer the same content over the network every time the resource is requested. Client-side HTTP caching can easily prevent downloading all those extra bytes. In this post we offer a solution to it without doing any complicated stuff, using the ActionResult abstract class to integrate a solution based on ETags in ASP.NET MVC to implement the client-side caching. Why do I need...
+      </p>
+    </li>
+
+
+
+    <li>
+      <h4>
+        <a class="post-link" href="/en/blog/aspnet/2016/02/05/ilmerge-target-assembly-lists-itself-as-an-external-reference.html">
+            Ilmerge. The target assembly lists itself as an external reference
+            <small>05 Feb 2016</small>
+        </a>
+      </h4>
+      <p>
+        I’ve made my mind to do this post just because I saw there wasn’t a solution to what happened to me with this problem, even though the solution to it was pretty naive to me. The thing is, in an ASP.NET project, I have a publish profile with precompilation enabled and with the advanced precompile option “Merge all outputs to a single assembly” enabled too. I decided to set to this output assembly my project name, something that seemed to me the right thing to do. But then, suddenly a misterious error showed up. An error occurred when merging assemblies:...
+      </p>
+    </li>
+
+
+</ul>
+      </div>
+    </main>
+    <script type="text/javascript" src="/app/app.js"></script>
 
   </body>
 </html>
