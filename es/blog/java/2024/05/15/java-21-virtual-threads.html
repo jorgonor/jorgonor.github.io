@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Midiendo el rendimiento de un servicio Java 21 con virtual threads. | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Midiendo el rendimiento de un servicio Java 21 con virtual threads." />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="es" />
+<meta name="description" content="Comparativa de escalabilidad de un API CRUD usando Tomcat con Virtual Threads." />
+<meta property="og:description" content="Comparativa de escalabilidad de un API CRUD usando Tomcat con Virtual Threads." />
+<link rel="canonical" href="https://jorgonor.com/es/blog/java/2024/05/15/java-21-virtual-threads.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/java/2024/05/15/java-21-virtual-threads.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-05-15T15:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Midiendo el rendimiento de un servicio Java 21 con virtual threads." />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2024-05-15T15:00:00+00:00","datePublished":"2024-05-15T15:00:00+00:00","description":"Comparativa de escalabilidad de un API CRUD usando Tomcat con Virtual Threads.","headline":"Midiendo el rendimiento de un servicio Java 21 con virtual threads.","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/es/blog/java/2024/05/15/java-21-virtual-threads.html"},"url":"https://jorgonor.com/es/blog/java/2024/05/15/java-21-virtual-threads.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="Java, JDBC, Tomcat, Spring Boot, PostgreSQL" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4HH511444Z');
+</script>
+
+</head>
+
+  <body class="post">
+      
+    
+
+<div id="sidebar">
+  <header>
+    <div class="site-title">
+      <a href="/es">
+        
+          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0h24v24H0z" fill="none"/>
+  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+</svg></span>
+        
+        Jorgonor
+      </a>
+    </div>
+    <p class="lead">Desarrollador de Software</p>
+  </header>
+
+  <nav id="sidebar-nav-links">
+  
+  <a class="page-link" href="/es/blog.html">Blog</a>
+  
+  <a class="page-link" href="/es/contacto.html">Contacto</a>
+  
+</nav>
+
+  <nav id="sidebar-icon-links">
+  <a class="icon" href="https://www.linkedin.com/in/jorgonor88" target="_blank" aria-label="Linkedin" alt="Linkedin" title="Linkedin">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0v24h24v-24h-24zm8 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.397-2.586 7-2.777 7 2.476v6.759z"/></svg>
+  </a>
+  <a id="github-link"
+      class="icon" title="Seguir @jorgonor" aria-label="Seguir @jorgonor"
+      alt="Seguir @jorgonor" href="https://github.com/jorgonor">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 28" height="24" width="28"><path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-0.609 0.109-0.828-0.266-0.828-0.578 0-0.391 0.016-1.687 0.016-3.297 0-1.125-0.375-1.844-0.812-2.219 2.672-0.297 5.484-1.313 5.484-5.922 0-1.313-0.469-2.375-1.234-3.219 0.125-0.313 0.531-1.531-0.125-3.187-1-0.313-3.297 1.234-3.297 1.234-0.953-0.266-1.984-0.406-3-0.406s-2.047 0.141-3 0.406c0 0-2.297-1.547-3.297-1.234-0.656 1.656-0.25 2.875-0.125 3.187-0.766 0.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-0.344 0.313-0.656 0.844-0.766 1.609-0.688 0.313-2.438 0.844-3.484-1-0.656-1.141-1.844-1.234-1.844-1.234-1.172-0.016-0.078 0.734-0.078 0.734 0.781 0.359 1.328 1.75 1.328 1.75 0.703 2.141 4.047 1.422 4.047 1.422 0 1 0.016 1.937 0.016 2.234 0 0.313-0.219 0.688-0.828 0.578-4.766-1.594-8.203-6.094-8.203-11.391 0-6.625 5.375-12 12-12zM4.547 19.234c0.031-0.063-0.016-0.141-0.109-0.187-0.094-0.031-0.172-0.016-0.203 0.031-0.031 0.063 0.016 0.141 0.109 0.187 0.078 0.047 0.172 0.031 0.203-0.031zM5.031 19.766c0.063-0.047 0.047-0.156-0.031-0.25-0.078-0.078-0.187-0.109-0.25-0.047-0.063 0.047-0.047 0.156 0.031 0.25 0.078 0.078 0.187 0.109 0.25 0.047zM5.5 20.469c0.078-0.063 0.078-0.187 0-0.297-0.063-0.109-0.187-0.156-0.266-0.094-0.078 0.047-0.078 0.172 0 0.281s0.203 0.156 0.266 0.109zM6.156 21.125c0.063-0.063 0.031-0.203-0.063-0.297-0.109-0.109-0.25-0.125-0.313-0.047-0.078 0.063-0.047 0.203 0.063 0.297 0.109 0.109 0.25 0.125 0.313 0.047zM7.047 21.516c0.031-0.094-0.063-0.203-0.203-0.25-0.125-0.031-0.266 0.016-0.297 0.109s0.063 0.203 0.203 0.234c0.125 0.047 0.266 0 0.297-0.094zM8.031 21.594c0-0.109-0.125-0.187-0.266-0.172-0.141 0-0.25 0.078-0.25 0.172 0 0.109 0.109 0.187 0.266 0.172 0.141 0 0.25-0.078 0.25-0.172zM8.937 21.438c-0.016-0.094-0.141-0.156-0.281-0.141-0.141 0.031-0.234 0.125-0.219 0.234 0.016 0.094 0.141 0.156 0.281 0.125s0.234-0.125 0.219-0.219z"></path>
+</svg>
+
+  </a>
+  
+  <a id="x-link" class="icon" xº href="https://twitter.com/jorgonor" aria-label="X" alt="X" title="X">
+    <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 462.799" width="24" height="24">
+<path fill-rule="nonzero" d="M403.229 0h78.506L310.219 196.04 512 462.799H354.002L230.261 301.007 88.669 462.799h-78.56l183.455-209.683L0 0h161.999l111.856 147.88L403.229 0zm-27.556 415.805h43.505L138.363 44.527h-46.68l283.99 371.278z"/>
+</svg>
+  </a>
+  
+  
+  
+  <a id="subscribe-link"
+     class="icon" title="Subscribirse" aria-label="Subscribirse"
+     href="https://jorgonor.com/es/feed.xml">
+    <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <circle cx="6.18" cy="17.82" r="2.18"/>
+    <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/>
+</svg>
+  </a>
+  <a id="stackoverflow-link" href="https://stackoverflow.com/users/6254934/jorgonor">
+    <img src="https://stackoverflow.com/users/flair/6254934.png?theme=dark" width="208" height="58" alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+  </a>
+  
+</nav>
+  
+<p class="lead-2">Experiencia</p>
+
+<ul class="pages-list">
+    <li class="exp-link"><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+</ul>
+
+
+  <div id="footer-copy">
+    © 2016-2024 <a href="https://jorgonor.com">jorgonor.com</a>
+    Vila-real, Castellón - España
+</div>
+</div>
+
+    <main class="container">
+      <div id="cookies_notice" >
+    <div class="col s8 m10">
+        <span class="card-title">Cookies</span>
+        <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso.</p>
+    </div>
+    <div class="col s4 m2">
+        <a id="cookies_notice_close" href="#">Aceptar</a>
+    </div>
+</div>
+
+      <div class="content">
+        <h1>Midiendo el rendimiento de un servicio Java 21 con virtual threads.</h1>
+        <header class="post-header">
+          
+          <p class="post-meta">
+            15/May/2024
+            </p>
+        </header>
+        
+        <div class="post-body">  
+          <p>Vuelvo por aquí para compartir los resultados de una comparativa que tenía curiosidad por realizar, comparar la escalabilidad de un microservicio simple desarrollado con Spring Boot. La idea de este ejercicio es comprobar como afecta a la disponibilidad del servicio utilizar la flamante funcionalidad incorporada en Java 21, los <a href="https://spring.io/blog/2022/10/11/embracing-virtual-threads">Virtual Threads</a>.</p>
+
+<p>El servicio se va a encargar de ofrecer una API Rest sencilla para almacenar, leer, modificar y borrar ubicaciones en una base de datos PostgreSQL.
+Podemos consultar el código en el repositorio de Github <a href="https://github.com/jorgonor/spring-boot-location-api">spring-boot-location-api</a>.</p>
+
+<p>Para desarrollar este servicio he utilizado el stack tradicional de Spring Boot, con los starters de <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/web.html">Spring Web</a> y <a href="https://spring.io/projects/spring-data-jdbc">Spring Data JDBC</a>. Para los más curiosos,
+en la rama <a href="https://github.com/jorgonor/spring-boot-location-api/tree/webflux-r2dbc">webflux-r2dbc</a> del repositorio GIT
+he añadido también una implementación equivalente reactiva,
+usando <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.reactive">Spring Webflux</a>
+y <a href="https://spring.io/projects/spring-data-r2dbc">Spring Data R2DBC</a>.</p>
+
+<h3 id="como-lanzar-los-tests-de-carga">Como lanzar los tests de carga</h3>
+
+<p>Como última pieza del puzzle, para poder medir la disponibilidad con o sin virtual threads usaré el programa de línea de comandos <a href="https://linux.die.net/man/1/siege">siege</a> que ofrece una interfaz sencilla para poder lanzar tests de carga. A continuación veremos un ejemplo:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">siege <span class="nt">-b</span> <span class="nt">-c</span> 1200 <span class="nt">-t</span> 60s http://127.0.0.1:8080/location/1</code></pre></figure>
+
+<p>Este comando lanzará 1.200 peticiones HTTP concurrentes (<em>opción -c</em>) contra el endpoint especificado durante 60 segundos (<em>opción -t</em>). Con él podremos medir la disponibilidad del endpoint que responde a las peticiones GET con las diferentes configuraciones del microservicio.</p>
+
+<h3 id="virtual-threads-y-microservicios-bloqueantes">Virtual Threads y microservicios bloqueantes</h3>
+
+<p>Vamos a comprobar cuál es el beneficio de utilizar los Virtual Threads en una aplicación bloqueante tradicional. 
+Las aplicaciones bloqueantes tradicionales suelen utilizar un hilo para atender cada una de las peticiones que reciben. La JVM por defecto
+utiliza un hilo del sistema operativo para atender cada una de estas peticiones. Activando los Virtual Threads, la máquina Java escalará
+mejor ante un escenario en el que varios hilos estén bloqueados por la Entrada/Salida, ya que los Virtual Threads están específicamente optimizados
+para estas cargas de trabajo y no necesitan los mismos recursos que un hilo del sistema operativo.</p>
+
+<p>En aplicaciones Spring Boot podemos activar los Virtual Threads simplemente añadiendo la property:</p>
+
+<p><code class="language-plaintext highlighter-rouge">spring.threads.virtual.enabled=true</code></p>
+
+<h3 id="comparativa-del-método-get">Comparativa del método GET</h3>
+
+<p>Veamos cuales son los resultados de nuestra API de ubicaciones con y sin Virtual Threads enviando una petición
+de consulta a nuestra base de datos.</p>
+
+<h4 id="test-sin-virtual-threads">Test sin Virtual Threads</h4>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"transactions"</span><span class="p">:</span><span class="w">                        </span><span class="mi">53754</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"availability"</span><span class="p">:</span><span class="w">                        </span><span class="mf">98.75</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data_transferred"</span><span class="p">:</span><span class="w">                     </span><span class="mf">8.61</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"response_time"</span><span class="p">:</span><span class="w">                        </span><span class="mf">1.10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"transaction_rate"</span><span class="p">:</span><span class="w">                   </span><span class="mf">901.61</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"throughput"</span><span class="p">:</span><span class="w">                           </span><span class="mf">0.14</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"concurrency"</span><span class="p">:</span><span class="w">                        </span><span class="mf">989.58</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"successful_transactions"</span><span class="p">:</span><span class="w">             </span><span class="mi">53764</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"failed_transactions"</span><span class="p">:</span><span class="w">                   </span><span class="mi">681</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"longest_transaction"</span><span class="p">:</span><span class="w">                 </span><span class="mf">31.17</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"shortest_transaction"</span><span class="p">:</span><span class="w">                 </span><span class="mf">0.00</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<h4 id="test-con-virtual-threads">Test con Virtual Threads</h4>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"transactions"</span><span class="p">:</span><span class="w">                        </span><span class="mi">60490</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"availability"</span><span class="p">:</span><span class="w">                        </span><span class="mf">99.24</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data_transferred"</span><span class="p">:</span><span class="w">                     </span><span class="mf">9.69</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"response_time"</span><span class="p">:</span><span class="w">                        </span><span class="mf">0.99</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"transaction_rate"</span><span class="p">:</span><span class="w">                  </span><span class="mf">1011.20</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"concurrency"</span><span class="p">:</span><span class="w">                        </span><span class="mf">998.96</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"successful_transactions"</span><span class="p">:</span><span class="w">             </span><span class="mi">60509</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"failed_transactions"</span><span class="p">:</span><span class="w">                   </span><span class="mi">465</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"longest_transaction"</span><span class="p">:</span><span class="w">                 </span><span class="mf">12.33</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"shortest_transaction"</span><span class="p">:</span><span class="w">                 </span><span class="mf">0.00</span><span class="w"> 
+</span><span class="p">}</span><span class="w">                                                    </span></code></pre></figure>
+
+<p>La disponibilidad ofrecida por la solución con virtual threads como podemos ver es superior.
+Además, <strong>es capaz de responder a un 13% más de peticiones en el mismo intervalo de tiempo</strong> por lo que sin ningún cambio en nuestro
+código podemos obtener una escalabilidad de este método mucho mayor.</p>
+
+<h3 id="comparativa-del-método-post">Comparativa del método POST</h3>
+
+<p>Ahora veamos el rendimiento del endpoint de almacenamiento de ubicaciones. Este test siempre se ha hecho con la tabla vacía
+para dar unas condiciones iguales entre la ejecución con virtual threads y sin virtual threads.</p>
+
+<h4 id="test-sin-virtual-threads-1">Test sin Virtual Threads</h4>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">   
+    </span><span class="nl">"transactions"</span><span class="p">:</span><span class="w">                        </span><span class="mi">45858</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"availability"</span><span class="p">:</span><span class="w">                        </span><span class="mf">98.29</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data_transferred"</span><span class="p">:</span><span class="w">                     </span><span class="mf">5.51</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"response_time"</span><span class="p">:</span><span class="w">                        </span><span class="mf">1.28</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"transaction_rate"</span><span class="p">:</span><span class="w">                   </span><span class="mf">772.28</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"concurrency"</span><span class="p">:</span><span class="w">                        </span><span class="mf">988.10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"successful_transactions"</span><span class="p">:</span><span class="w">             </span><span class="mi">45885</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"failed_transactions"</span><span class="p">:</span><span class="w">                   </span><span class="mi">800</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"longest_transaction"</span><span class="p">:</span><span class="w">                 </span><span class="mf">11.32</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"shortest_transaction"</span><span class="p">:</span><span class="w">                 </span><span class="mf">0.00</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<h4 id="test-con-virtual-threads-1">Test con Virtual Threads</h4>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"transactions"</span><span class="p">:</span><span class="w">                        </span><span class="mi">53267</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"availability"</span><span class="p">:</span><span class="w">                        </span><span class="mf">99.28</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data_transferred"</span><span class="p">:</span><span class="w">                     </span><span class="mf">6.40</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"response_time"</span><span class="p">:</span><span class="w">                        </span><span class="mf">1.11</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"transaction_rate"</span><span class="p">:</span><span class="w">                   </span><span class="mf">894.79</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"concurrency"</span><span class="p">:</span><span class="w">                        </span><span class="mf">996.25</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"successful_transactions"</span><span class="p">:</span><span class="w">             </span><span class="mi">53277</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"failed_transactions"</span><span class="p">:</span><span class="w">                   </span><span class="mi">385</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"longest_transaction"</span><span class="p">:</span><span class="w">                 </span><span class="mf">35.83</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"shortest_transaction"</span><span class="p">:</span><span class="w">                 </span><span class="mf">0.00</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>En este caso <strong>la disponibilidad ofrecida por la solución con virtual threads también es superior, siendo capaz de atender un 16% más de peticiones</strong>.</p>
+
+<h3 id="conclusiones">Conclusiones</h3>
+
+<p>Definitivamente, los virtual threads suponen una ventaja para nuestros servicios Java bloqueantes.
+Si en tus proyectos se está utilizando ya Java 21 o migrar aquellos que más carga reciben a esta versión no supone un gran esfuerzo, podría ser una buena idea
+valorar empezar a utilizar los virtual threads en tus servicios Java.</p>
+
+          
+
+
+
+<div class="post-tags">
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Java</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">JDBC</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Tomcat</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Spring Boot</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">PostgreSQL</span>
+    </span>
+  
+</div>
+        </div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var canonicalUrl = document.location.toString(); 
+            var disqus_config = function () {
+                this.page.url = canonicalUrl;
+                this.page.identifier = "";
+            };
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//jorgonorcom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+
+        <section class="related"></section>
+      </div>
+    </main>
+    <script type="text/javascript" src="/app/app.js"></script>
+
+  </body>
+</html>

@@ -5,9 +5,274 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 24 Mar 2024 22:24:34 +0000</pubDate>
-    <lastBuildDate>Sun, 24 Mar 2024 22:24:34 +0000</lastBuildDate>
+    <pubDate>Wed, 15 May 2024 15:43:12 +0000</pubDate>
+    <lastBuildDate>Wed, 15 May 2024 15:43:12 +0000</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
+    
+      <item>
+        <title>Midiendo el rendimiento de un servicio Java 21 con virtual threads.</title>
+        <description>&lt;p&gt;Vuelvo por aquí para compartir los resultados de una comparativa que tenía curiosidad por realizar, comparar la escalabilidad de un microservicio simple desarrollado con Spring Boot. La idea de este ejercicio es comprobar como afecta a la disponibilidad del servicio utilizar la flamante funcionalidad incorporada en Java 21, los &lt;a href=&quot;https://spring.io/blog/2022/10/11/embracing-virtual-threads&quot;&gt;Virtual Threads&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;El servicio se va a encargar de ofrecer una API Rest sencilla para almacenar, leer, modificar y borrar ubicaciones en una base de datos PostgreSQL.
+Podemos consultar el código en el repositorio de Github &lt;a href=&quot;https://github.com/jorgonor/spring-boot-location-api&quot;&gt;spring-boot-location-api&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Para desarrollar este servicio he utilizado el stack tradicional de Spring Boot, con los starters de &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/reference/html/web.html&quot;&gt;Spring Web&lt;/a&gt; y &lt;a href=&quot;https://spring.io/projects/spring-data-jdbc&quot;&gt;Spring Data JDBC&lt;/a&gt;. Para los más curiosos,
+en la rama &lt;a href=&quot;https://github.com/jorgonor/spring-boot-location-api/tree/webflux-r2dbc&quot;&gt;webflux-r2dbc&lt;/a&gt; del repositorio GIT
+he añadido también una implementación equivalente reactiva,
+usando &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.reactive&quot;&gt;Spring Webflux&lt;/a&gt;
+y &lt;a href=&quot;https://spring.io/projects/spring-data-r2dbc&quot;&gt;Spring Data R2DBC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;como-lanzar-los-tests-de-carga&quot;&gt;Como lanzar los tests de carga&lt;/h3&gt;
+
+&lt;p&gt;Como última pieza del puzzle, para poder medir la disponibilidad con o sin virtual threads usaré el programa de línea de comandos &lt;a href=&quot;https://linux.die.net/man/1/siege&quot;&gt;siege&lt;/a&gt; que ofrece una interfaz sencilla para poder lanzar tests de carga. A continuación veremos un ejemplo:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;siege &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1200 &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 60s http://127.0.0.1:8080/location/1&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Este comando lanzará 1.200 peticiones HTTP concurrentes (&lt;em&gt;opción -c&lt;/em&gt;) contra el endpoint especificado durante 60 segundos (&lt;em&gt;opción -t&lt;/em&gt;). Con él podremos medir la disponibilidad del endpoint que responde a las peticiones GET con las diferentes configuraciones del microservicio.&lt;/p&gt;
+
+&lt;h3 id=&quot;virtual-threads-y-microservicios-bloqueantes&quot;&gt;Virtual Threads y microservicios bloqueantes&lt;/h3&gt;
+
+&lt;p&gt;Vamos a comprobar cuál es el beneficio de utilizar los Virtual Threads en una aplicación bloqueante tradicional. 
+Las aplicaciones bloqueantes tradicionales suelen utilizar un hilo para atender cada una de las peticiones que reciben. La JVM por defecto
+utiliza un hilo del sistema operativo para atender cada una de estas peticiones. Activando los Virtual Threads, la máquina Java escalará
+mejor ante un escenario en el que varios hilos estén bloqueados por la Entrada/Salida, ya que los Virtual Threads están específicamente optimizados
+para estas cargas de trabajo y no necesitan los mismos recursos que un hilo del sistema operativo.&lt;/p&gt;
+
+&lt;p&gt;En aplicaciones Spring Boot podemos activar los Virtual Threads simplemente añadiendo la property:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spring.threads.virtual.enabled=true&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;comparativa-del-método-get&quot;&gt;Comparativa del método GET&lt;/h3&gt;
+
+&lt;p&gt;Veamos cuales son los resultados de nuestra API de ubicaciones con y sin Virtual Threads enviando una petición
+de consulta a nuestra base de datos.&lt;/p&gt;
+
+&lt;h4 id=&quot;test-sin-virtual-threads&quot;&gt;Test sin Virtual Threads&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53754&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;availability&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;98.75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;data_transferred&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                     &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;8.61&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;response_time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transaction_rate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;901.61&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;throughput&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                           &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;concurrency&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;989.58&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;successful_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;             &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53764&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;failed_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;681&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;longest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;31.17&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;shortest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.00&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;test-con-virtual-threads&quot;&gt;Test con Virtual Threads&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60490&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;availability&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;99.24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;data_transferred&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                     &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;9.69&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;response_time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.99&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transaction_rate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                  &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1011.20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;concurrency&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;998.96&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;successful_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;             &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60509&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;failed_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;465&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;longest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;12.33&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;shortest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.00&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                                                    &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;La disponibilidad ofrecida por la solución con virtual threads como podemos ver es superior.
+Además, &lt;strong&gt;es capaz de responder a un 13% más de peticiones en el mismo intervalo de tiempo&lt;/strong&gt; por lo que sin ningún cambio en nuestro
+código podemos obtener una escalabilidad de este método mucho mayor.&lt;/p&gt;
+
+&lt;h3 id=&quot;comparativa-del-método-post&quot;&gt;Comparativa del método POST&lt;/h3&gt;
+
+&lt;p&gt;Ahora veamos el rendimiento del endpoint de almacenamiento de ubicaciones. Este test siempre se ha hecho con la tabla vacía
+para dar unas condiciones iguales entre la ejecución con virtual threads y sin virtual threads.&lt;/p&gt;
+
+&lt;h4 id=&quot;test-sin-virtual-threads-1&quot;&gt;Test sin Virtual Threads&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;   
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;45858&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;availability&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;98.29&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;data_transferred&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                     &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;5.51&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;response_time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.28&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transaction_rate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;772.28&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;concurrency&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;988.10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;successful_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;             &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;45885&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;failed_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;800&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;longest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;11.32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;shortest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.00&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;test-con-virtual-threads-1&quot;&gt;Test con Virtual Threads&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53267&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;availability&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;99.28&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;data_transferred&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                     &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;6.40&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;response_time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transaction_rate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;894.79&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;concurrency&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;996.25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;successful_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;             &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53277&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;failed_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;385&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;longest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;35.83&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;shortest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.00&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;En este caso &lt;strong&gt;la disponibilidad ofrecida por la solución con virtual threads también es superior, siendo capaz de atender un 16% más de peticiones&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusiones&quot;&gt;Conclusiones&lt;/h3&gt;
+
+&lt;p&gt;Definitivamente, los virtual threads suponen una ventaja para nuestros servicios Java bloqueantes.
+Si en tus proyectos se está utilizando ya Java 21 o migrar aquellos que más carga reciben a esta versión no supone un gran esfuerzo, podría ser una buena idea
+valorar empezar a utilizar los virtual threads en tus servicios Java.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 May 2024 15:00:00 +0000</pubDate>
+        <link>https://jorgonor.com/es/blog/java/2024/05/15/java-21-virtual-threads.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/es/blog/java/2024/05/15/java-21-virtual-threads.html</guid>
+        
+        <category>Java</category>
+        
+        <category>JDBC</category>
+        
+        <category>Tomcat</category>
+        
+        <category>Spring Boot</category>
+        
+        <category>PostgreSQL</category>
+        
+        
+        <category>es</category>
+        
+        <category>blog</category>
+        
+        <category>java</category>
+        
+      </item>
+    
+      <item>
+        <title>Java 21 service with virtual threads performance test</title>
+        <description>&lt;p&gt;I’m back to share the results of a comparison I was curious about: comparing the scalability of a simple microservice developed with Spring Boot. The idea behind this exercise is to test how &lt;a href=&quot;https://spring.io/blog/2022/10/11/embracing-virtual-threads&quot;&gt;Virtual Threads&lt;/a&gt; (one of the most famous Java 21 new features) impact on service availability.&lt;/p&gt;
+
+&lt;p&gt;The service will be responsible for providing a simple REST API to store, read, modify, and delete locations in a PostgreSQL database. The code is available in the GitHub repository &lt;a href=&quot;https://github.com/jorgonor/spring-boot-location-api&quot;&gt;spring-boot-location-api&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In order to develop this microservice I’ve used the traditional technological stack of Spring Boot, with the &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/reference/html/web.html&quot;&gt;Spring Web&lt;/a&gt; and &lt;a href=&quot;https://spring.io/projects/spring-data-jdbc&quot;&gt;Spring Data JDBC&lt;/a&gt; starters. To the most curious, in the repository branch &lt;a href=&quot;https://github.com/jorgonor/spring-boot-location-api/tree/webflux-r2dbc&quot;&gt;webflux-r2dbc&lt;/a&gt; I’ve also added an equivalent reactive implementation using &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.reactive&quot;&gt;Spring Webflux&lt;/a&gt;
+and &lt;a href=&quot;https://spring.io/projects/spring-data-r2dbc&quot;&gt;Spring Data R2DBC&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-execute-the-load-tests&quot;&gt;How to execute the load tests&lt;/h3&gt;
+
+&lt;p&gt;To measure the availability with and without virtual threads, I will use the command-line program &lt;a href=&quot;https://linux.die.net/man/1/siege&quot;&gt;siege&lt;/a&gt;, which provides a straightforward interface for executing load tests. Let’s take a look at an example:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;siege &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1200 &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 60s http://127.0.0.1:8080/location/1&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;This command will launch 1,200 concurrent HTTP requests (&lt;em&gt;using the -c option&lt;/em&gt;) against the specified endpoint for 60 seconds (&lt;em&gt;using the -t option&lt;/em&gt;). With this command, the availability of the endpoint that responds to GET requests can be measured with the different microservice configurations.&lt;/p&gt;
+
+&lt;h3 id=&quot;virtual-threads-and-blocking-services&quot;&gt;Virtual threads and blocking services&lt;/h3&gt;
+
+&lt;p&gt;Let’s check the benefits of using Virtual Threads in a traditional blocking application. Traditional blocking applications typically use a thread to handle each incoming request. By default, the JVM uses an operating system thread to handle these HTTP requests. By enabling Virtual Threads, the Java machine will scale better in scenarios where multiple threads are blocked by I/O operations, as Virtual Threads are specifically optimized for such workloads and do not require the same resources as an OS thread.&lt;/p&gt;
+
+&lt;p&gt;In Spring Boot applications, we can activate Virtual Threads simply by adding the property:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spring.threads.virtual.enabled=true&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;comparing-the-http-get-method&quot;&gt;Comparing the HTTP GET method&lt;/h3&gt;
+
+&lt;p&gt;Let’s see what the results of our location API are with and without Virtual Threads by sending a request that will execute a query against the database.&lt;/p&gt;
+
+&lt;h4 id=&quot;test-with-virtual-threads-disabled&quot;&gt;Test with Virtual Threads disabled&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53754&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;availability&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;98.75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;data_transferred&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                     &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;8.61&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;response_time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transaction_rate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;901.61&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;throughput&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                           &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;concurrency&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;989.58&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;successful_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;             &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53764&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;failed_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;681&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;longest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;31.17&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;shortest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.00&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;test-with-virtual-threads-enabled&quot;&gt;Test with Virtual Threads enabled&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60490&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;availability&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;99.24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;data_transferred&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                     &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;9.69&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;response_time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.99&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transaction_rate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                  &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1011.20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;concurrency&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;998.96&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;successful_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;             &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60509&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;failed_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;465&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;longest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;12.33&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;shortest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.00&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                                                    &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The availability provided by the solution with virtual threads is superior.
+Additionally, &lt;strong&gt;it is capable of handling 13% more requests within the same time interval&lt;/strong&gt; without any changes to our code, resulting in significantly improved scalability.&lt;/p&gt;
+
+&lt;h3 id=&quot;comparing-the-http-post-method&quot;&gt;Comparing the HTTP POST method&lt;/h3&gt;
+
+&lt;p&gt;Now let’s examine the performance of the location persistence endpoint. This test has consistently been conducted with an empty table to ensure equal conditions between executions with and without virtual threads.&lt;/p&gt;
+
+&lt;h4 id=&quot;test-with-virtual-threads-disnabled&quot;&gt;Test with Virtual Threads disnabled&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;   
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;45858&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;availability&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;98.29&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;data_transferred&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                     &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;5.51&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;response_time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.28&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transaction_rate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;772.28&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;concurrency&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;988.10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;successful_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;             &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;45885&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;failed_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;800&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;longest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;11.32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;shortest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.00&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;test-with-virtual-threads-enabled-1&quot;&gt;Test with Virtual Threads enabled&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53267&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;availability&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;99.28&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;data_transferred&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                     &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;6.40&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;response_time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;transaction_rate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;894.79&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;concurrency&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                        &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;996.25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;successful_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;             &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53277&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;failed_transactions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                   &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;385&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;longest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;35.83&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;shortest_transaction&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;                 &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.00&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;In this case &lt;strong&gt;the service availability provided by the virtual threads solution is also better, being able to respond to 16% more requests&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;summing-up&quot;&gt;Summing up&lt;/h3&gt;
+
+&lt;p&gt;Definitely, virtual threads offer performance advantages for our blocking Java services. If your projects are already using Java 21 or migrating those that receive heavier loads to this version do not require a significant effort, it could be a good idea to consider starting to use virtual threads in your Java services as soon as possible.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 May 2024 15:00:00 +0000</pubDate>
+        <link>https://jorgonor.com/en/blog/java/2024/05/15/java-21-virtual-threads-comparison.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/en/blog/java/2024/05/15/java-21-virtual-threads-comparison.html</guid>
+        
+        <category>Java</category>
+        
+        <category>JDBC</category>
+        
+        <category>Tomcat</category>
+        
+        <category>Spring Boot</category>
+        
+        <category>PostgreSQL</category>
+        
+        
+        <category>en</category>
+        
+        <category>blog</category>
+        
+        <category>java</category>
+        
+      </item>
     
       <item>
         <title>Promesas con async/await y carga concurrente de recursos</title>
@@ -1171,184 +1436,6 @@ in hybrid app development, or &lt;strong&gt;Ionic Framework&lt;/strong&gt; stand
         <category>blog</category>
         
         <category>javascript</category>
-        
-      </item>
-    
-      <item>
-        <title>Nativescript. El sucesor natural de Ionic.</title>
-        <description>&lt;p&gt;El desarrollo de aplicaciones móviles es hoy en día uno de los sectores de la informática más pujantes y, por ello,
-está mucho más expuesto a cambios disruptivos en su entorno. Dentro de este entorno tan competitivo, hace aparición
-&lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt;. &lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt; es una nueva tecnología open-source de 
-&lt;a href=&quot;http://www.telerik.com/&quot;&gt;&lt;strong&gt;Telerik&lt;/strong&gt;&lt;/a&gt; para poder desarrollar aplicaciones nativas para Android e iOS
-utilizando como lenguaje de programación Javascript, o también el nuevo primo-hermano de Microsoft, Typescript.
-Esta característica nativa es la que hace que el framework referencia para desarrollar apps en Javascript,
-&lt;a href=&quot;http://ionicframework.com/&quot;&gt;&lt;strong&gt;Ionic&lt;/strong&gt;&lt;/a&gt;, pueda verse reemplazado por &lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt; con el tiempo.&lt;/p&gt;
-
-&lt;h3 id=&quot;qué-ofrece-y-como-de-nativo-es-nativescript&quot;&gt;Qué ofrece y como de &lt;em&gt;nativo&lt;/em&gt; es Nativescript&lt;/h3&gt;
-
-&lt;p&gt;Te habrá sorprendido que &lt;strong&gt;Nativescript&lt;/strong&gt; permita desarrollar aplicaciones móviles usando tecnologías nativas desde
-Javascript. Esta tecnología utiliza los componentes visuales nativos de la plataforma móvil sobre la que se ejecuta,
-ofreciendo una fluidez superior, a parte de ofrecer la invocación desde código Javascript de métodos y objetos
-nativos de la plataforma. Además de Javascript, se apoya en XML para la definición del interfaz y un 
-subconjunto de CSS para personalización.&lt;/p&gt;
-
-&lt;p&gt;Esto nos ofrece poder utilizar las bonanzas de la plataforma utilizando Javascript como el &lt;em&gt;glue-code&lt;/em&gt; que se encarga
-de juntar las piezas y dejar el procesamiento pesado y la interfaz a las APIs nativas del dispositivo.
-Para ello, Nativescript utiliza el motor V8, en el cual nos permite incluso ejecutar código nativo utilizando objetos predefinidos.
-Para una explicación detallada inmejorable, &lt;a href=&quot;http://developer.telerik.com/featured/nativescript-works/&quot;&gt;consultar este post&lt;/a&gt;
-donde se explica muy bien este mecanismo de &lt;em&gt;bridge&lt;/em&gt; entre el motor V8 y la plataforma sobre la que se ejecuta Nativescript (sólo disponible en inglés).
-También puedes ver el siguiente video que explica de manera sencilla como funciona este &lt;em&gt;bridge&lt;/em&gt; entre Javascript y
-las APIs nativas del dispositivo.&lt;/p&gt;
-
-&lt;iframe width=&quot;100%&quot; height=&quot;480&quot; src=&quot;https://www.youtube.com/embed/I3_ZnWTj-NA&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;h3 id=&quot;comunidad-y-plugins&quot;&gt;Comunidad y plugins&lt;/h3&gt;
-
-&lt;p&gt;La comunidad de &lt;strong&gt;Nativescript&lt;/strong&gt; está creciendo día a día.
-Disponen de &lt;a href=&quot;http://developer.telerik.com/wp-login.php?action=slack-invitation&quot;&gt;canal de Slack&lt;/a&gt;,
-repositorio de Github y están trabajando en internacionalizar más el proyecto.&lt;/p&gt;
-
-&lt;p&gt;Por otro lado, ya se dispone de muchos plugins para poder utilizar componentes nativos de manera fluida
-dentro de Nativescript, además de tener una garantía extra en el &lt;a href=&quot;https://plugins.telerik.com/nativescript&quot;&gt;Marketplace de plugins verificados de Telerik&lt;/a&gt;.
-Algunos ejemplos sonados son, un plugin para &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/admob&quot;&gt;Admob&lt;/a&gt;,
-&lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/sqlite&quot;&gt;Sqlite&lt;/a&gt;, &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/social-share&quot;&gt;Social Share&lt;/a&gt;
-o &lt;a href=&quot;https://plugins.telerik.com/nativescript/plugin/firebase&quot;&gt;Firebase&lt;/a&gt;.
-Y recuerda, siempre puedes utilizar el &lt;em&gt;bridge&lt;/em&gt; nativo Javascript si quieres invocar métodos de la plataforma destino.&lt;/p&gt;
-
-&lt;p&gt;Además, si eres de los que le tienen alergia a la terminal, &lt;strong&gt;Telerik&lt;/strong&gt; está desarrollando una extensión para Visual Studio Code
-que puedes descargar e instalar desde el &lt;a href=&quot;https://www.nativescript.org/nativescript-for-visual-studio-code&quot;&gt;siguiente enlace&lt;/a&gt;.
-Ofrece lanzar la aplicación desde el propio IDE sin tener que ir ejecutando los comandos de manera manual.&lt;/p&gt;
-
-&lt;h3 id=&quot;está-la-fruta-madura&quot;&gt;¿Está la fruta madura?&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.nativescript.org/&quot;&gt;&lt;strong&gt;Nativescript&lt;/strong&gt;&lt;/a&gt; es una tecnología nueva y, como tal, tiene aún ciertos puntos a mejorar.
-El flujo de desarrollo no acaba de ser el ideal. En caso de cometer algún error en el marcado, puede llegar a ser
-complicado darse cuenta de en qué vista tenemos el error.&lt;/p&gt;
-
-&lt;p&gt;A parte de esto, un punto muy interesante es el de la comunidad. Como ocurre en estos casos, Ionic tiene una comunidad con más
-años tras de sí y sigue siendo el framework Javascript más utilizado para el desarrollo de apps móviles.&lt;/p&gt;
-
-&lt;h3 id=&quot;lo-nativo-contra-lo-estándar&quot;&gt;Lo nativo contra lo estándar&lt;/h3&gt;
-
-&lt;p&gt;La situación actual de Ionic es complicada. &lt;a href=&quot;http://blog.ionic.io/announcing-the-release-of-ionic-2-beta-6/&quot;&gt;El equipo de Ionic está trabajando en la versión 2&lt;/a&gt;
-que dará soporte al nuevo framework &lt;a href=&quot;https://angular.io/docs/ts/latest/quickstart.html&quot;&gt;Angular.js 2&lt;/a&gt;.
-Hay bastante hype con el lanzamiento de este nuevo framework, y era de vital importancia que Ionic incorporara esta segunda versión,
-pero han perdido competitividad con alternativas que utilizan la vista nativa del dispositivo como puede ser el mismo &lt;strong&gt;Nativescript&lt;/strong&gt; o alternativas
-como &lt;a href=&quot;https://facebook.github.io/react-native/&quot;&gt;&lt;strong&gt;React Native&lt;/strong&gt; de Facebook&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;En esta situación podemos llegar a ver cómo soluciones que ofrecen una experiencia de usuario más fluida pueden ir ganando terreno,
-mientras que Ionic podría llegar el mismo a incorporarlas dentro de su framework o ver si los desarrolladores no valoran tanto
-esta mejora en experiencia UI. En el futuro próximo, veremos si &lt;strong&gt;Nativescript&lt;/strong&gt;
-se convierte en referencia, &lt;strong&gt;Ionic Framework&lt;/strong&gt; se mantiene u otras soluciones ganan protagonismo.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 01 May 2016 09:30:00 +0000</pubDate>
-        <link>https://jorgonor.com/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html</link>
-        <guid isPermaLink="true">https://jorgonor.com/es/blog/javascript/2016/05/01/nativescript-sucesor-natural-ionic.html</guid>
-        
-        <category>javascript</category>
-        
-        <category>app</category>
-        
-        <category>mobile</category>
-        
-        
-        <category>es</category>
-        
-        <category>blog</category>
-        
-        <category>javascript</category>
-        
-      </item>
-    
-      <item>
-        <title>Bash para Windows 10</title>
-        <description>&lt;p&gt;Como se anunció en la &lt;strong&gt;Build 2016&lt;/strong&gt; de Microsoft, Microsoft está trabajando con Canonical para &lt;strong&gt;traer Bash a Windows sobre un
-entorno Ubuntu&lt;/strong&gt; para poder ejecutar aplicaciones Linux sobre Windows incluso poder &lt;strong&gt;instalar
-software con apt-get&lt;/strong&gt;. Para los amantes de Bash, esto es una muy buena noticia, ya que nos podemos imaginar utilizando Visual Studio para programar
-por ejemplo aplicaciones Node.js, Ionic o incluso Webs en PHP, mientras utilizamos nuestro intérprete de comandos favorito para hacer tareas automatizadas,
-buscar en el sistema de ficheros de manera eficiente, y conectarnos a nuestros servidores usando ssh.&lt;/p&gt;
-
-&lt;div class=&quot;row&quot;&gt;
-&lt;div class=&quot;col s12&quot;&gt;
-    &lt;div class=&quot;card&quot;&gt;
-    &lt;div class=&quot;card-image&quot;&gt;
-        &lt;iframe src=&quot;https://channel9.msdn.com/Events/Build/2016/P488/player&quot; width=&quot;100%&quot; height=&quot;500&quot; allowfullscreen=&quot;&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;card-content&quot;&gt;
-        Demostración de como ejecutar Bash en Windows. Sólo disponible en inglés me temo.
-    &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Por lo que podemos ver en el vídeo, podemos ejecutar binarios Linux sobre Windows e instalarlos directamente desde la misma consola.
-Ideal para desarrollar webs apoyadas en intérpretes como PHP, Python o Ruby.&lt;/p&gt;
-
-&lt;p&gt;Si formáis parte del programa &lt;a href=&quot;https://insider.windows.com/&quot;&gt;Windows Insider&lt;/a&gt; podéis probar &lt;strong&gt;Bash on Windows&lt;/strong&gt; siguiendo &lt;a href=&quot;http://blog.dustinkirkland.com/2016/04/howto-ubuntu-on-windows.html&quot;&gt;este tutorial&lt;/a&gt;
-hecho por un famoso &lt;a href=&quot;http://blog.dustinkirkland.com/&quot;&gt;blogger&lt;/a&gt; de Canonical, Dustin Kirkland. Curioso como mínimo 🙂 .&lt;/p&gt;
-
-&lt;div class=&quot;row&quot;&gt;
-&lt;div class=&quot;col s12 offset-l2 l8&quot;&gt;
-    &lt;div class=&quot;card&quot;&gt;
-        &lt;div class=&quot;card-image&quot;&gt;
-            &lt;img src=&quot;/img/posts/bash_on_windows.png&quot; class=&quot;img-responsive&quot; /&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;card-content&quot;&gt;
-            Bash en Windows 10 en el Build 2016.
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;ul class=&quot;collection&quot;&gt;
-    &lt;li class=&quot;collection-item avatar&quot;&gt;
-      &lt;img src=&quot;/img/posts/cygwin-logo.png&quot; alt=&quot;Cygwin Logo&quot; width=&quot;60&quot; height=&quot;60&quot; /&gt;
-      &lt;span class=&quot;title&quot;&gt;&lt;a href=&quot;https://www.cygwin.com/&quot;&gt;Cygwin&lt;/a&gt;&lt;/span&gt;
-      &lt;p&gt;
-        &lt;b&gt;&lt;a href=&quot;https://www.cygwin.com/&quot;&gt;Cygwin&lt;/a&gt;&lt;/b&gt; es una especie de distribución que permite ejecutar los programas de shell Unix tradicionales
-        sobre Windows. Como podemos ver en su Web, los propios programas han de ser compilados adrede para esa plataforma y, cualquier que lo
-        haya utilizado sabe que su rendimiento deja mucho que desear.
-      &lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;collection-item avatar&quot;&gt;
-      &lt;img src=&quot;/img/posts/git-logo.png&quot; alt=&quot;Git Logo&quot; width=&quot;60&quot; height=&quot;60&quot; /&gt;
-      &lt;span class=&quot;title&quot;&gt;&lt;a href=&quot;https://git-scm.com/&quot;&gt;Git para Windows&lt;/a&gt;&lt;/span&gt;
-      &lt;p&gt;
-        &lt;b&gt;&lt;a href=&quot;https://git-scm.com/&quot;&gt;Git para Windows&lt;/a&gt;&lt;/b&gt; lleva integrado un intérprete bash con bastantes funcionalidades parecidas a Cygwin.
-        Si usas git, probablemente lo hayas utilizado en alguna ocasión. La verdad que yo prefiero utilizar este a Cygwin, ya que es mucho
-        más sencillo de instalar y lleva prácticamente lo necesario, aunque si necesitas más programas sueles ir a morir a Cygwin.
-      &lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;collection-item avatar&quot;&gt;
-      &lt;img src=&quot;/img/posts/conemu-logo.png&quot; alt=&quot;Conemu Logo&quot; width=&quot;60&quot; height=&quot;60&quot; /&gt;
-      &lt;span class=&quot;title&quot;&gt;&lt;a href=&quot;https://conemu.github.io/&quot;&gt;Conemu&lt;/a&gt;&lt;/span&gt;
-      &lt;p&gt;
-        &lt;b&gt;&lt;a href=&quot;https://conemu.github.io/&quot;&gt;Conemu&lt;/a&gt;&lt;/b&gt; es una mejora importante a la terminal de Windows. Aunque en Windows 10, han mejorado bastante
-el terminal de Windows y ya se puede ampliar a pantalla completa y demás, Conemu permite la ejecución de diversos intérpretes de comandos
-e incorpora pestañas. Dentro de él se pueden ejecutar Cygwin, Git Bash o incluso CMD. Una gozada para los amantes de la productividad.
-      &lt;/p&gt;
-    &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Ahora no nos queda más que esperar a nuevas noticias para poder aumentar nuestra productividad en Windows para aquellos que nos manejamos
-bien sobre el viejo pero increiblemente productivo Bash.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 04 Apr 2016 19:30:00 +0000</pubDate>
-        <link>https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html</link>
-        <guid isPermaLink="true">https://jorgonor.com/es/blog/tech/2016/04/04/bash-para-windows-10.html</guid>
-        
-        <category>tech</category>
-        
-        <category>bash</category>
-        
-        <category>windows</category>
-        
-        
-        <category>es</category>
-        
-        <category>blog</category>
-        
-        <category>tech</category>
         
       </item>
     
