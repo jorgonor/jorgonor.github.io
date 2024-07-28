@@ -5,8 +5,8 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 28 Jul 2024 10:59:07 +0000</pubDate>
-    <lastBuildDate>Sun, 28 Jul 2024 10:59:07 +0000</lastBuildDate>
+    <pubDate>Sun, 28 Jul 2024 11:20:46 +0000</pubDate>
+    <lastBuildDate>Sun, 28 Jul 2024 11:20:46 +0000</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
     
       <item>
@@ -15,6 +15,8 @@
 adapting to changes while making sure our software keeps doing what it was doing before.&lt;/p&gt;
 
 &lt;p&gt;A technology that can help us considerably when verifying that our software works as expected is &lt;a href=&quot;https://testcontainers.com/&quot;&gt;Test containers&lt;/a&gt;. Test containers is an open-source framework that allows us to deploy infrastructure dependencies of our application when running tests, so that we can test the application against real infrastructure dependencies.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://testcontainers.com/&quot;&gt;&lt;img src=&quot;/img/posts/test-containers-slider.png&quot; alt=&quot;Test containers&quot; title=&quot;Test containers&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;We can deploy relational databases, non-relational databases, messaging brokers as well as any software deployable within a Docker container.
 We just need our tests to be able to communicate with a &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; daemon and deploy
@@ -186,6 +188,8 @@ artifact with Gradle, executing the tests with test containers as a build requir
 a los que hay que adaptar el software día tras día.&lt;/p&gt;
 
 &lt;p&gt;Una de las tecnologías que más nos puede ayudar a la hora de comprobar que nuestro software funciona es sin lugar a dudas &lt;a href=&quot;https://testcontainers.com/&quot;&gt;Test containers&lt;/a&gt;. Test containers es un framework open-source que nos permite desplegar dependencias de infrastructura de nuestra aplicación al lanzar los tests, de manera que podemos probar la aplicación contra la dependencia de infrastructura real.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://testcontainers.com/&quot;&gt;&lt;img src=&quot;/img/posts/test-containers-slider.png&quot; alt=&quot;Test containers&quot; title=&quot;Test containers&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Podemos desplegar desde bases de datos relacionales, no relacionales, brokers de mensajería así como
 cualquier componente desplegable con Docker.

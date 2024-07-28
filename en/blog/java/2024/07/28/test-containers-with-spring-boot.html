@@ -29,15 +29,17 @@
 <link rel="canonical" href="https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html" />
 <meta property="og:url" content="https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html" />
 <meta property="og:site_name" content="Jorgonor" />
+<meta property="og:image" content="https://jorgonor.com/img/posts/test-containers-logo.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2024-07-28T10:30:00+00:00" />
-<meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://jorgonor.com/img/posts/test-containers-logo.png" />
 <meta property="twitter:title" content="Test containers with Spring Boot. Persistence layer integration testing" />
 <meta name="twitter:site" content="@jorgonor" />
 <meta name="twitter:creator" content="@jorgonor" />
 <meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2024-07-28T10:30:00+00:00","datePublished":"2024-07-28T10:30:00+00:00","description":"How to create a test suite for our infrastructure tests with Spring Boot and Test containers","headline":"Test containers with Spring Boot. Persistence layer integration testing","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html"},"url":"https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2024-07-28T10:30:00+00:00","datePublished":"2024-07-28T10:30:00+00:00","description":"How to create a test suite for our infrastructure tests with Spring Boot and Test containers","headline":"Test containers with Spring Boot. Persistence layer integration testing","image":"https://jorgonor.com/img/posts/test-containers-logo.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html"},"url":"https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -165,6 +167,8 @@
 adapting to changes while making sure our software keeps doing what it was doing before.</p>
 
 <p>A technology that can help us considerably when verifying that our software works as expected is <a href="https://testcontainers.com/">Test containers</a>. Test containers is an open-source framework that allows us to deploy infrastructure dependencies of our application when running tests, so that we can test the application against real infrastructure dependencies.</p>
+
+<p><a href="https://testcontainers.com/"><img src="/img/posts/test-containers-slider.png" alt="Test containers" title="Test containers" /></a></p>
 
 <p>We can deploy relational databases, non-relational databases, messaging brokers as well as any software deployable within a Docker container.
 We just need our tests to be able to communicate with a <a href="https://www.docker.com/">Docker</a> daemon and deploy
