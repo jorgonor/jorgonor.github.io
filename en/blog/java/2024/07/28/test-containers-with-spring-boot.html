@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/en/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Test containers with Spring Boot. Persistence layer integration testing | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Test containers with Spring Boot. Persistence layer integration testing" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="How to create a test suite for our infrastructure tests with Spring Boot and Test containers" />
+<meta property="og:description" content="How to create a test suite for our infrastructure tests with Spring Boot and Test containers" />
+<link rel="canonical" href="https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html" />
+<meta property="og:url" content="https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-07-28T10:30:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Test containers with Spring Boot. Persistence layer integration testing" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2024-07-28T10:30:00+00:00","datePublished":"2024-07-28T10:30:00+00:00","description":"How to create a test suite for our infrastructure tests with Spring Boot and Test containers","headline":"Test containers with Spring Boot. Persistence layer integration testing","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html"},"url":"https://jorgonor.com/en/blog/java/2024/07/28/test-containers-with-spring-boot.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="Java, Spring Boot, Docker, Testing, PostgreSQL" >
+
+  
+  <meta name="content-language" content="en">
+  
+
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4HH511444Z');
+</script>
+
+</head>
+
+  <body class="post">
+      
+    
+
+<div id="sidebar">
+  <header>
+    <div class="site-title">
+      <a href="/en">
+        
+          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0h24v24H0z" fill="none"/>
+  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+</svg></span>
+        
+        Jorgonor
+      </a>
+    </div>
+    <p class="lead">Software Developer</p>
+  </header>
+
+  <nav id="sidebar-nav-links">
+  
+  <a class="page-link" href="/en/blog.html">Blog</a>
+  
+  <a class="page-link" href="/en/contact.html">Contact</a>
+  
+</nav>
+
+  <nav id="sidebar-icon-links">
+  <a class="icon" href="https://www.linkedin.com/in/jorgonor88" target="_blank" aria-label="Linkedin" alt="Linkedin" title="Linkedin">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0v24h24v-24h-24zm8 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.397-2.586 7-2.777 7 2.476v6.759z"/></svg>
+  </a>
+  <a id="github-link"
+      class="icon" title="Follow @jorgonor" aria-label="Follow @jorgonor"
+      alt="Follow @jorgonor" href="https://github.com/jorgonor">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 28" height="24" width="28"><path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-0.609 0.109-0.828-0.266-0.828-0.578 0-0.391 0.016-1.687 0.016-3.297 0-1.125-0.375-1.844-0.812-2.219 2.672-0.297 5.484-1.313 5.484-5.922 0-1.313-0.469-2.375-1.234-3.219 0.125-0.313 0.531-1.531-0.125-3.187-1-0.313-3.297 1.234-3.297 1.234-0.953-0.266-1.984-0.406-3-0.406s-2.047 0.141-3 0.406c0 0-2.297-1.547-3.297-1.234-0.656 1.656-0.25 2.875-0.125 3.187-0.766 0.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-0.344 0.313-0.656 0.844-0.766 1.609-0.688 0.313-2.438 0.844-3.484-1-0.656-1.141-1.844-1.234-1.844-1.234-1.172-0.016-0.078 0.734-0.078 0.734 0.781 0.359 1.328 1.75 1.328 1.75 0.703 2.141 4.047 1.422 4.047 1.422 0 1 0.016 1.937 0.016 2.234 0 0.313-0.219 0.688-0.828 0.578-4.766-1.594-8.203-6.094-8.203-11.391 0-6.625 5.375-12 12-12zM4.547 19.234c0.031-0.063-0.016-0.141-0.109-0.187-0.094-0.031-0.172-0.016-0.203 0.031-0.031 0.063 0.016 0.141 0.109 0.187 0.078 0.047 0.172 0.031 0.203-0.031zM5.031 19.766c0.063-0.047 0.047-0.156-0.031-0.25-0.078-0.078-0.187-0.109-0.25-0.047-0.063 0.047-0.047 0.156 0.031 0.25 0.078 0.078 0.187 0.109 0.25 0.047zM5.5 20.469c0.078-0.063 0.078-0.187 0-0.297-0.063-0.109-0.187-0.156-0.266-0.094-0.078 0.047-0.078 0.172 0 0.281s0.203 0.156 0.266 0.109zM6.156 21.125c0.063-0.063 0.031-0.203-0.063-0.297-0.109-0.109-0.25-0.125-0.313-0.047-0.078 0.063-0.047 0.203 0.063 0.297 0.109 0.109 0.25 0.125 0.313 0.047zM7.047 21.516c0.031-0.094-0.063-0.203-0.203-0.25-0.125-0.031-0.266 0.016-0.297 0.109s0.063 0.203 0.203 0.234c0.125 0.047 0.266 0 0.297-0.094zM8.031 21.594c0-0.109-0.125-0.187-0.266-0.172-0.141 0-0.25 0.078-0.25 0.172 0 0.109 0.109 0.187 0.266 0.172 0.141 0 0.25-0.078 0.25-0.172zM8.937 21.438c-0.016-0.094-0.141-0.156-0.281-0.141-0.141 0.031-0.234 0.125-0.219 0.234 0.016 0.094 0.141 0.156 0.281 0.125s0.234-0.125 0.219-0.219z"></path>
+</svg>
+
+  </a>
+  
+  <a id="x-link" class="icon" xº href="https://twitter.com/jorgonor" aria-label="X" alt="X" title="X">
+    <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 462.799" width="24" height="24">
+<path fill-rule="nonzero" d="M403.229 0h78.506L310.219 196.04 512 462.799H354.002L230.261 301.007 88.669 462.799h-78.56l183.455-209.683L0 0h161.999l111.856 147.88L403.229 0zm-27.556 415.805h43.505L138.363 44.527h-46.68l283.99 371.278z"/>
+</svg>
+  </a>
+  
+  
+  
+  <a id="subscribe-link"
+     class="icon" title="Subscribe" aria-label="Subscribe"
+     href="https://jorgonor.com/en/feed.xml">
+    <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <circle cx="6.18" cy="17.82" r="2.18"/>
+    <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/>
+</svg>
+  </a>
+  <a id="stackoverflow-link" href="https://stackoverflow.com/users/6254934/jorgonor">
+    <img src="https://stackoverflow.com/users/flair/6254934.png?theme=dark" width="208" height="58" alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+  </a>
+  
+</nav>
+  
+<p class="lead-2">Expertise</p>
+
+<ul class="pages-list">
+    <li class="exp-link"><a href="/en/java-developer.html" class="white-text">Java</a></li>
+    <li class="exp-link"><a href="/en/php-developer.html" class="white-text">PHP</a></li>
+</ul>
+
+
+  <div id="footer-copy">
+    © 2016-2024 <a href="https://jorgonor.com">jorgonor.com</a>
+    Spain
+</div>
+</div>
+
+    <main class="container">
+      <div id="cookies_notice" >
+    <div class="col s8 m10">
+        <span class="card-title">Cookies</span>
+        <p>This website uses cookies to obtain statistics from users navigation. If you go on browsing we consider you accept them.</p>
+    </div>
+    <div class="col s4 m2">
+        <a id="cookies_notice_close" href="#">Accept</a>
+    </div>
+</div>
+
+      <div class="content">
+        <h1>Test containers with Spring Boot. Persistence layer integration testing</h1>
+        <header class="post-header">
+          
+          <p class="post-meta">
+            Jul 28, 2024
+
+            </p>
+        </header>
+        
+        <div class="post-body">  
+          <p>Nowadays, there is no doubt that the quality of software and its flexibility are directly linked to the ability to verify if it still works after a change, a refactor or a new functionality. Time and effort are dedicated developing automated tests for our applications in order to keep
+adapting to changes while making sure our software keeps doing what it was doing before.</p>
+
+<p>A technology that can help us considerably when verifying that our software works as expected is <a href="https://testcontainers.com/">Test containers</a>. Test containers is an open-source framework that allows us to deploy infrastructure dependencies of our application when running tests, so that we can test the application against real infrastructure dependencies.</p>
+
+<p>We can deploy relational databases, non-relational databases, messaging brokers as well as any software deployable within a Docker container.
+We just need our tests to be able to communicate with a <a href="https://www.docker.com/">Docker</a> daemon and deploy
+the test containers that we have configured in our test code.</p>
+
+<h3 id="what-problems-do-test-containers-solve">¿What problems do Test containers solve?</h3>
+
+<p>By allowing us to automatically deploy infrastructure dependencies of our application, test containers makes it easier
+for us to write integration tests that make sure that the components of our application work correctly on the specific infrastructure.
+Without test containers, we would have to manage the instance of this infrastructure dependency externally.
+Using a shared external instance introduces problems and limitations when initializing
+schemes, fixture data, concurrent test executions by some developers, manual infrastructure deploy and so on.</p>
+
+<p>With test containers, our tests always start with a new instance dedicated only for that test execution and we do not have
+to worry about all these situations.</p>
+
+<h3 id="test-containers-in-spring-boot">Test containers in Spring Boot</h3>
+
+<p>Let’s put our hands on Test containers! In this article the purpose is going to be to test the persistence layer of a microservice.
+The microservice is a simple locations REST API, already used in other website articles such as 
+<a href="/en/blog/java/2024/05/15/java-21-virtual-threads-comparison.html">Java 21 service with virtual threads performance test</a>.
+The source code is available in the Github repository <a href="https://github.com/jorgonor/spring-boot-location-api">Spring Boot Location API</a>.
+In order to start the service it is necessary to have <a href="https://www.docker.com/">Docker</a> installed and a <a href="https://www.oracle.com/es/java/technologies/downloads/#java21">Java 21 JDK</a> or higher.</p>
+
+<p>The idea of this exercise is to prove that the application is able to use PostgreSQL and MongoDB as its persistence engine. Let’s start with PostgreSQL.</p>
+
+<h4 id="adding-the-postgresql-infrastructure-tests">Adding the PostgreSQL infrastructure tests</h4>
+
+<figure class="highlight"><pre><code class="language-gradle" data-lang="gradle"><span class="n">ext</span> <span class="o">{</span>
+    <span class="n">springBootVersion</span> <span class="o">=</span> <span class="s1">'3.2.8'</span>
+    <span class="n">springDependencyManagementVersion</span> <span class="o">=</span> <span class="s1">'1.1.4'</span>
+<span class="o">}</span>
+
+<span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'java'</span>
+    <span class="n">id</span> <span class="s1">'org.springframework.boot'</span> <span class="n">version</span> <span class="s2">"${springBootVersion}"</span>
+    <span class="n">id</span> <span class="s1">'io.spring.dependency-management'</span> <span class="n">version</span> <span class="s2">"${springDependencyManagementVersion}"</span>
+<span class="o">}</span>
+
+<span class="k">dependencies</span> <span class="o">{</span>
+    <span class="c1">// Other dependencies...</span>
+
+    <span class="n">testImplementation</span> <span class="s1">'org.springframework.boot:spring-boot-testcontainers'</span>
+    <span class="n">testImplementation</span> <span class="s1">'org.testcontainers:postgresql'</span>
+
+<span class="o">}</span></code></pre></figure>
+
+<p>Adding all these dependencies to our <code class="language-plaintext highlighter-rouge">build.gradle</code> file we are adding the module to use test containers in Spring Boot and also the test container module
+to be able to support PostgreSQL test containers.
+The next step is going to be configuring the docker image we need to use in our test container. In order to use it in our Spring Boot tests it is going
+to be necessary to initialize it as a Spring bean.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@TestConfiguration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LocationApiTestContainersConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ServiceConnection</span>
+    <span class="nc">PostgreSQLContainer</span><span class="o">&lt;?&gt;</span> <span class="n">postgresqlContainer</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="k">return</span> <span class="k">new</span> <span class="nc">PostgreSQLContainer</span><span class="o">&lt;&gt;(</span><span class="nc">DockerImageName</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">"postgres:16-alpine"</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">withUrlParam</span><span class="o">(</span><span class="s">"binaryTransfer"</span><span class="o">,</span> <span class="s">"true"</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">withUrlParam</span><span class="o">(</span><span class="s">"rewriteBatchedInserts"</span><span class="o">,</span> <span class="s">"true"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="c1">// ...</span>
+
+<span class="o">}</span></code></pre></figure>
+
+<p>With the <code class="language-plaintext highlighter-rouge">@ServiceConnection</code> annotation, Spring is going to configure the connection details against the deployed docker container. Now that our
+tests are able to start a PostgreSQL instance, it is already possible to write the infrastructure integration tests.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">PersistenceIntegrationTest</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="nc">LocationRepository</span> <span class="n">locationRepository</span><span class="o">;</span>
+
+    <span class="nd">@Test</span>
+    <span class="kt">void</span> <span class="nf">testLocationDoesNotExist</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">LocationId</span> <span class="n">locationId</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LocationId</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+
+        <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertThatThrownBy</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">locationRepository</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">locationId</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">isInstanceOf</span><span class="o">(</span><span class="nc">EntityNotFoundException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">// ...</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>The design pattern <em>Template method test pattern</em> has been chosen in order to be able to reuse our tests for each of the supported persistence engines.
+The abstract class <code class="language-plaintext highlighter-rouge">PersistenceIntegrationTest</code> is going to be used as a test template some test classes implementations may extend.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Import</span><span class="o">(</span><span class="nc">LocationApiTestContainersConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"postgres"</span><span class="o">)</span>
+<span class="nd">@SpringBootTest</span><span class="o">(</span><span class="n">classes</span> <span class="o">=</span> <span class="o">{</span><span class="nc">TestLocationApiApplication</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="nd">@Rollback</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PostgresIntegrationTest</span> <span class="kd">extends</span> <span class="nc">PersistenceIntegrationTest</span> <span class="o">{</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>The <code class="language-plaintext highlighter-rouge">PostgresIntegrationTest</code> inherits the <code class="language-plaintext highlighter-rouge">PersistenceIntegrationTest</code> test methods and enables the <code class="language-plaintext highlighter-rouge">postgres</code> Spring profile. This profile is
+going to be the one used in the application to activate the PostgreSQL persistence and it will also initialize the <code class="language-plaintext highlighter-rouge">LocationRepository</code> implementation
+responsible for persisting our domain objects into the PostgreSQL RDBMS.</p>
+
+<h4 id="adding-the-mongodb-infrastructure-tests">Adding the MongoDB infrastructure tests</h4>
+
+<p>The first step is to add the required modules for the mongo test container.</p>
+
+<figure class="highlight"><pre><code class="language-gradle" data-lang="gradle"><span class="k">dependencies</span> <span class="o">{</span>
+
+    <span class="c1">// Other dependencies...</span>
+
+    <span class="n">testImplementation</span> <span class="s1">'org.testcontainers:mongodb'</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>And the required bean to start the mongo test container.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@TestConfiguration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LocationApiTestContainersConfiguration</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nd">@Profile</span><span class="o">(</span><span class="s">"mongo"</span><span class="o">)</span>
+    <span class="nd">@Bean</span>
+    <span class="nd">@ServiceConnection</span>
+    <span class="nc">MongoDBContainer</span> <span class="nf">mongoContainer</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">MongoDBContainer</span><span class="o">(</span><span class="s">"mongo:6.0.16"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>As the last step, another inheritor class of the <code class="language-plaintext highlighter-rouge">PersistenceIntegrationTest</code> is created in order to execute the MongoDB infrastructure integration tests.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Import</span><span class="o">(</span><span class="nc">LocationApiTestContainersConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@ActiveProfiles</span><span class="o">(</span><span class="s">"mongo"</span><span class="o">)</span>
+<span class="nd">@SpringBootTest</span><span class="o">(</span><span class="n">classes</span> <span class="o">=</span> <span class="o">{</span><span class="nc">TestLocationApiApplication</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MongoIntegrationTest</span> <span class="kd">extends</span> <span class="nc">PersistenceIntegrationTest</span> <span class="o">{</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>At this point a project framework has been created in order to use a CI environment that guarantees in each build that our application
+still works against both database engines and also the exact docker image version of the database that we are using in our production environments.</p>
+
+<h3 id="test-containers-y-github-actions">Test containers y Github Actions</h3>
+
+<p>Closing the article, I wanted to remark the use of <a href="https://github.com/features/actions">Github Actions</a> as a simple and available CI engine.
+In the <a href="https://github.com/jorgonor/spring-boot-location-api/actions">example repository</a> it can be checked that Github Actions builds the
+artifact with Gradle, executing the tests with test containers as a build requirement.</p>
+
+          
+
+
+
+<div class="post-tags">
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Java</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Spring Boot</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Docker</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Testing</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">PostgreSQL</span>
+    </span>
+  
+</div>
+        </div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var canonicalUrl = document.location.toString(); 
+            var disqus_config = function () {
+                this.page.url = canonicalUrl;
+                this.page.identifier = "";
+            };
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//jorgonorcom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+
+        <section class="related"><h4>Related posts</h4>
+                <ul class="posts-list"><li class="relatedPost">
+                    <a class="post-link" href="https://jorgonor.com/en/blog/java/2024/05/15/java-21-virtual-threads-comparison.html">Java 21 service with virtual threads performance test
+                    </a>
+                </li>
+                
+                </ul></section>
+      </div>
+    </main>
+    <script type="text/javascript" src="/app/app.js"></script>
+
+  </body>
+</html>

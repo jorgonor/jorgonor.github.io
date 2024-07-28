@@ -5,10 +5,178 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 May 2024 17:12:00 +0000</pubDate>
-    <lastBuildDate>Tue, 21 May 2024 17:12:00 +0000</lastBuildDate>
+    <pubDate>Sun, 28 Jul 2024 10:59:07 +0000</pubDate>
+    <lastBuildDate>Sun, 28 Jul 2024 10:59:07 +0000</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
     
+    
+      <item>
+        <title>Tests de integración de bases de datos con Test containers y Spring Boot</title>
+        <description>&lt;p&gt;Hoy en día no se pone en duda que la calidad del software y su maleabilidad van directamente ligadas a la capacidad de comprobar si éste sigue funcionando tras un cambio, un refactor o una nueva funcionalidad. Dedicamos tiempo y esfuerzo a desarrollar las pruebas automáticas de nuestras aplicaciones con el objetivo de no caer en una montaña de deuda técnica y poder seguir adaptándonos a los cambios 
+a los que hay que adaptar el software día tras día.&lt;/p&gt;
+
+&lt;p&gt;Una de las tecnologías que más nos puede ayudar a la hora de comprobar que nuestro software funciona es sin lugar a dudas &lt;a href=&quot;https://testcontainers.com/&quot;&gt;Test containers&lt;/a&gt;. Test containers es un framework open-source que nos permite desplegar dependencias de infrastructura de nuestra aplicación al lanzar los tests, de manera que podemos probar la aplicación contra la dependencia de infrastructura real.&lt;/p&gt;
+
+&lt;p&gt;Podemos desplegar desde bases de datos relacionales, no relacionales, brokers de mensajería así como
+cualquier componente desplegable con Docker.
+Sólo necesitamos que al lanzar nuestros tests éstos puedan comunicarse con un daemon de &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; y desplegar
+los test containers que hayamos configurado.&lt;/p&gt;
+
+&lt;h3 id=&quot;qué-problema-resuelven-los-test-containers&quot;&gt;¿Qué problema resuelven los test containers?&lt;/h3&gt;
+
+&lt;p&gt;Al permitirnos desplegar de manera automática dependencias de infrastructura de nuestra aplicación, test containers nos facilita escribir tests de integración
+que se aseguren de que los componentes de nuestra aplicación funcionan correctamente sobre la infrastructura concreta.
+Sin test containers, tendríamos que manejar la instancia de esta dependencia de infrastructura externamente. Usar una instancia externa compartida introduce problemas y limitaciones a la hora de inicializar
+esquemas, datos de prueba, ejecución concurrente de los tests por parte de varios desarrolladores, …&lt;/p&gt;
+
+&lt;p&gt;Con test containers nuestros tests siempre arrancan con una instancia nueva dedicada solo para esa ejecución de tests y no tenemos
+que preocuparnos por estas situaciones.&lt;/p&gt;
+
+&lt;h3 id=&quot;test-containers-en-spring-boot&quot;&gt;Test containers en Spring Boot&lt;/h3&gt;
+
+&lt;p&gt;Vamos a ponernos manos a la obra para probar la capa de persistencia de un microservicio con test containers.
+El microservicio va a ser un sencillo API REST de ubicaciones que hemos usado en otros artículos como
+&lt;a href=&quot;/es/blog/java/2024/05/15/java-21-virtual-threads.html&quot;&gt;Midiendo el rendimiento de un servicio Java 21 con virtual threads&lt;/a&gt; y que podemos encontrar en el repositorio de Github &lt;a href=&quot;https://github.com/jorgonor/spring-boot-location-api&quot;&gt;Spring Boot Location API&lt;/a&gt;.
+Para poder arrancar el servicio es necesario contar con &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; instalado en nuestro sistema y un &lt;a href=&quot;https://www.oracle.com/es/java/technologies/downloads/#java21&quot;&gt;JDK Java 21&lt;/a&gt; o superior.&lt;/p&gt;
+
+&lt;p&gt;La idea de este ejercicio es probar que la aplicación es capaz de usar como motor de persistencia tanto PostgreSQL como MongoDB.
+Empecemos con la parte de PostgreSQL.&lt;/p&gt;
+
+&lt;h4 id=&quot;añadiendo-los-tests-de-infrastructura-postgresql&quot;&gt;Añadiendo los tests de infrastructura PostgreSQL&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-gradle&quot; data-lang=&quot;gradle&quot;&gt;&lt;span class=&quot;n&quot;&gt;ext&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;springBootVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;3.2.8&apos;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;springDependencyManagementVersion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;1.1.4&apos;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;plugins&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;java&apos;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;org.springframework.boot&apos;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;${springBootVersion}&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;io.spring.dependency-management&apos;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;${springDependencyManagementVersion}&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;dependencies&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Otras dependencias...&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;testImplementation&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;org.springframework.boot:spring-boot-testcontainers&apos;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;testImplementation&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;org.testcontainers:postgresql&apos;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Con estas dependencias en el fichero &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle&lt;/code&gt; estamos añadiendo el módulo de Spring Boot para hacer uso de test containers y también el módulo de test containers para soportar PostgreSQL.
+Como siguiente paso, en nuestro código de test tendremos que decirle qué imagen docker usamos para nuestro test container e iniciarlo como un bean de Spring Boot.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@TestConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;proxyBeanMethods&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LocationApiTestContainersConfiguration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Bean&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@ServiceConnection&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;PostgreSQLContainer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;postgresqlContainer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PostgreSQLContainer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;DockerImageName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;postgres:16-alpine&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withUrlParam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;binaryTransfer&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withUrlParam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;rewriteBatchedInserts&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Gracias a la anotación &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@ServiceConnection&lt;/code&gt; Spring no va a necesitar que configuremos en la configuración de la aplicación la conexión a nuestro contenedor docker,
+sino que él mismo sabrá como conectarse al test container y gestionará la cadena de conexión. A partir de ese momento ya es posible escribir tests en nuestra aplicación que usen el PostgreSQL desplegado por el test container.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PersistenceIntegrationTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;LocationRepository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;locationRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testLocationDoesNotExist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;LocationId&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;locationId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LocationId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;nc&quot;&gt;Assertions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertThatThrownBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;locationRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;locationId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isInstanceOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;EntityNotFoundException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Usaremos el patrón de diseño &lt;em&gt;Template method test pattern&lt;/em&gt; para poder reutilizar nuestros tests para cada uno de los motores de persistencia.
+La clase abstracta &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PersistenceIntegrationTest&lt;/code&gt; será la que usaremos como una plantilla con los tests de la que extenderán otras clases concretas.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@Import&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;LocationApiTestContainersConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@ActiveProfiles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;postgres&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@SpringBootTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;classes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;TestLocationApiApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Rollback&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PostgresIntegrationTest&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PersistenceIntegrationTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;La clase &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PostgresIntegrationTest&lt;/code&gt; heredará los tests de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PersistenceIntegrationTest&lt;/code&gt; y activará el perfil de Spring &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;postgres&lt;/code&gt;. Ese perfil,
+será el que se utilizará en la aplicación para activar la persistencia con PostgreSQL e inicializará el bean que implemente la interfaz de repositorio &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LocationRepository&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;añadiendo-los-tests-de-infrastructura-mongodb&quot;&gt;Añadiendo los tests de infrastructura MongoDB&lt;/h4&gt;
+
+&lt;p&gt;Como primer paso tendremos que añadir el soporte al test container de mongo.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-gradle&quot; data-lang=&quot;gradle&quot;&gt;&lt;span class=&quot;k&quot;&gt;dependencies&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Otras dependencias...&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;testImplementation&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;org.testcontainers:mongodb&apos;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Y el bean necesario para arrancar el test container de mongo.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@TestConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;proxyBeanMethods&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LocationApiTestContainersConfiguration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Profile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mongo&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Bean&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@ServiceConnection&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;MongoDBContainer&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mongoContainer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MongoDBContainer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mongo:6.0.16&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Como paso final, crearemos otra clase hija de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PersistenceIntegrationTest&lt;/code&gt; para ejecutar los tests contra este motor de base de datos.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@Import&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;LocationApiTestContainersConfiguration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@ActiveProfiles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mongo&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@SpringBootTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;classes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;TestLocationApiApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MongoIntegrationTest&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PersistenceIntegrationTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;En este punto ya contaríamos con un marco de trabajo para que en nuestro entorno de CI se garantice que nuestra aplicación funciona contra ambos
+motores de bases de datos y, no solo eso, sino exactamente contra la versión del motor de base de datos usado en nuestros entornos productivos.&lt;/p&gt;
+
+&lt;h3 id=&quot;test-containers-y-github-actions&quot;&gt;Test containers y Github Actions&lt;/h3&gt;
+
+&lt;p&gt;Como broche final, quería hacer una mención especial a &lt;a href=&quot;https://github.com/features/actions&quot;&gt;Github Actions&lt;/a&gt;. Con Github podemos utilizar Github
+Actions como nuestro entorno de CI/CD. En el &lt;a href=&quot;https://github.com/jorgonor/spring-boot-location-api/actions&quot;&gt;repositorio de ejemplo&lt;/a&gt; podemos comprobar
+como Github Actions construye el artefacto del servicio con Gradle, ejecutando los tests con test containers en el proceso.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 28 Jul 2024 10:15:00 +0000</pubDate>
+        <link>https://jorgonor.com/es/blog/java/2024/07/28/test-containers-con-spring-boot.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/es/blog/java/2024/07/28/test-containers-con-spring-boot.html</guid>
+        
+        <category>Java</category>
+        
+        <category>Spring Boot</category>
+        
+        <category>Docker</category>
+        
+        <category>Pruebas</category>
+        
+        <category>PostgreSQL</category>
+        
+        
+        <category>es</category>
+        
+        <category>blog</category>
+        
+        <category>java</category>
+        
+      </item>
     
       <item>
         <title>Midiendo el rendimiento de un servicio Java 21 con virtual threads.</title>
