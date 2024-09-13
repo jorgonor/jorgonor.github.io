@@ -208,7 +208,8 @@ Empecemos con la parte de PostgreSQL.</p>
 <span class="o">}</span>
 
 <span class="k">dependencies</span> <span class="o">{</span>
-    <span class="c1">// Otras dependencias...</span>
+    <span class="c1">// Otras dependencias...
+</span>
 
     <span class="n">testImplementation</span> <span class="s1">'org.springframework.boot:spring-boot-testcontainers'</span>
     <span class="n">testImplementation</span> <span class="s1">'org.testcontainers:postgresql'</span>
@@ -229,7 +230,8 @@ Como siguiente paso, en nuestro código de test tendremos que decirle qué image
             <span class="o">.</span><span class="na">withUrlParam</span><span class="o">(</span><span class="s">"binaryTransfer"</span><span class="o">,</span> <span class="s">"true"</span><span class="o">)</span>
             <span class="o">.</span><span class="na">withUrlParam</span><span class="o">(</span><span class="s">"rewriteBatchedInserts"</span><span class="o">,</span> <span class="s">"true"</span><span class="o">);</span>
     <span class="o">}</span>
-<span class="c1">// ...</span>
+<span class="c1">// ...
+</span>
 
 <span class="o">}</span></code></pre></figure>
 
@@ -249,7 +251,8 @@ sino que él mismo sabrá como conectarse al test container y gestionará la cad
                 <span class="o">.</span><span class="na">isInstanceOf</span><span class="o">(</span><span class="nc">EntityNotFoundException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
     <span class="o">}</span>
 
-    <span class="c1">// ...</span>
+    <span class="c1">// ...
+</span>
 <span class="o">}</span></code></pre></figure>
 
 <p>Usaremos el patrón de diseño <em>Template method test pattern</em> para poder reutilizar nuestros tests para cada uno de los motores de persistencia.
@@ -271,7 +274,8 @@ será el que se utilizará en la aplicación para activar la persistencia con Po
 
 <figure class="highlight"><pre><code class="language-gradle" data-lang="gradle"><span class="k">dependencies</span> <span class="o">{</span>
 
-    <span class="c1">// Otras dependencias...</span>
+    <span class="c1">// Otras dependencias...
+</span>
 
     <span class="n">testImplementation</span> <span class="s1">'org.testcontainers:mongodb'</span>
 <span class="o">}</span></code></pre></figure>
@@ -280,7 +284,8 @@ será el que se utilizará en la aplicación para activar la persistencia con Po
 
 <figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@TestConfiguration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">LocationApiTestContainersConfiguration</span> <span class="o">{</span>
-    <span class="c1">// ...</span>
+    <span class="c1">// ...
+</span>
 
     <span class="nd">@Profile</span><span class="o">(</span><span class="s">"mongo"</span><span class="o">)</span>
     <span class="nd">@Bean</span>

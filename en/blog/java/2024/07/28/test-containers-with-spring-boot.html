@@ -209,7 +209,8 @@ In order to start the service it is necessary to have <a href="https://www.docke
 <span class="o">}</span>
 
 <span class="k">dependencies</span> <span class="o">{</span>
-    <span class="c1">// Other dependencies...</span>
+    <span class="c1">// Other dependencies...
+</span>
 
     <span class="n">testImplementation</span> <span class="s1">'org.springframework.boot:spring-boot-testcontainers'</span>
     <span class="n">testImplementation</span> <span class="s1">'org.testcontainers:postgresql'</span>
@@ -232,7 +233,8 @@ to be necessary to initialize it as a Spring bean.</p>
             <span class="o">.</span><span class="na">withUrlParam</span><span class="o">(</span><span class="s">"binaryTransfer"</span><span class="o">,</span> <span class="s">"true"</span><span class="o">)</span>
             <span class="o">.</span><span class="na">withUrlParam</span><span class="o">(</span><span class="s">"rewriteBatchedInserts"</span><span class="o">,</span> <span class="s">"true"</span><span class="o">);</span>
     <span class="o">}</span>
-<span class="c1">// ...</span>
+<span class="c1">// ...
+</span>
 
 <span class="o">}</span></code></pre></figure>
 
@@ -252,7 +254,8 @@ tests are able to start a PostgreSQL instance, it is already possible to write t
                 <span class="o">.</span><span class="na">isInstanceOf</span><span class="o">(</span><span class="nc">EntityNotFoundException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
     <span class="o">}</span>
 
-    <span class="c1">// ...</span>
+    <span class="c1">// ...
+</span>
 <span class="o">}</span></code></pre></figure>
 
 <p>The design pattern <em>Template method test pattern</em> has been chosen in order to be able to reuse our tests for each of the supported persistence engines.
@@ -275,7 +278,8 @@ responsible for persisting our domain objects into the PostgreSQL RDBMS.</p>
 
 <figure class="highlight"><pre><code class="language-gradle" data-lang="gradle"><span class="k">dependencies</span> <span class="o">{</span>
 
-    <span class="c1">// Other dependencies...</span>
+    <span class="c1">// Other dependencies...
+</span>
 
     <span class="n">testImplementation</span> <span class="s1">'org.testcontainers:mongodb'</span>
 <span class="o">}</span></code></pre></figure>
@@ -284,7 +288,8 @@ responsible for persisting our domain objects into the PostgreSQL RDBMS.</p>
 
 <figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@TestConfiguration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">LocationApiTestContainersConfiguration</span> <span class="o">{</span>
-    <span class="c1">// ...</span>
+    <span class="c1">// ...
+</span>
 
     <span class="nd">@Profile</span><span class="o">(</span><span class="s">"mongo"</span><span class="o">)</span>
     <span class="nd">@Bean</span>
