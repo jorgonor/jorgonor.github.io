@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  
+  <link rel="stylesheet" href="/css/main.css" media="screen,projection" />
+  
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Jorgonor" href="https://jorgonor.com/es/feed.xml" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Evoluciona tus tests de integración con Mock Server | Jorgonor</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Evoluciona tus tests de integración con Mock Server" />
+<meta name="author" content="jorgonor" />
+<meta property="og:locale" content="es" />
+<meta name="description" content="Tutorial para utilizar la herramienta mock server en pruebas de integración" />
+<meta property="og:description" content="Tutorial para utilizar la herramienta mock server en pruebas de integración" />
+<link rel="canonical" href="https://jorgonor.com/es/blog/java/2025/04/02/evoluciona-tus-tests-con-mock-server.html" />
+<meta property="og:url" content="https://jorgonor.com/es/blog/java/2025/04/02/evoluciona-tus-tests-con-mock-server.html" />
+<meta property="og:site_name" content="Jorgonor" />
+<meta property="og:image" content="https://jorgonor.com/img/posts/mockserver.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-04-02T06:09:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://jorgonor.com/img/posts/mockserver.png" />
+<meta property="twitter:title" content="Evoluciona tus tests de integración con Mock Server" />
+<meta name="twitter:site" content="@jorgonor" />
+<meta name="twitter:creator" content="@jorgonor" />
+<meta name="google-site-verification" content="F_iQ3vgdOe6rDYNG-NjoHfXirbNnHwytIs3AXYkvqAw" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"jorgonor"},"dateModified":"2025-04-02T06:09:00+00:00","datePublished":"2025-04-02T06:09:00+00:00","description":"Tutorial para utilizar la herramienta mock server en pruebas de integración","headline":"Evoluciona tus tests de integración con Mock Server","image":"https://jorgonor.com/img/posts/mockserver.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://jorgonor.com/es/blog/java/2025/04/02/evoluciona-tus-tests-con-mock-server.html"},"url":"https://jorgonor.com/es/blog/java/2025/04/02/evoluciona-tus-tests-con-mock-server.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <meta name="keywords" content="Java, Spring Boot, Docker, Pruebas" >
+
+  
+  <meta name="content-language" content="es">
+  
+
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HH511444Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4HH511444Z');
+</script>
+
+</head>
+
+  <body class="post">
+      
+    
+
+<div id="sidebar">
+  <header>
+    <div class="site-title">
+      <a href="/es">
+        
+          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0h24v24H0z" fill="none"/>
+  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+</svg></span>
+        
+        Jorgonor
+      </a>
+    </div>
+    <p class="lead">Desarrollador de Software</p>
+  </header>
+
+  <nav id="sidebar-nav-links">
+  
+  <a class="page-link" href="/es/blog.html">Blog</a>
+  
+  <a class="page-link" href="/es/contacto.html">Contacto</a>
+  
+</nav>
+
+  <nav id="sidebar-icon-links">
+  <a class="icon" href="https://www.linkedin.com/in/jorgonor88" target="_blank" aria-label="Linkedin" alt="Linkedin" title="Linkedin">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0v24h24v-24h-24zm8 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.397-2.586 7-2.777 7 2.476v6.759z"/></svg>
+  </a>
+  <a id="github-link"
+      class="icon" title="Seguir @jorgonor" aria-label="Seguir @jorgonor"
+      alt="Seguir @jorgonor" href="https://github.com/jorgonor">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 28" height="24" width="28"><path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-0.609 0.109-0.828-0.266-0.828-0.578 0-0.391 0.016-1.687 0.016-3.297 0-1.125-0.375-1.844-0.812-2.219 2.672-0.297 5.484-1.313 5.484-5.922 0-1.313-0.469-2.375-1.234-3.219 0.125-0.313 0.531-1.531-0.125-3.187-1-0.313-3.297 1.234-3.297 1.234-0.953-0.266-1.984-0.406-3-0.406s-2.047 0.141-3 0.406c0 0-2.297-1.547-3.297-1.234-0.656 1.656-0.25 2.875-0.125 3.187-0.766 0.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-0.344 0.313-0.656 0.844-0.766 1.609-0.688 0.313-2.438 0.844-3.484-1-0.656-1.141-1.844-1.234-1.844-1.234-1.172-0.016-0.078 0.734-0.078 0.734 0.781 0.359 1.328 1.75 1.328 1.75 0.703 2.141 4.047 1.422 4.047 1.422 0 1 0.016 1.937 0.016 2.234 0 0.313-0.219 0.688-0.828 0.578-4.766-1.594-8.203-6.094-8.203-11.391 0-6.625 5.375-12 12-12zM4.547 19.234c0.031-0.063-0.016-0.141-0.109-0.187-0.094-0.031-0.172-0.016-0.203 0.031-0.031 0.063 0.016 0.141 0.109 0.187 0.078 0.047 0.172 0.031 0.203-0.031zM5.031 19.766c0.063-0.047 0.047-0.156-0.031-0.25-0.078-0.078-0.187-0.109-0.25-0.047-0.063 0.047-0.047 0.156 0.031 0.25 0.078 0.078 0.187 0.109 0.25 0.047zM5.5 20.469c0.078-0.063 0.078-0.187 0-0.297-0.063-0.109-0.187-0.156-0.266-0.094-0.078 0.047-0.078 0.172 0 0.281s0.203 0.156 0.266 0.109zM6.156 21.125c0.063-0.063 0.031-0.203-0.063-0.297-0.109-0.109-0.25-0.125-0.313-0.047-0.078 0.063-0.047 0.203 0.063 0.297 0.109 0.109 0.25 0.125 0.313 0.047zM7.047 21.516c0.031-0.094-0.063-0.203-0.203-0.25-0.125-0.031-0.266 0.016-0.297 0.109s0.063 0.203 0.203 0.234c0.125 0.047 0.266 0 0.297-0.094zM8.031 21.594c0-0.109-0.125-0.187-0.266-0.172-0.141 0-0.25 0.078-0.25 0.172 0 0.109 0.109 0.187 0.266 0.172 0.141 0 0.25-0.078 0.25-0.172zM8.937 21.438c-0.016-0.094-0.141-0.156-0.281-0.141-0.141 0.031-0.234 0.125-0.219 0.234 0.016 0.094 0.141 0.156 0.281 0.125s0.234-0.125 0.219-0.219z"></path>
+</svg>
+
+  </a>
+  
+  <a id="x-link" class="icon" xº href="https://twitter.com/jorgonor" aria-label="X" alt="X" title="X">
+    <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 462.799" width="24" height="24">
+<path fill-rule="nonzero" d="M403.229 0h78.506L310.219 196.04 512 462.799H354.002L230.261 301.007 88.669 462.799h-78.56l183.455-209.683L0 0h161.999l111.856 147.88L403.229 0zm-27.556 415.805h43.505L138.363 44.527h-46.68l283.99 371.278z"/>
+</svg>
+  </a>
+  
+  
+  
+  <a id="subscribe-link"
+     class="icon" title="Subscribirse" aria-label="Subscribirse"
+     href="https://jorgonor.com/es/feed.xml">
+    <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <circle cx="6.18" cy="17.82" r="2.18"/>
+    <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/>
+</svg>
+  </a>
+  <a id="stackoverflow-link" href="https://stackoverflow.com/users/6254934/jorgonor">
+    <img src="https://stackoverflow.com/users/flair/6254934.png?theme=dark" width="208" height="58" alt="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for jorgonor at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+  </a>
+  
+</nav>
+  
+<p class="lead-2">Experiencia</p>
+
+<ul class="pages-list">
+    <li class="exp-link"><a href="/es/ingeniero/java.html" class="white-text">Java</a></li>
+    <li class="exp-link"><a href="/es/programador/php.html" class="white-text">PHP</a></li>
+</ul>
+
+
+  <div id="footer-copy">
+    © 2016-2025 <a href="https://jorgonor.com">jorgonor.com</a>
+    Vila-real, Castellón - España
+</div>
+</div>
+
+    <main class="container">
+      <div id="cookies_notice" >
+    <div class="col s8 m10">
+        <span class="card-title">Cookies</span>
+        <p>Esta web utiliza cookies para obtener datos estadísticos de la navegación de sus usuarios. Si continúas navegando consideramos que aceptas su uso.</p>
+    </div>
+    <div class="col s4 m2">
+        <a id="cookies_notice_close" href="#">Aceptar</a>
+    </div>
+</div>
+
+      <div class="content">
+        <h1>Evoluciona tus tests de integración con Mock Server</h1>
+        <header class="post-header">
+          
+          <p class="post-meta">
+            2/Abr/2025
+            </p>
+        </header>
+        
+        <div class="post-body">  
+          <h3 id="qué-es-mock-server">¿Qué es Mock Server?</h3>
+
+<p>Mock Server es una herramienta versátil en la que es posible apoyarse a la hora de probar integraciones contra servicios HTTP.
+Es especialmente útil para pruebas de integración. Con Mock Server podemos lanzar un servidor HTTP dentro de nuestra suite de tests y definir cómo debe comportarse ante una petición concreta de la aplicación cliente.</p>
+
+<p><a href="https://www.mock-server.com/"><img src="/img/posts/mockserver.png" alt="Mock Server" title="Mock Server" /></a></p>
+
+<p>Además de esto, Mock Server también nos va a permitir comprobar que el cliente está ejecutando las peticiones esperadas dado un flujo de ejecución.</p>
+
+<h3 id="en-qué-escenarios-es-útil-mock-server">¿En qué escenarios es útil Mock Server?</h3>
+
+<ol>
+  <li><strong>Desarrollo API First</strong>: Si estamos usando la metodología de desarrollo API First, puede resultarnos útil usar Mock Server para tener rápidamente una aplicación Backend como la que deseamos contra la que integrarnos.</li>
+  <li><strong>Aislamiento</strong>: Las pruebas de integración estarán completamente aisladas de un entorno de pre-producción o integración. Esto implica dos beneficios adicionales. Añade reproducibilidad a nuestras pruebas y también simplifica la puesta en marcha de éstas eliminando dependencias externas.</li>
+  <li><strong>Velocidad de ejecución</strong>: Las pruebas se ejecutarán más rápido al no depender de la red ni de servicios externos.</li>
+</ol>
+
+<h3 id="desplegando-mock-server-como-un-contenedor-docker">Desplegando Mock Server como un contenedor docker</h3>
+
+<p>Mock Server como tal puede ser desplegado como una aplicación Java en un contenedor Docker. Esto podemos conseguirlo con este docker-compose:</p>
+
+<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code>services:
+  mockServer:
+    image: mockserver/mockserver:5.14.0
+    ports:
+      - 12345:1080
+    environment:
+      MOCKSERVER_WATCH_INITIALIZATION_JSON: "true"
+      MOCKSERVER_PROPERTY_FILE: /config/mockserver.properties
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializerJson.json
+    volumes:
+      - type: bind
+        source: .
+        target: /config
+</code></pre></div></div>
+
+<p>Lanzando este docker-compose con el comando <code class="language-plaintext highlighter-rouge">docker-compose up</code> se creará un contenedor docker al que podremos acceder en la URL <a href="http://localhost:12345">http://localhost:12345</a>.</p>
+
+<p>Para definir el comportamiento esperado del server externo HTTP tenemos dos opciones. O bien usar la <a href="https://www.mock-server.com/mock_server/creating_expectations.html">API REST de Mock Server</a> o bien usar un <a href="https://www.mock-server.com/mock_server/initializing_expectations.html#expectation_initializer_json">fichero JSON de inicialización</a>.</p>
+
+<p>Si estás integrando un servicio y conoces las respuestas esperadas ante una entrada o quieres probar escenarios especificos puedes definir distintos request matchers, como serían:</p>
+
+<ul>
+  <li>Usar el <a href="https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers">path de la petición HTTP</a>.</li>
+  <li>Usar un matcher con el <a href="https://www.mock-server.com/mock_server/creating_expectations.html#button_match_request_by_body_with_json_exactly">cuerpo de la petición HTTP esperando un JSON</a>.</li>
+  <li>Usar un matcher con el <a href="https://www.mock-server.com/mock_server/creating_expectations.html#button_match_request_by_regex_body">cuerpo de la petición HTTP coincidiendo con una expresión regular</a>.</li>
+  <li>Usar un matcher por las <a href="https://www.mock-server.com/mock_server/creating_expectations.html#request_key_to_multivalue_matchers">cabeceras de la petición HTTP</a>.</li>
+</ul>
+
+<p>Si quieres entrar en más detalles te recomiendo que le eches un ojo a <a href="https://github.com/jorgonor/mockserver-samples/">este repositorio en Github</a> donde hay un ejemplo de mock server desplegado con Docker.
+Puedes descargar el repositorio, y desplegarlo con <code class="language-plaintext highlighter-rouge">docker-compose up</code>. Una vez el contenedor docker esté listo accede a <a href="http://localhost:12345/mockserver/dashboard">http://localhost:12345/mockserver/dashboard</a> para ver las expectations creadas y el estado de Mock Server.</p>
+
+<div style="text-align: center;">
+  <img src="/img/posts/mockserver-dashboard.png" alt="MockServer Dashboard" style="display: block; margin: 0 auto;" />
+  <p style="text-align: center;">MockServer Dashboard</p>
+</div>
+
+<h3 id="pruebas-de-integración-en-java-con-mock-server">Pruebas de integración en Java con Mock Server</h3>
+
+<h3 id="instalación-y-configuración">Instalación y configuración</h3>
+
+<p>Para comenzar a usar Mock Server en tu proyecto Java, será necesario que añadas las dependencias a los artefactos necesarios.
+Si usas Gradle, agrega las siguientes línea a tu archivo <code class="language-plaintext highlighter-rouge">build.gradle</code>:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">testImplementation</span> <span class="s1">'org.mock-server:mockserver-netty:5.11.2'</span>
+<span class="n">testImplementation</span> <span class="s1">'org.mock-server:mockserver-client-java:5.11.2'</span>
+</code></pre></div></div>
+
+<h3 id="ejemplo-básico">Ejemplo básico</h3>
+
+<p>Veamos un caso de uso de ejemplo, una librería que usaremos como conector contra una API REST para gestionar la reserva de libros. La librería contará con un método para poder recuperar los libros disponibles y un método para poder reservar un ejemplar del libro.
+Usando mock server podemos mockear un servidor HTTP lanzándolo directamente desde nuestros tests. Para poder inicializar simplemente hay que invocar el método <code class="language-plaintext highlighter-rouge">ClientAndServer.startClientAndServer(&lt;port&gt;)</code> antes de cada uno
+de los tests.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LibraryClientTestImpl</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DEFAULT_PORT</span> <span class="o">=</span> <span class="mi">8181</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">LibraryClient</span> <span class="n">libraryClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LibraryClientImpl</span><span class="o">(</span>
+        <span class="k">new</span> <span class="nf">LibraryClientConfig</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">setBaseUrl</span><span class="o">(</span><span class="s">"http://localhost:"</span> <span class="o">+</span> <span class="no">DEFAULT_PORT</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">setTimeout</span><span class="o">(</span><span class="mi">1000</span><span class="o">)</span>
+    <span class="o">);</span>
+
+    <span class="kd">private</span> <span class="nc">ClientAndServer</span> <span class="n">clientAndServer</span><span class="o">;</span>
+
+    <span class="nd">@BeforeEach</span>
+    <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// Inicia un mockserver</span>
+        <span class="n">clientAndServer</span> <span class="o">=</span> <span class="nc">ClientAndServer</span><span class="o">.</span><span class="na">startClientAndServer</span><span class="o">(</span><span class="no">DEFAULT_PORT</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@AfterEach</span>
+    <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// Paramos el mockserver</span>
+        <span class="n">clientAndServer</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kt">void</span> <span class="nf">testGetBooks</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">responseBody</span> <span class="o">=</span> <span class="s">"[{"</span>
+          <span class="o">+</span> <span class="s">" \"isbn\": \"9781593279509\", "</span>
+          <span class="o">+</span> <span class="s">" \"title\":\"Eloquent Javascript\", "</span>
+          <span class="o">+</span> <span class="s">" \"author\":\"Marijin Haverbeke\""</span>
+          <span class="o">+</span> <span class="s">"}, {"</span>
+          <span class="o">+</span> <span class="s">" \"isbn\": \"9781801072977\", "</span>
+          <span class="o">+</span> <span class="s">" \"title\":\"Microservices with Spring Boot and Spring Cloud\", "</span>
+          <span class="o">+</span> <span class="s">" \"author\":\"Magnus Larsson\" "</span>
+          <span class="o">+</span> <span class="s">"}, {"</span>
+          <span class="o">+</span> <span class="s">" \"isbn\": \"9780596004651\", "</span>
+          <span class="o">+</span> <span class="s">" \"title\":\"Head First Java\", "</span>
+          <span class="o">+</span> <span class="s">" \"author\":\"Kathy Sierra\""</span>
+          <span class="o">+</span> <span class="s">"}]"</span><span class="o">;</span>
+
+        <span class="c1">// Definimos una expectation para cuando un cliente haga una petición GET contra el endpoint /v1/books</span>
+        <span class="n">clientAndServer</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="nc">HttpRequest</span><span class="o">.</span><span class="na">request</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">withMethod</span><span class="o">(</span><span class="s">"GET"</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">withPath</span><span class="o">(</span><span class="s">"/v1/books"</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">respond</span><span class="o">(</span>
+                <span class="nc">HttpResponse</span><span class="o">.</span><span class="na">response</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">withStatusCode</span><span class="o">(</span><span class="mi">200</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">withHeader</span><span class="o">(</span><span class="s">"Content-Type"</span><span class="o">,</span> <span class="s">"application/json"</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">withBody</span><span class="o">(</span><span class="n">responseBody</span><span class="o">)</span>
+            <span class="o">);</span>
+
+        <span class="c1">// Dispara la petición a través del cliente de la librería para probarlo</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Book</span><span class="o">&gt;</span> <span class="n">books</span> <span class="o">=</span> <span class="n">libraryClient</span><span class="o">.</span><span class="na">getBooks</span><span class="o">();</span>
+        <span class="nc">Book</span> <span class="n">book</span><span class="o">;</span>
+
+        <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="n">books</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+
+        <span class="c1">// Verifica el primero de los libros</span>
+
+        <span class="n">book</span> <span class="o">=</span> <span class="n">books</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+
+        <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">"9781593279509"</span><span class="o">,</span> <span class="n">book</span><span class="o">.</span><span class="na">getIsbn</span><span class="o">());</span>
+        <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">"Eloquent Javascript"</span><span class="o">,</span> <span class="n">book</span><span class="o">.</span><span class="na">getTitle</span><span class="o">());</span>
+        <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">"Marijin Haverbeke"</span><span class="o">,</span> <span class="n">book</span><span class="o">.</span><span class="na">getAuthor</span><span class="o">());</span>
+
+        <span class="c1">// Verifica el resto de libros...</span>
+
+        <span class="c1">// Verifica que mockserver ha recibido la petición GET /v1/books y la ha recibido una sola vez.</span>
+
+        <span class="nc">RequestDefinition</span><span class="o">[]</span> <span class="n">requests</span> <span class="o">=</span>
+          <span class="n">clientAndServer</span><span class="o">.</span><span class="na">retrieveRecordedRequests</span><span class="o">(</span><span class="nc">HttpRequest</span><span class="o">.</span><span class="na">request</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">withMethod</span><span class="o">(</span><span class="s">"GET"</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">withPath</span><span class="o">(</span><span class="s">"/v1/books"</span><span class="o">));</span>
+        
+        <span class="nc">Assertions</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">requests</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">// ...</span>
+</code></pre></div></div>
+
+<p>En el test se puede ver como definimos una expectation programáticamente del mismo modo que lo haríamos con un stub. Una vez configurada la expectation, se dispara la ejecución de la petición
+para obtener los libros disponibles del api y se verifica que los datos recibidos coinciden con los enviados por parte de los resultados introducidos en el stub.</p>
+
+<p>Como un extra, también se valida que se ha realizado la petición contra Mock Server y que ésta se ejecuta una sola vez.</p>
+
+<h3 id="comprueba-la-potencia-de-mock-server">Comprueba la potencia de Mock Server</h3>
+
+<p>Mock Server es una herramienta muy útil a la hora de validar escenarios que se puedan dar en tu integración a una API de terceros. Es una herramienta a tener en el radar cuando una aplicación necesite validar que se integra correctamente
+contra una API de terceros, añadiendo calidad y cobertura de que se cumple con el contrato en cada una de las
+compilaciones de la aplicación.</p>
+
+          
+
+
+
+<div class="post-tags">
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Java</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Spring Boot</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Docker</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">Pruebas</span>
+    </span>
+  
+</div>
+        </div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var canonicalUrl = document.location.toString(); 
+            var disqus_config = function () {
+                this.page.url = canonicalUrl;
+                this.page.identifier = "";
+            };
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//jorgonorcom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+
+        <section class="related"><h4>Posts similares</h4>
+                <ul class="posts-list"><li class="relatedPost">
+                    <a class="post-link" href="https://jorgonor.com/es/blog/java/2024/07/28/test-containers-con-spring-boot.html">Tests de integración de bases de datos con Test containers y Spring Boot
+                    </a>
+                </li>
+                
+                <li class="relatedPost">
+                    <a class="post-link" href="https://jorgonor.com/es/blog/java/2024/05/15/java-21-virtual-threads.html">Midiendo el rendimiento de un servicio Java 21 con virtual threads.
+                    </a>
+                </li>
+                
+                </ul></section>
+      </div>
+    </main>
+    <script type="text/javascript" src="/app/app.js"></script>
+
+  </body>
+</html>

@@ -5,10 +5,199 @@
     <description></description>
     <link>https://jorgonor.com/</link>
     <atom:link href="https://jorgonor.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 13 Sep 2024 14:54:16 +0000</pubDate>
-    <lastBuildDate>Fri, 13 Sep 2024 14:54:16 +0000</lastBuildDate>
+    <pubDate>Wed, 02 Apr 2025 07:05:44 +0000</pubDate>
+    <lastBuildDate>Wed, 02 Apr 2025 07:05:44 +0000</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
     
+    
+      <item>
+        <title>Power up your integration tests with Mock Server</title>
+        <description>&lt;h3 id=&quot;what-is-mock-server&quot;&gt;What is Mock Server?&lt;/h3&gt;
+
+&lt;p&gt;Mock Server is a considerably useful tool when testing integrations against HTTP services. It is especially useful for integration tests.
+With Mock Server, it is possible to launch an HTTP server within our test suite and define how it should behave when receiving specific requests from a client application.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.mock-server.com/&quot;&gt;&lt;img src=&quot;/img/posts/mockserver.png&quot; alt=&quot;Mock Server&quot; title=&quot;Mock Server&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Additionally, Mock Server is able to verify that the client is making the expected requests when a particular execution flow is being executed.&lt;/p&gt;
+
+&lt;h3 id=&quot;in-what-scenarios-is-mock-server-useful&quot;&gt;In what scenarios is Mock Server useful?&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;API First Development&lt;/strong&gt;: If you are using the API First development methodology, Mock Server can be helpful to quickly have a backend application to integrate without needing any real application developed.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Isolation&lt;/strong&gt;: Integration tests will be completely isolated from a pre-production or integration environment. This brings two additional benefits: it adds reproducibility to our tests and simplifies their setup by removing external dependencies.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Execution Speed&lt;/strong&gt;: Tests will run faster as they do not depend on the network or external services.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;deploying-mock-server-as-a-docker-container&quot;&gt;Deploying Mock Server as a Docker container&lt;/h3&gt;
+
+&lt;p&gt;Mock Server can be deployed as a Java application in a Docker container. This can be achieved with the following docker-compose:&lt;/p&gt;
+
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;services:
+  mockServer:
+    image: mockserver/mockserver:5.14.0
+    ports:
+      - 12345:1080
+    environment:
+      MOCKSERVER_WATCH_INITIALIZATION_JSON: &quot;true&quot;
+      MOCKSERVER_PROPERTY_FILE: /config/mockserver.properties
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializerJson.json
+    volumes:
+      - type: bind
+        source: .
+        target: /config
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Running this docker-compose with the command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up&lt;/code&gt; will create a Docker container accessible at the URL &lt;a href=&quot;http://localhost:12345&quot;&gt;http://localhost:12345&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To define the expected behavior of the external HTTP server, there are two preferred options: either use the &lt;a href=&quot;https://www.mock-server.com/mock_server/creating_expectations.html&quot;&gt;Mock Server REST API&lt;/a&gt; or a &lt;a href=&quot;https://www.mock-server.com/mock_server/initializing_expectations.html#expectation_initializer_json&quot;&gt;JSON initialization file&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you are integrating a service and you know the expected responses for specific inputs or want to test specific scenarios, you can define various request matchers, such as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Using the &lt;a href=&quot;https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers&quot;&gt;HTTP request path&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Using a matcher with the &lt;a href=&quot;https://www.mock-server.com/mock_server/creating_expectations.html#button_match_request_by_body_with_json_exactly&quot;&gt;HTTP request body expecting a JSON&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Using a matcher with the &lt;a href=&quot;https://www.mock-server.com/mock_server/creating_expectations.html#button_match_request_by_regex_body&quot;&gt;HTTP request body matching a regular expression&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Using a matcher for the &lt;a href=&quot;https://www.mock-server.com/mock_server/creating_expectations.html#request_key_to_multivalue_matchers&quot;&gt;HTTP request headers&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you want to get into the details, check out &lt;a href=&quot;https://github.com/jorgonor/mockserver-samples/&quot;&gt;this GitHub repository&lt;/a&gt;, which contains an example of Mock Server deployed with Docker.
+You can download the repository and deploy it with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up&lt;/code&gt;.
+Once the Docker container is ready, access &lt;a href=&quot;http://localhost:12345/mockserver/dashboard&quot;&gt;http://localhost:12345/mockserver/dashboard&lt;/a&gt; to view the created expectations and the state of Mock Server.&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center;&quot;&gt;
+  &lt;img src=&quot;/img/posts/mockserver-dashboard.png&quot; alt=&quot;MockServer Dashboard&quot; style=&quot;display: block; margin: 0 auto;&quot; /&gt;
+  &lt;p style=&quot;text-align: center;&quot;&gt;MockServer Dashboard&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;integration-tests-in-java-with-mock-server&quot;&gt;Integration Tests in Java with Mock Server&lt;/h3&gt;
+
+&lt;h3 id=&quot;installation-and-configuration&quot;&gt;Installation and Configuration&lt;/h3&gt;
+
+&lt;p&gt;To start using Mock Server in your Java project, you will need to add the necessary dependencies to your build file.&lt;br /&gt;
+If you are using Gradle, add the following lines to your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build.gradle&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;testImplementation&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;org.mock-server:mockserver-netty:5.11.2&apos;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testImplementation&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;org.mock-server:mockserver-client-java:5.11.2&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;basic-example&quot;&gt;Basic Example&lt;/h3&gt;
+
+&lt;p&gt;Let’s look at an example use case: a middleware library to a REST API for managing book reservations. The library will have a method to retrieve available books and another method to reserve a book.&lt;br /&gt;
+Using Mock Server, we can mock an HTTP server directly from our tests. To initialize it, simply invoke the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ClientAndServer.startClientAndServer(&amp;lt;port&amp;gt;)&lt;/code&gt; method before each test.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LibraryClientTestImpl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DEFAULT_PORT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8181&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LibraryClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libraryClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LibraryClientImpl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;LibraryClientConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setBaseUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://localhost:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DEFAULT_PORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ClientAndServer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clientAndServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@BeforeEach&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setUp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Start a Mock Server&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;clientAndServer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ClientAndServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;startClientAndServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DEFAULT_PORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@AfterEach&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;tearDown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Stop the Mock Server&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;clientAndServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testGetBooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;responseBody&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[{&quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;isbn\&quot;: \&quot;9781593279509\&quot;, &quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;title\&quot;:\&quot;Eloquent Javascript\&quot;, &quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;author\&quot;:\&quot;Marijin Haverbeke\&quot;&quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;}, {&quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;isbn\&quot;: \&quot;9781801072977\&quot;, &quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;title\&quot;:\&quot;Microservices with Spring Boot and Spring Cloud\&quot;, &quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;author\&quot;:\&quot;Magnus Larsson\&quot; &quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;}, {&quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;isbn\&quot;: \&quot;9780596004651\&quot;, &quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;title\&quot;:\&quot;Head First Java\&quot;, &quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; \&quot;author\&quot;:\&quot;Kathy Sierra\&quot;&quot;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;}]&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Define an expectation for when a client makes a GET request to the /v1/books endpoint&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;clientAndServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;HttpRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GET&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/v1/books&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;respond&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;HttpResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withStatusCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withHeader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Content-Type&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;application/json&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withBody&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responseBody&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Trigger the request through the library client to test it&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Book&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;libraryClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Book&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;Assertions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Verify the first book&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;book&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;Assertions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;9781593279509&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getIsbn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Assertions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Eloquent Javascript&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getTitle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;Assertions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Marijin Haverbeke&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getAuthor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Verify the remaining books...&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Verify that Mock Server received the GET /v1/books request exactly once.&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;RequestDefinition&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;clientAndServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;retrieveRecordedRequests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;HttpRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GET&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/v1/books&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    
+    &lt;span class=&quot;nc&quot;&gt;Assertions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the test, you can see how an expectation is defined programmatically, similar to how we would create a stub in a unit test.
+Once the expectation is configured, the request is executed to retrieve the available books from the API, and the received data is verified against the expected results defined in the stub.&lt;/p&gt;
+
+&lt;p&gt;As an extra step, we also validate that the request was made to Mock Server and that the request was executed only once.&lt;/p&gt;
+
+&lt;h3 id=&quot;get-started-with-mock-server&quot;&gt;Get started with Mock Server&lt;/h3&gt;
+
+&lt;p&gt;Mock Server is a very useful tool for validating scenarios that may occur when integrating with a third-party API.
+It is a tool worth considering when an application needs to ensure proper integration with a third-party API, adding quality and coverage to ensure that the contract is fulfilled in every build of the application.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 02 Apr 2025 06:09:00 +0000</pubDate>
+        <link>https://jorgonor.com/en/blog/java/2025/04/02/power-up-your-tests-with-mock-server.html</link>
+        <guid isPermaLink="true">https://jorgonor.com/en/blog/java/2025/04/02/power-up-your-tests-with-mock-server.html</guid>
+        
+        <category>Java</category>
+        
+        <category>Spring Boot</category>
+        
+        <category>Docker</category>
+        
+        <category>Testing</category>
+        
+        
+        <category>en</category>
+        
+        <category>blog</category>
+        
+        <category>java</category>
+        
+      </item>
     
       <item>
         <title>Test containers with Spring Boot. Persistence layer integration testing</title>
